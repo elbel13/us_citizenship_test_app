@@ -10,8 +10,14 @@ import 'screens/test_readiness_screen.dart';
 import 'screens/settings_screen.dart';
 import 'theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
+import 'services/database_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize database
+  await DatabaseService().database;
+
   runApp(const USCitizenshipTestApp());
 }
 

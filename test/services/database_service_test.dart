@@ -1,0 +1,154 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:us_citizenship_test_app/services/database_service.dart';
+import 'package:us_citizenship_test_app/models/question.dart';
+
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize ffi for testing
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+
+  group('DatabaseService', () {
+    setUp(() async {
+      // Reset the database between tests
+      final dbService = DatabaseService();
+      try {
+        await dbService.clearDatabase();
+        await dbService.close();
+      } catch (e) {
+        // Database might not exist yet
+      }
+    });
+
+    tearDown(() async {
+      // Clean up database after each test
+      final dbService = DatabaseService();
+      try {
+        await dbService.clearDatabase();
+        await dbService.close();
+      } catch (e) {
+        // Ignore errors during cleanup
+      }
+    });
+
+    test('database initializes successfully', () async {
+      final databaseService = DatabaseService();
+      final db = await databaseService.database;
+      expect(db, isNotNull);
+      expect(db.isOpen, true);
+    });
+
+    test('creates required tables on initialization', () async {
+      final databaseService = DatabaseService();
+      final db = await databaseService.database;
+
+      // Check if question table exists
+      final questionTableExists = await db.rawQuery(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='question'",
+      );
+      expect(questionTableExists.isNotEmpty, true);
+
+      // Check if question_text table exists
+      final questionTextTableExists = await db.rawQuery(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='question_text'",
+      );
+      expect(questionTextTableExists.isNotEmpty, true);
+    });
+
+    test('creates index on question_text language_code', () async {
+      final databaseService = DatabaseService();
+      final db = await databaseService.database;
+
+      final indexExists = await db.rawQuery(
+        "SELECT name FROM sqlite_master WHERE type='index' AND name='idx_question_text_language'",
+      );
+      expect(indexExists.isNotEmpty, true);
+    });
+
+    test('populates database from assets on first access', () async {
+      final databaseService = DatabaseService();
+      // This test relies on the mock asset being loaded
+      final questions = await databaseService.getQuestions('en');
+
+      expect(questions, isNotEmpty);
+      expect(questions.length, greaterThan(0));
+    });
+
+    test('getQuestions returns correct language questions', () async {
+      final databaseService = DatabaseService();
+      final questionsEn = await databaseService.getQuestions('en');
+
+      expect(questionsEn, isNotEmpty);
+      for (var question in questionsEn) {
+        expect(question.languageCode, 'en');
+      }
+    });
+
+    test('getQuestions returns questions in order', () async {
+      final databaseService = DatabaseService();
+      final questions = await databaseService.getQuestions('en');
+
+      expect(questions, isNotEmpty);
+
+      // Check if questions are ordered by question_id
+      for (int i = 0; i < questions.length - 1; i++) {
+        expect(questions[i].id, lessThanOrEqualTo(questions[i + 1].id));
+      }
+    });
+
+    test('getQuestions returns empty list for non-existent language', () async {
+      final databaseService = DatabaseService();
+      final questions = await databaseService.getQuestions('fr');
+
+      expect(questions, isEmpty);
+    });
+
+    test('clearDatabase removes all data', () async {
+      final databaseService = DatabaseService();
+      // First, ensure database is populated
+      await databaseService.database;
+      var questions = await databaseService.getQuestions('en');
+      expect(questions, isNotEmpty);
+
+      // Clear the database
+      await databaseService.clearDatabase();
+
+      // Verify it's empty
+      questions = await databaseService.getQuestions('en');
+      expect(questions, isEmpty);
+    });
+
+    test('database only populates once', () async {
+      final databaseService = DatabaseService();
+      // Access database multiple times
+      final db1 = await databaseService.database;
+      final db2 = await databaseService.database;
+
+      final questions = await databaseService.getQuestions('en');
+      final count = questions.length;
+
+      // Access again - should not duplicate data
+      await databaseService.database;
+      final questionsAfter = await databaseService.getQuestions('en');
+
+      expect(questionsAfter.length, count);
+    });
+
+    test('Question data integrity after database operations', () async {
+      final databaseService = DatabaseService();
+      final questions = await databaseService.getQuestions('en');
+
+      expect(questions, isNotEmpty);
+
+      final firstQuestion = questions.first;
+      expect(firstQuestion.id, isNotNull);
+      expect(firstQuestion.questionText, isNotEmpty);
+      expect(firstQuestion.answerText, isNotEmpty);
+      expect(firstQuestion.languageCode, 'en');
+    });
+  });
+}
