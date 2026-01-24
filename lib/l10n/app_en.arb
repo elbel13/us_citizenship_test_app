@@ -1,0 +1,55 @@
+{
+  "@@locale": "en",
+  "appTitle": "US Citizenship Test App",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "mainMenu": "Main Menu",
+  "@mainMenu": {
+    "description": "Main menu screen title"
+  },
+  "flashcards": "Flashcards",
+  "@flashcards": {
+    "description": "Flashcards menu option"
+  },
+  "multipleChoice": "Multiple Choice",
+  "@multipleChoice": {
+    "description": "Multiple choice menu option"
+  },
+  "writing": "Writing",
+  "@writing": {
+    "description": "Writing menu option"
+  },
+  "listening": "Listening",
+  "@listening": {
+    "description": "Listening menu option"
+  },
+  "simulatedInterview": "Simulated Interview",
+  "@simulatedInterview": {
+    "description": "Simulated interview menu option"
+  },
+  "testReadiness": "Test Readiness",
+  "@testReadiness": {
+    "description": "Test readiness menu option"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings menu option"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language setting label"
+  },
+  "selectLanguage": "Select Language",
+  "@selectLanguage": {
+    "description": "Select language dialog title"
+  },
+  "english": "English",
+  "@english": {
+    "description": "English language option"
+  },
+  "spanish": "Spanish",
+  "@spanish": {
+    "description": "Spanish language option"
+  }
+}

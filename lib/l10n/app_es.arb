@@ -1,0 +1,16 @@
+{
+  "@@locale": "es",
+  "appTitle": "Examen de Ciudadanía de EE.UU.",
+  "mainMenu": "Menú Principal",
+  "flashcards": "Tarjetas de Estudio",
+  "multipleChoice": "Opción Múltiple",
+  "writing": "Escritura",
+  "listening": "Comprensión Auditiva",
+  "simulatedInterview": "Entrevista Simulada",
+  "testReadiness": "Preparación para el Examen",
+  "settings": "Configuración",
+  "language": "Idioma",
+  "selectLanguage": "Seleccionar Idioma",
+  "english": "Inglés",
+  "spanish": "Español"
+}
