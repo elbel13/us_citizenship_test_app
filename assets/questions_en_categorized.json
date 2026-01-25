@@ -1,0 +1,1183 @@
+[
+  {
+    "id": 1,
+    "question": "What is the form of government of the United States?",
+    "answers": [
+      {"text": "Republic", "category": "POLITICAL_CONCEPT"},
+      {"text": "Constitution-based federal republic", "category": "POLITICAL_CONCEPT"},
+      {"text": "Representative democracy", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 2,
+    "question": "What is the supreme law of the land?",
+    "answers": [
+      {"text": "(U.S.) Constitution", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 3,
+    "question": "Name one thing the U.S. Constitution does.",
+    "answers": [
+      {"text": "Forms the government", "category": "GOVERNMENT_ACTION"},
+      {"text": "Defines powers of government", "category": "GOVERNMENT_ACTION"},
+      {"text": "Defines the parts of government", "category": "GOVERNMENT_ACTION"},
+      {"text": "Protects the rights of the people", "category": "GOVERNMENT_ACTION"}
+    ]
+  },
+  {
+    "id": 4,
+    "question": "The U.S. Constitution starts with the words \"We the People.\" What does \"We the People\" mean?",
+    "answers": [
+      {"text": "Self-government", "category": "POLITICAL_CONCEPT"},
+      {"text": "Popular sovereignty", "category": "POLITICAL_CONCEPT"},
+      {"text": "Consent of the governed", "category": "POLITICAL_CONCEPT"},
+      {"text": "People should govern themselves", "category": "POLITICAL_CONCEPT"},
+      {"text": "(Example of) social contract", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 5,
+    "question": "How are changes made to the U.S. Constitution?",
+    "answers": [
+      {"text": "Amendments", "category": "DOCUMENT"},
+      {"text": "The amendment process", "category": "GOVERNMENT_ACTION"}
+    ]
+  },
+  {
+    "id": 6,
+    "question": "What does the Bill of Rights protect?",
+    "answers": [
+      {"text": "(The basic) rights of Americans", "category": "RIGHTS"},
+      {"text": "(The basic) rights of people living in the United States", "category": "RIGHTS"}
+    ]
+  },
+  {
+    "id": 7,
+    "question": "How many amendments does the U.S. Constitution have?",
+    "answers": [
+      {"text": "Twenty-seven (27)", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 8,
+    "question": "Why is the Declaration of Independence important?",
+    "answers": [
+      {"text": "It says America is free from British control.", "category": "EVENT"},
+      {"text": "It says all people are created equal.", "category": "POLITICAL_CONCEPT"},
+      {"text": "It identifies inherent rights.", "category": "RIGHTS"},
+      {"text": "It identifies individual freedoms.", "category": "RIGHTS"}
+    ]
+  },
+  {
+    "id": 9,
+    "question": "What founding document said the American colonies were free from Britain?",
+    "answers": [
+      {"text": "Declaration of Independence", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 10,
+    "question": "Name two important ideas from the Declaration of Independence and the U.S. Constitution.",
+    "answers": [
+      {"text": "Equality", "category": "POLITICAL_CONCEPT"},
+      {"text": "Liberty", "category": "POLITICAL_CONCEPT"},
+      {"text": "Social contract", "category": "POLITICAL_CONCEPT"},
+      {"text": "Natural rights", "category": "POLITICAL_CONCEPT"},
+      {"text": "Limited government", "category": "POLITICAL_CONCEPT"},
+      {"text": "Self-government", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 11,
+    "question": "The words \"Life, Liberty, and the pursuit of Happiness\" are in what founding document?",
+    "answers": [
+      {"text": "Declaration of Independence", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 12,
+    "question": "What is the economic system of the United States?",
+    "answers": [
+      {"text": "Capitalism", "category": "POLITICAL_CONCEPT"},
+      {"text": "Free market economy", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 13,
+    "question": "What is the rule of law?",
+    "answers": [
+      {"text": "Everyone must follow the law.", "category": "POLITICAL_CONCEPT"},
+      {"text": "Leaders must obey the law.", "category": "POLITICAL_CONCEPT"},
+      {"text": "Government must obey the law.", "category": "POLITICAL_CONCEPT"},
+      {"text": "No one is above the law.", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 14,
+    "question": "Many documents influenced the U.S. Constitution. Name one.",
+    "answers": [
+      {"text": "Declaration of Independence", "category": "DOCUMENT"},
+      {"text": "Articles of Confederation", "category": "DOCUMENT"},
+      {"text": "Federalist Papers", "category": "DOCUMENT"},
+      {"text": "Anti-Federalist Papers", "category": "DOCUMENT"},
+      {"text": "Virginia Declaration of Rights", "category": "DOCUMENT"},
+      {"text": "Fundamental Orders of Connecticut", "category": "DOCUMENT"},
+      {"text": "Mayflower Compact", "category": "DOCUMENT"},
+      {"text": "Iroquois Great Law of Peace", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 15,
+    "question": "There are three branches of government. Why?",
+    "answers": [
+      {"text": "So one part does not become too powerful", "category": "POLITICAL_CONCEPT"},
+      {"text": "Checks and balances", "category": "POLITICAL_CONCEPT"},
+      {"text": "Separation of powers", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 16,
+    "question": "Name the three branches of government.",
+    "answers": [
+      {"text": "Legislative, executive, and judicial", "category": "GOVERNMENT_BRANCH"},
+      {"text": "Congress, president, and the courts", "category": "GOVERNMENT_BRANCH"}
+    ]
+  },
+  {
+    "id": 17,
+    "question": "The President of the United States is in charge of which branch of government?",
+    "answers": [
+      {"text": "Executive branch", "category": "GOVERNMENT_BRANCH"}
+    ]
+  },
+  {
+    "id": 18,
+    "question": "What part of the federal government writes laws?",
+    "answers": [
+      {"text": "(U.S.) Congress", "category": "GOVERNMENT_BRANCH"},
+      {"text": "(U.S. or national) legislature", "category": "GOVERNMENT_BRANCH"},
+      {"text": "Legislative branch", "category": "GOVERNMENT_BRANCH"}
+    ]
+  },
+  {
+    "id": 19,
+    "question": "What are the two parts of the U.S. Congress?",
+    "answers": [
+      {"text": "Senate and House (of Representatives)", "category": "GOVERNMENT_BRANCH"}
+    ]
+  },
+  {
+    "id": 20,
+    "question": "Name one power of the U.S. Congress.",
+    "answers": [
+      {"text": "Writes laws", "category": "GOVERNMENT_ACTION"},
+      {"text": "Declares war", "category": "GOVERNMENT_ACTION"},
+      {"text": "Makes the federal budget", "category": "GOVERNMENT_ACTION"}
+    ]
+  },
+  {
+    "id": 21,
+    "question": "How many U.S. senators are there?",
+    "answers": [
+      {"text": "One hundred (100)", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 22,
+    "question": "How long is a term for a U.S. senator?",
+    "answers": [
+      {"text": "Six (6) years", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 23,
+    "question": "Who is one of your state's U.S. senators now?",
+    "answers": [
+      {"text": "Answers will vary. [District of Columbia residents and residents of U.S. territories should answer that D.C. (or the territory where the applicant lives) has no U.S. senators.]", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 24,
+    "question": "How many voting members are in the House of Representatives?",
+    "answers": [
+      {"text": "Four hundred thirty-five (435)", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 25,
+    "question": "How long is a term for a member of the House of Representatives?",
+    "answers": [
+      {"text": "Two (2) years", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 26,
+    "question": "Why do U.S. representatives serve shorter terms than U.S. senators?",
+    "answers": [
+      {"text": "To more closely follow public opinion", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 27,
+    "question": "How many senators does each state have?",
+    "answers": [
+      {"text": "Two (2)", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 28,
+    "question": "Why does each state have two senators?",
+    "answers": [
+      {"text": "Equal representation (for small states)", "category": "POLITICAL_CONCEPT"},
+      {"text": "The Great Compromise (Connecticut Compromise)", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 29,
+    "question": "Name your U.S. representative.",
+    "answers": [
+      {"text": "Answers will vary. [Residents of territories with nonvoting Delegates or Resident Commissioners may provide the name of that Delegate or Commissioner. Also acceptable is any statement that the territory has no (voting) representatives in Congress.]", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 30,
+    "question": "What is the name of the Speaker of the House of Representatives now?",
+    "answers": [
+      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the Speaker of the House of Representatives.", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 31,
+    "question": "Who does a U.S. senator represent?",
+    "answers": [
+      {"text": "Citizens of their state", "category": "CIVIC_DUTY"},
+      {"text": "People of their state", "category": "CIVIC_DUTY"}
+    ]
+  },
+  {
+    "id": 32,
+    "question": "Who elects U.S. senators?",
+    "answers": [
+      {"text": "Citizens from their state", "category": "CIVIC_DUTY"}
+    ]
+  },
+  {
+    "id": 33,
+    "question": "Who does a member of the House of Representatives represent?",
+    "answers": [
+      {"text": "Citizens in their (congressional) district", "category": "CIVIC_DUTY"},
+      {"text": "Citizens in their district", "category": "CIVIC_DUTY"},
+      {"text": "People from their (congressional) district", "category": "CIVIC_DUTY"},
+      {"text": "People in their district", "category": "CIVIC_DUTY"}
+    ]
+  },
+  {
+    "id": 34,
+    "question": "Who elects members of the House of Representatives?",
+    "answers": [
+      {"text": "Citizens from their (congressional) district", "category": "CIVIC_DUTY"}
+    ]
+  },
+  {
+    "id": 35,
+    "question": "Some states have more representatives than other states. Why?",
+    "answers": [
+      {"text": "(Because of) the state's population", "category": "POLITICAL_CONCEPT"},
+      {"text": "(Because) they have more people", "category": "POLITICAL_CONCEPT"},
+      {"text": "(Because) some states have more people", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 36,
+    "question": "The President of the United States is elected for how many years?",
+    "answers": [
+      {"text": "Four (4) years", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 37,
+    "question": "The President of the United States can serve only two terms. Why?",
+    "answers": [
+      {"text": "(Because of) the 22nd Amendment", "category": "DOCUMENT"},
+      {"text": "To keep the president from becoming too powerful", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 38,
+    "question": "What is the name of the President of the United States now?",
+    "answers": [
+      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the President of the United States.", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 39,
+    "question": "What is the name of the Vice President of the United States now?",
+    "answers": [
+      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the Vice President of the United States.", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 40,
+    "question": "If the president can no longer serve, who becomes president?",
+    "answers": [
+      {"text": "The Vice President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 41,
+    "question": "Name one power of the president.",
+    "answers": [
+      {"text": "Signs bills into law", "category": "GOVERNMENT_ACTION"},
+      {"text": "Vetoes bills", "category": "GOVERNMENT_ACTION"},
+      {"text": "Enforces laws", "category": "GOVERNMENT_ACTION"},
+      {"text": "Commander in Chief (of the military)", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Chief diplomat", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Appoints federal judges", "category": "GOVERNMENT_ACTION"}
+    ]
+  },
+  {
+    "id": 42,
+    "question": "Who is Commander in Chief of the U.S. military?",
+    "answers": [
+      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 43,
+    "question": "Who signs bills to become laws?",
+    "answers": [
+      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 44,
+    "question": "Who vetoes bills?",
+    "answers": [
+      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 45,
+    "question": "Who appoints federal judges?",
+    "answers": [
+      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 46,
+    "question": "The executive branch has many parts. Name one.",
+    "answers": [
+      {"text": "President (of the United States)", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Cabinet", "category": "GOVERNMENT_BRANCH"},
+      {"text": "Federal departments and agencies", "category": "GOVERNMENT_BRANCH"}
+    ]
+  },
+  {
+    "id": 47,
+    "question": "What does the President's Cabinet do?",
+    "answers": [
+      {"text": "Advises the President (of the United States)", "category": "GOVERNMENT_ACTION"}
+    ]
+  },
+  {
+    "id": 48,
+    "question": "What are two Cabinet-level positions?",
+    "answers": [
+      {"text": "Attorney General", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of Agriculture", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of Commerce", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of Education", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of Energy", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of Health and Human Services", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of Homeland Security", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of Housing and Urban Development", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of the Interior", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of Labor", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of State", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of Transportation", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of the Treasury", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of Veterans Affairs", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Secretary of War (Defense)", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Vice-President", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Administrator of the Environmental Protection Agency", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Administrator of the Small Business Administration", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Director of the Central Intelligence Agency", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Director of the Office of Management and Budget", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Director of National Intelligence", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "United States Trade Representative", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 49,
+    "question": "Why is the Electoral College important?",
+    "answers": [
+      {"text": "It decides who is elected president.", "category": "GOVERNMENT_ACTION"},
+      {"text": "It provides a compromise between the popular election of the president and congressional selection.", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 50,
+    "question": "What is one part of the judicial branch?",
+    "answers": [
+      {"text": "Supreme Court", "category": "GOVERNMENT_BRANCH"},
+      {"text": "Federal Courts", "category": "GOVERNMENT_BRANCH"}
+    ]
+  },
+  {
+    "id": 51,
+    "question": "What does the judicial branch do?",
+    "answers": [
+      {"text": "Reviews laws", "category": "GOVERNMENT_ACTION"},
+      {"text": "Explains laws", "category": "GOVERNMENT_ACTION"},
+      {"text": "Resolves disputes (disagreements) about the law", "category": "GOVERNMENT_ACTION"},
+      {"text": "Decides if a law goes against the (U.S.) Constitution", "category": "GOVERNMENT_ACTION"}
+    ]
+  },
+  {
+    "id": 52,
+    "question": "What is the highest court in the United States?",
+    "answers": [
+      {"text": "Supreme Court", "category": "GOVERNMENT_BRANCH"}
+    ]
+  },
+  {
+    "id": 53,
+    "question": "How many seats are on the Supreme Court?",
+    "answers": [
+      {"text": "Nine (9)", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 54,
+    "question": "How many Supreme Court justices are usually needed to decide a case?",
+    "answers": [
+      {"text": "Five (5)", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 55,
+    "question": "How long do Supreme Court justices serve?",
+    "answers": [
+      {"text": "(For) life", "category": "NUMBER"},
+      {"text": "Lifetime appointment", "category": "NUMBER"},
+      {"text": "(Until) retirement", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 56,
+    "question": "Supreme Court justices serve for life. Why?",
+    "answers": [
+      {"text": "To be independent (of politics)", "category": "POLITICAL_CONCEPT"},
+      {"text": "To limit outside (political) influence", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 57,
+    "question": "Who is the Chief Justice of the United States now?",
+    "answers": [
+      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the Chief Justice of the United States.", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 58,
+    "question": "Name one power that is only for the federal government.",
+    "answers": [
+      {"text": "Print paper money", "category": "GOVERNMENT_ACTION"},
+      {"text": "Mint coins", "category": "GOVERNMENT_ACTION"},
+      {"text": "Declare war", "category": "GOVERNMENT_ACTION"},
+      {"text": "Create an army", "category": "GOVERNMENT_ACTION"},
+      {"text": "Make treaties", "category": "GOVERNMENT_ACTION"},
+      {"text": "Set foreign policy", "category": "GOVERNMENT_ACTION"}
+    ]
+  },
+  {
+    "id": 59,
+    "question": "Name one power that is only for the states.",
+    "answers": [
+      {"text": "Provide schooling and education", "category": "GOVERNMENT_ACTION"},
+      {"text": "Provide protection (police)", "category": "GOVERNMENT_ACTION"},
+      {"text": "Provide safety (fire departments)", "category": "GOVERNMENT_ACTION"},
+      {"text": "Give a driver's license", "category": "GOVERNMENT_ACTION"},
+      {"text": "Approve zoning and land use", "category": "GOVERNMENT_ACTION"}
+    ]
+  },
+  {
+    "id": 60,
+    "question": "What is the purpose of the 10th Amendment?",
+    "answers": [
+      {"text": "(It states that the) powers not given to the federal government belong to the states or to the people.", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 61,
+    "question": "Who is the governor of your state now?",
+    "answers": [
+      {"text": "Answers will vary. [District of Columbia residents should answer that D.C. does not have a governor.]", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 62,
+    "question": "What is the capital of your state?",
+    "answers": [
+      {"text": "Answers will vary. [District of Columbia residents should answer that D.C. is not a state and does not have a capital. Residents of U.S. territories should name the capital of the territory.]", "category": "PLACE"}
+    ]
+  },
+  {
+    "id": 63,
+    "question": "There are four amendments to the U.S. Constitution about who can vote. Describe one of them.",
+    "answers": [
+      {"text": "Citizens eighteen (18) and older (can vote).", "category": "RIGHTS"},
+      {"text": "You don't have to pay (a poll tax) to vote.", "category": "RIGHTS"},
+      {"text": "Any citizen can vote. (Women and men can vote.)", "category": "RIGHTS"},
+      {"text": "A male citizen of any race (can vote).", "category": "RIGHTS"}
+    ]
+  },
+  {
+    "id": 64,
+    "question": "Who can vote in federal elections, run for federal office, and serve on a jury in the United States?",
+    "answers": [
+      {"text": "Citizens", "category": "CIVIC_DUTY"},
+      {"text": "Citizens of the United States", "category": "CIVIC_DUTY"},
+      {"text": "U.S. citizens", "category": "CIVIC_DUTY"}
+    ]
+  },
+  {
+    "id": 65,
+    "question": "What are three rights of everyone living in the United States?",
+    "answers": [
+      {"text": "Freedom of expression", "category": "RIGHTS"},
+      {"text": "Freedom of speech", "category": "RIGHTS"},
+      {"text": "Freedom of assembly", "category": "RIGHTS"},
+      {"text": "Freedom to petition the government", "category": "RIGHTS"},
+      {"text": "Freedom of religion", "category": "RIGHTS"},
+      {"text": "The right to bear arms", "category": "RIGHTS"}
+    ]
+  },
+  {
+    "id": 66,
+    "question": "What do we show loyalty to when we say the Pledge of Allegiance?",
+    "answers": [
+      {"text": "The United States", "category": "PLACE"},
+      {"text": "The flag", "category": "NATIONAL_SYMBOL"}
+    ]
+  },
+  {
+    "id": 67,
+    "question": "Name two promises that new citizens make in the Oath of Allegiance.",
+    "answers": [
+      {"text": "Give up loyalty to other countries", "category": "CIVIC_DUTY"},
+      {"text": "Defend the (U.S.) Constitution", "category": "CIVIC_DUTY"},
+      {"text": "Obey the laws of the United States", "category": "CIVIC_DUTY"},
+      {"text": "Serve in the military (if needed)", "category": "CIVIC_DUTY"},
+      {"text": "Serve (help, do important work for) the nation (if needed)", "category": "CIVIC_DUTY"},
+      {"text": "Be loyal to the United States", "category": "CIVIC_DUTY"}
+    ]
+  },
+  {
+    "id": 68,
+    "question": "How can people become United States citizens?",
+    "answers": [
+      {"text": "Be born in the United States, under the conditions set by the 14th Amendment", "category": "CIVIC_DUTY"},
+      {"text": "Naturalize", "category": "CIVIC_DUTY"},
+      {"text": "Derive citizenship (under conditions set by Congress)", "category": "CIVIC_DUTY"}
+    ]
+  },
+  {
+    "id": 69,
+    "question": "What are two examples of civic participation in the United States?",
+    "answers": [
+      {"text": "Vote", "category": "CIVIC_DUTY"},
+      {"text": "Run for office", "category": "CIVIC_DUTY"},
+      {"text": "Join a political party", "category": "CIVIC_DUTY"},
+      {"text": "Help with a campaign", "category": "CIVIC_DUTY"},
+      {"text": "Join a civic group", "category": "CIVIC_DUTY"},
+      {"text": "Join a community group", "category": "CIVIC_DUTY"},
+      {"text": "Give an elected official your opinion (on an issue)", "category": "CIVIC_DUTY"},
+      {"text": "Contact elected officials", "category": "CIVIC_DUTY"},
+      {"text": "Support or oppose an issue or policy", "category": "CIVIC_DUTY"},
+      {"text": "Write to a newspaper", "category": "CIVIC_DUTY"}
+    ]
+  },
+  {
+    "id": 70,
+    "question": "What is one way Americans can serve their country?",
+    "answers": [
+      {"text": "Vote", "category": "CIVIC_DUTY"},
+      {"text": "Pay taxes", "category": "CIVIC_DUTY"},
+      {"text": "Obey the law", "category": "CIVIC_DUTY"},
+      {"text": "Serve in the military", "category": "CIVIC_DUTY"},
+      {"text": "Run for office", "category": "CIVIC_DUTY"},
+      {"text": "Work for local, state, or federal government", "category": "CIVIC_DUTY"}
+    ]
+  },
+  {
+    "id": 71,
+    "question": "Why is it important to pay federal taxes?",
+    "answers": [
+      {"text": "Required by law", "category": "CIVIC_DUTY"},
+      {"text": "All people pay to fund the federal government", "category": "CIVIC_DUTY"},
+      {"text": "Required by the (U.S.) Constitution (16th Amendment)", "category": "CIVIC_DUTY"},
+      {"text": "Civic duty", "category": "CIVIC_DUTY"}
+    ]
+  },
+  {
+    "id": 72,
+    "question": "It is important for all men age 18 through 25 to register for the Selective Service. Name one reason why.",
+    "answers": [
+      {"text": "Required by law", "category": "CIVIC_DUTY"},
+      {"text": "Civic duty", "category": "CIVIC_DUTY"},
+      {"text": "Makes the draft fair, if needed", "category": "CIVIC_DUTY"}
+    ]
+  },
+  {
+    "id": 73,
+    "question": "The colonists came to America for many reasons. Name one.",
+    "answers": [
+      {"text": "Freedom", "category": "POLITICAL_CONCEPT"},
+      {"text": "Political liberty", "category": "POLITICAL_CONCEPT"},
+      {"text": "Religious freedom", "category": "RIGHTS"},
+      {"text": "Economic opportunity", "category": "POLITICAL_CONCEPT"},
+      {"text": "Escape persecution", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 74,
+    "question": "Who lived in America before the Europeans arrived?",
+    "answers": [
+      {"text": "American Indians", "category": "NATIVE_TRIBE"},
+      {"text": "Native Americans", "category": "NATIVE_TRIBE"}
+    ]
+  },
+  {
+    "id": 75,
+    "question": "What group of people was taken and sold as slaves?",
+    "answers": [
+      {"text": "Africans", "category": "PLACE"},
+      {"text": "People from Africa", "category": "PLACE"}
+    ]
+  },
+  {
+    "id": 76,
+    "question": "What war did the Americans fight to win independence from Britain?",
+    "answers": [
+      {"text": "American Revolution", "category": "WAR"},
+      {"text": "The (American) Revolutionary War", "category": "WAR"},
+      {"text": "War for (American) Independence", "category": "WAR"}
+    ]
+  },
+  {
+    "id": 77,
+    "question": "Name one reason why the Americans declared independence from Britain.",
+    "answers": [
+      {"text": "High taxes", "category": "EVENT"},
+      {"text": "Taxation without representation", "category": "EVENT"},
+      {"text": "British soldiers stayed in Americans' houses (boarding, quartering)", "category": "EVENT"},
+      {"text": "They did not have self-government", "category": "POLITICAL_CONCEPT"},
+      {"text": "Boston Massacre", "category": "EVENT"},
+      {"text": "Boston Tea Party (Tea Act)", "category": "EVENT"},
+      {"text": "Stamp Act", "category": "EVENT"},
+      {"text": "Sugar Act", "category": "EVENT"},
+      {"text": "Townshend Acts", "category": "EVENT"},
+      {"text": "Intolerable (Coercive) Acts", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 78,
+    "question": "Who wrote the Declaration of Independence?",
+    "answers": [
+      {"text": "(Thomas) Jefferson", "category": "FOUNDING_FATHER"}
+    ]
+  },
+  {
+    "id": 79,
+    "question": "When was the Declaration of Independence adopted?",
+    "answers": [
+      {"text": "July 4, 1776", "category": "DATE"}
+    ]
+  },
+  {
+    "id": 80,
+    "question": "The American Revolution had many important events. Name one.",
+    "answers": [
+      {"text": "(Battle of) Bunker Hill", "category": "EVENT"},
+      {"text": "Declaration of Independence", "category": "DOCUMENT"},
+      {"text": "Washington Crossing the Delaware (Battle of Trenton)", "category": "EVENT"},
+      {"text": "(Battle of) Saratoga", "category": "EVENT"},
+      {"text": "Valley Forge (Encampment)", "category": "EVENT"},
+      {"text": "(Battle of) Yorktown (British surrender at Yorktown)", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 81,
+    "question": "There were 13 original states. Name five.",
+    "answers": [
+      {"text": "New Hampshire", "category": "PLACE"},
+      {"text": "Massachusetts", "category": "PLACE"},
+      {"text": "Rhode Island", "category": "PLACE"},
+      {"text": "Connecticut", "category": "PLACE"},
+      {"text": "New York", "category": "PLACE"},
+      {"text": "New Jersey", "category": "PLACE"},
+      {"text": "Pennsylvania", "category": "PLACE"},
+      {"text": "Delaware", "category": "PLACE"},
+      {"text": "Maryland", "category": "PLACE"},
+      {"text": "Virginia", "category": "PLACE"},
+      {"text": "North Carolina", "category": "PLACE"},
+      {"text": "South Carolina", "category": "PLACE"},
+      {"text": "Georgia", "category": "PLACE"}
+    ]
+  },
+  {
+    "id": 82,
+    "question": "What founding document was written in 1787?",
+    "answers": [
+      {"text": "(U.S.) Constitution", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 83,
+    "question": "The Federalist Papers supported the passage of the U.S. Constitution. Name one of the writers.",
+    "answers": [
+      {"text": "(James) Madison", "category": "FOUNDING_FATHER"},
+      {"text": "(Alexander) Hamilton", "category": "FOUNDING_FATHER"},
+      {"text": "(John) Jay", "category": "FOUNDING_FATHER"},
+      {"text": "Publius", "category": "FOUNDING_FATHER"}
+    ]
+  },
+  {
+    "id": 84,
+    "question": "Why were the Federalist Papers important?",
+    "answers": [
+      {"text": "They helped people understand the (U.S.) Constitution.", "category": "EVENT"},
+      {"text": "They supported passing the (U.S.) Constitution.", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 85,
+    "question": "Benjamin Franklin is famous for many things. Name one.",
+    "answers": [
+      {"text": "Founded the first free public libraries", "category": "EVENT"},
+      {"text": "First Postmaster General of the United States", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Helped write the Declaration of Independence", "category": "EVENT"},
+      {"text": "Inventor", "category": "INNOVATION"},
+      {"text": "U.S. diplomat", "category": "GOVERNMENT_OFFICIAL"}
+    ]
+  },
+  {
+    "id": 86,
+    "question": "George Washington is famous for many things. Name one.",
+    "answers": [
+      {"text": "\"Father of Our Country\"", "category": "FOUNDING_FATHER"},
+      {"text": "First president of the United States", "category": "FOUNDING_FATHER"},
+      {"text": "General of the Continental Army", "category": "FOUNDING_FATHER"},
+      {"text": "President of the Constitutional Convention", "category": "FOUNDING_FATHER"}
+    ]
+  },
+  {
+    "id": 87,
+    "question": "Thomas Jefferson is famous for many things. Name one.",
+    "answers": [
+      {"text": "Writer of the Declaration of Independence", "category": "FOUNDING_FATHER"},
+      {"text": "Third president of the United States", "category": "FOUNDING_FATHER"},
+      {"text": "Doubled the size of the United States (Louisiana Purchase)", "category": "EVENT"},
+      {"text": "First Secretary of State", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "Founded the University of Virginia", "category": "EVENT"},
+      {"text": "Writer of the Virginia Statute on Religious Freedom", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 88,
+    "question": "James Madison is famous for many things. Name one.",
+    "answers": [
+      {"text": "\"Father of the Constitution\"", "category": "FOUNDING_FATHER"},
+      {"text": "Fourth president of the United States", "category": "FOUNDING_FATHER"},
+      {"text": "President during the War of 1812", "category": "FOUNDING_FATHER"},
+      {"text": "One of the writers of the Federalist Papers", "category": "FOUNDING_FATHER"}
+    ]
+  },
+  {
+    "id": 89,
+    "question": "Alexander Hamilton is famous for many things. Name one.",
+    "answers": [
+      {"text": "First Secretary of the Treasury", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "One of the writers of the Federalist Papers", "category": "FOUNDING_FATHER"},
+      {"text": "Helped establish the First Bank of the United States", "category": "EVENT"},
+      {"text": "Aide to General George Washington", "category": "FOUNDING_FATHER"},
+      {"text": "Member of the Continental Congress", "category": "FOUNDING_FATHER"}
+    ]
+  },
+  {
+    "id": 90,
+    "question": "What territory did the United States buy from France in 1803?",
+    "answers": [
+      {"text": "Louisiana Territory", "category": "PLACE"},
+      {"text": "Louisiana", "category": "PLACE"}
+    ]
+  },
+  {
+    "id": 91,
+    "question": "Name one war fought by the United States in the 1800s.",
+    "answers": [
+      {"text": "War of 1812", "category": "WAR"},
+      {"text": "Mexican-American War", "category": "WAR"},
+      {"text": "Civil War", "category": "WAR"},
+      {"text": "Spanish-American War", "category": "WAR"}
+    ]
+  },
+  {
+    "id": 92,
+    "question": "Name the U.S. war between the North and the South.",
+    "answers": [
+      {"text": "The Civil War", "category": "WAR"}
+    ]
+  },
+  {
+    "id": 93,
+    "question": "The Civil War had many important events. Name one.",
+    "answers": [
+      {"text": "(Battle of) Fort Sumter", "category": "EVENT"},
+      {"text": "Emancipation Proclamation", "category": "DOCUMENT"},
+      {"text": "(Battle of) Vicksburg", "category": "EVENT"},
+      {"text": "(Battle of) Gettysburg", "category": "EVENT"},
+      {"text": "Sherman's March", "category": "EVENT"},
+      {"text": "(Surrender at) Appomattox", "category": "EVENT"},
+      {"text": "(Battle of) Antietam/Sharpsburg", "category": "EVENT"},
+      {"text": "Lincoln was assassinated.", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 94,
+    "question": "Abraham Lincoln is famous for many things. Name one.",
+    "answers": [
+      {"text": "Freed the slaves (Emancipation Proclamation)", "category": "PRESIDENT"},
+      {"text": "Saved (or preserved) the Union", "category": "PRESIDENT"},
+      {"text": "Led the United States during the Civil War", "category": "PRESIDENT"},
+      {"text": "16th president of the United States", "category": "PRESIDENT"},
+      {"text": "Delivered the Gettysburg Address", "category": "PRESIDENT"}
+    ]
+  },
+  {
+    "id": 95,
+    "question": "What did the Emancipation Proclamation do?",
+    "answers": [
+      {"text": "Freed the slaves", "category": "EVENT"},
+      {"text": "Freed slaves in the Confederacy", "category": "EVENT"},
+      {"text": "Freed slaves in the Confederate states", "category": "EVENT"},
+      {"text": "Freed slaves in most Southern states", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 96,
+    "question": "What U.S. war ended slavery?",
+    "answers": [
+      {"text": "The Civil War", "category": "WAR"}
+    ]
+  },
+  {
+    "id": 97,
+    "question": "What amendment says all persons born or naturalized in the United States, and subject to the jurisdiction thereof, are U.S. citizens?",
+    "answers": [
+      {"text": "14th Amendment", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 98,
+    "question": "When did all men get the right to vote?",
+    "answers": [
+      {"text": "After the Civil War", "category": "DATE"},
+      {"text": "During Reconstruction", "category": "DATE"},
+      {"text": "(With the) 15th Amendment", "category": "DOCUMENT"},
+      {"text": "1870", "category": "DATE"}
+    ]
+  },
+  {
+    "id": 99,
+    "question": "Name one leader of the women's rights movement in the 1800s.",
+    "answers": [
+      {"text": "Susan B. Anthony", "category": "HISTORICAL_FIGURE"},
+      {"text": "Elizabeth Cady Stanton", "category": "HISTORICAL_FIGURE"},
+      {"text": "Sojourner Truth", "category": "HISTORICAL_FIGURE"},
+      {"text": "Harriet Tubman", "category": "HISTORICAL_FIGURE"},
+      {"text": "Lucretia Mott", "category": "HISTORICAL_FIGURE"},
+      {"text": "Lucy Stone", "category": "HISTORICAL_FIGURE"}
+    ]
+  },
+  {
+    "id": 100,
+    "question": "Name one war fought by the United States in the 1900s.",
+    "answers": [
+      {"text": "World War I", "category": "WAR"},
+      {"text": "World War II", "category": "WAR"},
+      {"text": "Korean War", "category": "WAR"},
+      {"text": "Vietnam War", "category": "WAR"},
+      {"text": "(Persian) Gulf War", "category": "WAR"}
+    ]
+  },
+  {
+    "id": 101,
+    "question": "Why did the United States enter World War I?",
+    "answers": [
+      {"text": "Because Germany attacked U.S. (civilian) ships", "category": "EVENT"},
+      {"text": "To support the Allied Powers (England, France, Italy, and Russia)", "category": "EVENT"},
+      {"text": "To oppose the Central Powers (Germany, Austria-Hungary, the Ottoman Empire, and Bulgaria)", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 102,
+    "question": "When did all women get the right to vote?",
+    "answers": [
+      {"text": "1920", "category": "DATE"},
+      {"text": "After World War I", "category": "DATE"},
+      {"text": "(With the) 19th Amendment", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 103,
+    "question": "What was the Great Depression?",
+    "answers": [
+      {"text": "Longest economic recession in modern history", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 104,
+    "question": "When did the Great Depression start?",
+    "answers": [
+      {"text": "The Great Crash (1929)", "category": "DATE"},
+      {"text": "Stock market crash of 1929", "category": "DATE"}
+    ]
+  },
+  {
+    "id": 105,
+    "question": "Who was president during the Great Depression and World War II?",
+    "answers": [
+      {"text": "(Franklin) Roosevelt", "category": "PRESIDENT"}
+    ]
+  },
+  {
+    "id": 106,
+    "question": "Why did the United States enter World War II?",
+    "answers": [
+      {"text": "(Bombing of) Pearl Harbor", "category": "EVENT"},
+      {"text": "Japanese attacked Pearl Harbor", "category": "EVENT"},
+      {"text": "To support the Allied Powers (England, France, and Russia)", "category": "EVENT"},
+      {"text": "To oppose the Axis Powers (Germany, Italy, and Japan)", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 107,
+    "question": "Dwight Eisenhower is famous for many things. Name one.",
+    "answers": [
+      {"text": "General during World War II", "category": "PRESIDENT"},
+      {"text": "President at the end of (during) the Korean War", "category": "PRESIDENT"},
+      {"text": "34th president of the United States", "category": "PRESIDENT"},
+      {"text": "Signed the Federal-Aid Highway Act of 1956 (Created the Interstate System)", "category": "PRESIDENT"}
+    ]
+  },
+  {
+    "id": 108,
+    "question": "Who was the United States' main rival during the Cold War?",
+    "answers": [
+      {"text": "Soviet Union", "category": "PLACE"},
+      {"text": "USSR", "category": "PLACE"},
+      {"text": "Russia", "category": "PLACE"}
+    ]
+  },
+  {
+    "id": 109,
+    "question": "During the Cold War, what was one main concern of the United States?",
+    "answers": [
+      {"text": "Communism", "category": "POLITICAL_CONCEPT"},
+      {"text": "Nuclear war", "category": "WAR"}
+    ]
+  },
+  {
+    "id": 110,
+    "question": "Why did the United States enter the Korean War?",
+    "answers": [
+      {"text": "To stop the spread of communism", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 111,
+    "question": "Why did the United States enter the Vietnam War?",
+    "answers": [
+      {"text": "To stop the spread of communism", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 112,
+    "question": "What did the civil rights movement do?",
+    "answers": [
+      {"text": "Fought to end racial discrimination", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 113,
+    "question": "Martin Luther King, Jr. is famous for many things. Name one.",
+    "answers": [
+      {"text": "Fought for civil rights", "category": "HISTORICAL_FIGURE"},
+      {"text": "Worked for equality for all Americans", "category": "HISTORICAL_FIGURE"},
+      {"text": "Worked to ensure that people would \"not be judged by the color of their skin, but by the content of their character\"", "category": "HISTORICAL_FIGURE"}
+    ]
+  },
+  {
+    "id": 114,
+    "question": "Why did the United States enter the Persian Gulf War?",
+    "answers": [
+      {"text": "To force the Iraqi military from Kuwait", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 115,
+    "question": "What major event happened on September 11, 2001 in the United States?",
+    "answers": [
+      {"text": "Terrorists attacked the United States", "category": "EVENT"},
+      {"text": "Terrorists took over two planes and crashed them into the World Trade Center in New York City", "category": "EVENT"},
+      {"text": "Terrorists took over a plane and crashed into the Pentagon in Arlington, Virginia", "category": "EVENT"},
+      {"text": "Terrorists took over a plane originally aimed at Washington, D.C., and crashed in a field in Pennsylvania", "category": "EVENT"}
+    ]
+  },
+  {
+    "id": 116,
+    "question": "Name one U.S. military conflict after the September 11, 2001 attacks.",
+    "answers": [
+      {"text": "(Global) War on Terror", "category": "WAR"},
+      {"text": "War in Afghanistan", "category": "WAR"},
+      {"text": "War in Iraq", "category": "WAR"}
+    ]
+  },
+  {
+    "id": 117,
+    "question": "Name one American Indian tribe in the United States.",
+    "answers": [
+      {"text": "Apache", "category": "NATIVE_TRIBE"},
+      {"text": "Blackfeet", "category": "NATIVE_TRIBE"},
+      {"text": "Cayuga", "category": "NATIVE_TRIBE"},
+      {"text": "Cherokee", "category": "NATIVE_TRIBE"},
+      {"text": "Cheyenne", "category": "NATIVE_TRIBE"},
+      {"text": "Chippewa", "category": "NATIVE_TRIBE"},
+      {"text": "Choctaw", "category": "NATIVE_TRIBE"},
+      {"text": "Creek", "category": "NATIVE_TRIBE"},
+      {"text": "Crow", "category": "NATIVE_TRIBE"},
+      {"text": "Hopi", "category": "NATIVE_TRIBE"},
+      {"text": "Huron", "category": "NATIVE_TRIBE"},
+      {"text": "Inupiat", "category": "NATIVE_TRIBE"},
+      {"text": "Lakota", "category": "NATIVE_TRIBE"},
+      {"text": "Mohawk", "category": "NATIVE_TRIBE"},
+      {"text": "Mohegan", "category": "NATIVE_TRIBE"},
+      {"text": "Navajo", "category": "NATIVE_TRIBE"},
+      {"text": "Oneida", "category": "NATIVE_TRIBE"},
+      {"text": "Onondaga", "category": "NATIVE_TRIBE"},
+      {"text": "Pueblo", "category": "NATIVE_TRIBE"},
+      {"text": "Seminole", "category": "NATIVE_TRIBE"},
+      {"text": "Seneca", "category": "NATIVE_TRIBE"},
+      {"text": "Shawnee", "category": "NATIVE_TRIBE"},
+      {"text": "Sioux", "category": "NATIVE_TRIBE"},
+      {"text": "Teton", "category": "NATIVE_TRIBE"},
+      {"text": "Tuscarora", "category": "NATIVE_TRIBE"}
+    ]
+  },
+  {
+    "id": 118,
+    "question": "Name one example of an American innovation.",
+    "answers": [
+      {"text": "Light bulb", "category": "INNOVATION"},
+      {"text": "Automobile (cars, internal combustion engine)", "category": "INNOVATION"},
+      {"text": "Skyscrapers", "category": "INNOVATION"},
+      {"text": "Airplane", "category": "INNOVATION"},
+      {"text": "Assembly line", "category": "INNOVATION"},
+      {"text": "Landing on the moon", "category": "INNOVATION"},
+      {"text": "Integrated circuit (IC)", "category": "INNOVATION"}
+    ]
+  },
+  {
+    "id": 119,
+    "question": "What is the capital of the United States?",
+    "answers": [
+      {"text": "Washington, D.C.", "category": "PLACE"}
+    ]
+  },
+  {
+    "id": 120,
+    "question": "Where is the Statue of Liberty?",
+    "answers": [
+      {"text": "New York (Harbor)", "category": "PLACE"},
+      {"text": "Liberty Island", "category": "PLACE"},
+      {"text": "New Jersey", "category": "PLACE"},
+      {"text": "Near New York City", "category": "PLACE"},
+      {"text": "On the Hudson (River)", "category": "PLACE"}
+    ]
+  },
+  {
+    "id": 121,
+    "question": "Why does the flag have 13 stripes?",
+    "answers": [
+      {"text": "(Because there were) 13 original colonies", "category": "NUMBER"},
+      {"text": "(Because the stripes) represent the original colonies", "category": "NATIONAL_SYMBOL"}
+    ]
+  },
+  {
+    "id": 122,
+    "question": "Why does the flag have 50 stars?",
+    "answers": [
+      {"text": "(Because there is) one star for each state", "category": "NATIONAL_SYMBOL"},
+      {"text": "(Because) each star represents a state", "category": "NATIONAL_SYMBOL"},
+      {"text": "(Because there are) 50 states", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 123,
+    "question": "What is the name of the national anthem?",
+    "answers": [
+      {"text": "The Star-Spangled Banner", "category": "NATIONAL_SYMBOL"}
+    ]
+  },
+  {
+    "id": 124,
+    "question": "The Nation's first motto was \"E Pluribus Unum.\" What does that mean?",
+    "answers": [
+      {"text": "Out of many, one", "category": "POLITICAL_CONCEPT"},
+      {"text": "We all become one", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 125,
+    "question": "What is Independence Day?",
+    "answers": [
+      {"text": "A holiday to celebrate U.S. independence (from Britain)", "category": "NATIONAL_SYMBOL"},
+      {"text": "The country's birthday", "category": "NATIONAL_SYMBOL"}
+    ]
+  },
+  {
+    "id": 126,
+    "question": "Name three national U.S. holidays.",
+    "answers": [
+      {"text": "New Year's Day", "category": "NATIONAL_SYMBOL"},
+      {"text": "Martin Luther King, Jr. Day", "category": "NATIONAL_SYMBOL"},
+      {"text": "Presidents Day (Washington's Birthday)", "category": "NATIONAL_SYMBOL"},
+      {"text": "Memorial Day", "category": "NATIONAL_SYMBOL"},
+      {"text": "Juneteenth", "category": "NATIONAL_SYMBOL"},
+      {"text": "Independence Day", "category": "NATIONAL_SYMBOL"},
+      {"text": "Labor Day", "category": "NATIONAL_SYMBOL"},
+      {"text": "Columbus Day", "category": "NATIONAL_SYMBOL"},
+      {"text": "Veterans Day", "category": "NATIONAL_SYMBOL"},
+      {"text": "Thanksgiving Day", "category": "NATIONAL_SYMBOL"},
+      {"text": "Christmas Day", "category": "NATIONAL_SYMBOL"}
+    ]
+  },
+  {
+    "id": 127,
+    "question": "What is Memorial Day?",
+    "answers": [
+      {"text": "A holiday to honor soldiers who died in military service", "category": "NATIONAL_SYMBOL"}
+    ]
+  },
+  {
+    "id": 128,
+    "question": "What is Veterans Day?",
+    "answers": [
+      {"text": "A holiday to honor people in the (U.S.) military", "category": "NATIONAL_SYMBOL"},
+      {"text": "A holiday to honor people who have served (in the U.S. military)", "category": "NATIONAL_SYMBOL"}
+    ]
+  }
+]

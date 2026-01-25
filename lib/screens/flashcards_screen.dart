@@ -35,15 +35,19 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
         locale.languageCode,
       );
 
-      setState(() {
-        _questions = questions;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _questions = questions;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
     }
   }
 

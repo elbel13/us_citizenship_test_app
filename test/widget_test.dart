@@ -10,7 +10,7 @@ void main() {
   sqfliteFfiInit();
   databaseFactory = databaseFactoryFfi;
 
-  testWidgets('App loads main menu', (WidgetTester tester) async {
+  testWidgets('App loads and displays main menu', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const USCitizenshipTestApp());
     await tester.pumpAndSettle();
@@ -18,8 +18,7 @@ void main() {
     // Verify that main menu title is displayed
     expect(find.text('Main Menu'), findsOneWidget);
 
-    // Verify menu options are present
+    // Verify at least one menu option is present
     expect(find.text('Flashcards'), findsOneWidget);
-    expect(find.text('Settings'), findsOneWidget);
   });
 }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/question.dart';
+import '../models/answer.dart';
 
 class DatabaseService {
   static final DatabaseService _instance = DatabaseService._internal();
@@ -10,6 +11,28 @@ class DatabaseService {
   DatabaseService._internal();
 
   static Database? _database;
+
+  // Category name to ID mapping
+  static const Map<String, int> categoryIds = {
+    'DOCUMENT': 1,
+    'FOUNDING_FATHER': 2,
+    'PRESIDENT': 3,
+    'HISTORICAL_FIGURE': 4,
+    'GOVERNMENT_OFFICIAL': 5,
+    'NUMBER': 6,
+    'DATE': 7,
+    'WAR': 8,
+    'GOVERNMENT_BRANCH': 9,
+    'GOVERNMENT_ACTION': 10,
+    'RIGHTS': 11,
+    'CIVIC_DUTY': 12,
+    'POLITICAL_CONCEPT': 13,
+    'PLACE': 14,
+    'NATIVE_TRIBE': 15,
+    'EVENT': 16,
+    'INNOVATION': 17,
+    'NATIONAL_SYMBOL': 18,
+  };
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -21,8 +44,16 @@ class DatabaseService {
     String path = join(await getDatabasesPath(), 'citizenship_test.db');
     return await openDatabase(
       path,
-      version: 1,
+      version: 2, // Incremented version for schema change
       onCreate: _createDatabase,
+      onUpgrade: (db, oldVersion, newVersion) async {
+        // For now, just drop and recreate (no user data to preserve)
+        if (oldVersion < 2) {
+          await db.execute('DROP TABLE IF EXISTS question_text');
+          await db.execute('DROP TABLE IF EXISTS question');
+          await _createDatabase(db, newVersion);
+        }
+      },
       onOpen: (db) async {
         // Check if we need to populate the database
         await _populateIfEmpty(db);
@@ -31,6 +62,19 @@ class DatabaseService {
   }
 
   Future<void> _createDatabase(Database db, int version) async {
+    // Create answer_category table
+    await db.execute('''
+      CREATE TABLE answer_category (
+        id INTEGER PRIMARY KEY,
+        category_name TEXT NOT NULL
+      )
+    ''');
+
+    await db.execute('''
+      CREATE INDEX idx_answer_category_name 
+      ON answer_category(category_name)
+    ''');
+
     await db.execute('''
       CREATE TABLE question (
         id INTEGER PRIMARY KEY
@@ -40,10 +84,9 @@ class DatabaseService {
     await db.execute('''
       CREATE TABLE question_text (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        question_id INTEGER,
-        language_code TEXT,
-        question_text TEXT,
-        answer_text TEXT,
+        question_id INTEGER NOT NULL,
+        language_code TEXT NOT NULL,
+        question_text TEXT NOT NULL,
         FOREIGN KEY (question_id) REFERENCES question(id)
       )
     ''');
@@ -52,6 +95,40 @@ class DatabaseService {
       CREATE INDEX idx_question_text_language 
       ON question_text(language_code)
     ''');
+
+    await db.execute('''
+      CREATE INDEX idx_question_text_question 
+      ON question_text(question_id)
+    ''');
+
+    // Create answer table
+    await db.execute('''
+      CREATE TABLE answer (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        question_text_id INTEGER NOT NULL,
+        answer_text TEXT NOT NULL,
+        category_id INTEGER NOT NULL,
+        FOREIGN KEY (question_text_id) REFERENCES question_text(id),
+        FOREIGN KEY (category_id) REFERENCES answer_category(id)
+      )
+    ''');
+
+    await db.execute('''
+      CREATE INDEX idx_answer_question_text 
+      ON answer(question_text_id)
+    ''');
+
+    await db.execute('''
+      CREATE INDEX idx_answer_category 
+      ON answer(category_id)
+    ''');
+
+    // Populate categories
+    Batch batch = db.batch();
+    categoryIds.forEach((name, id) {
+      batch.insert('answer_category', {'id': id, 'category_name': name});
+    });
+    await batch.commit(noResult: true);
   }
 
   Future<void> _populateIfEmpty(Database db) async {
@@ -71,9 +148,9 @@ class DatabaseService {
     String languageCode,
   ) async {
     try {
-      // Load the JSON file from assets
+      // Load the categorized JSON file from assets
       final String jsonString = await rootBundle.loadString(
-        'assets/questions_$languageCode.json',
+        'assets/questions_${languageCode}_categorized.json',
       );
       final List<dynamic> jsonData = json.decode(jsonString);
 
@@ -82,19 +159,39 @@ class DatabaseService {
 
       for (var item in jsonData) {
         int questionId = item['id'];
+        String questionText = item['question'];
+        List<dynamic> answers = item['answers'];
 
         // Insert into question table
         batch.insert('question', {
           'id': questionId,
         }, conflictAlgorithm: ConflictAlgorithm.ignore);
 
-        // Insert into question_text table
-        batch.insert('question_text', {
+        // Insert into question_text table and get the ID
+        // We need to use rawInsert to get the last inserted ID
+        await batch.commit(noResult: true);
+
+        // Insert question_text and get its ID
+        int questionTextId = await db.insert('question_text', {
           'question_id': questionId,
           'language_code': languageCode,
-          'question_text': item['question'],
-          'answer_text': item['answer'],
-        }, conflictAlgorithm: ConflictAlgorithm.ignore);
+          'question_text': questionText,
+        }, conflictAlgorithm: ConflictAlgorithm.replace);
+
+        // Insert answers
+        batch = db.batch();
+        for (var answer in answers) {
+          String answerText = answer['text'];
+          String category = answer['category'];
+          int categoryId =
+              categoryIds[category] ?? 13; // Default to POLITICAL_CONCEPT
+
+          batch.insert('answer', {
+            'question_text_id': questionTextId,
+            'answer_text': answerText,
+            'category_id': categoryId,
+          });
+        }
       }
 
       await batch.commit(noResult: true);
@@ -113,20 +210,64 @@ class DatabaseService {
       orderBy: 'question_id',
     );
 
-    return List.generate(maps.length, (i) {
-      return Question(
-        id: maps[i]['question_id'],
-        questionText: maps[i]['question_text'],
-        answerText: maps[i]['answer_text'],
-        languageCode: maps[i]['language_code'],
+    // Convert to Question objects with answers
+    List<Question> questions = [];
+    for (var qtMap in maps) {
+      int questionTextId = qtMap['id'];
+
+      // Get all answers for this question_text
+      final List<Map<String, dynamic>> answerMaps = await db.query(
+        'answer',
+        where: 'question_text_id = ?',
+        whereArgs: [questionTextId],
       );
-    });
+
+      // Convert answer maps to Answer objects
+      List<Answer> answers = answerMaps
+          .map((map) => Answer.fromMap(map))
+          .toList();
+
+      // Create question with answers
+      questions.add(Question.fromMap(qtMap, answers: answers));
+    }
+
+    return questions;
+  }
+
+  /// Get random wrong answers from specified categories, excluding the current question
+  Future<List<String>> getWrongAnswersByCategories(
+    int questionId,
+    List<int> categoryIds,
+    int count,
+  ) async {
+    final db = await database;
+
+    // Build the WHERE clause for categories
+    final categoryPlaceholders = categoryIds.map((_) => '?').join(',');
+
+    final List<Map<String, dynamic>> answerMaps = await db.rawQuery(
+      '''
+      SELECT DISTINCT a.answer_text
+      FROM answer a
+      JOIN question_text qt ON a.question_text_id = qt.id
+      WHERE qt.question_id != ?
+        AND a.category_id IN ($categoryPlaceholders)
+      ORDER BY RANDOM()
+      LIMIT ?
+    ''',
+      [questionId, ...categoryIds, count],
+    );
+
+    return answerMaps.map((map) => map['answer_text'] as String).toList();
   }
 
   Future<void> clearDatabase() async {
     final db = await database;
+    // Delete in correct order respecting foreign key constraints
+    await db.delete('answer');
     await db.delete('question_text');
     await db.delete('question');
+    // Note: We don't delete answer_category as those are constant
   }
 
   Future<void> close() async {

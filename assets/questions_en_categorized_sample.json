@@ -1,0 +1,179 @@
+[
+  {
+    "id": 1,
+    "question": "What is the form of government of the United States?",
+    "answers": [
+      {"text": "Republic", "category": "POLITICAL_CONCEPT"},
+      {"text": "Constitution-based federal republic", "category": "POLITICAL_CONCEPT"},
+      {"text": "Representative democracy", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 2,
+    "question": "What is the supreme law of the land?",
+    "answers": [
+      {"text": "(U.S.) Constitution", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 3,
+    "question": "Name one thing the U.S. Constitution does.",
+    "answers": [
+      {"text": "Forms the government", "category": "GOVERNMENT_ACTION"},
+      {"text": "Defines powers of government", "category": "GOVERNMENT_ACTION"},
+      {"text": "Defines the parts of government", "category": "GOVERNMENT_ACTION"},
+      {"text": "Protects the rights of the people", "category": "GOVERNMENT_ACTION"}
+    ]
+  },
+  {
+    "id": 4,
+    "question": "The U.S. Constitution starts with the words \"We the People.\" What does \"We the People\" mean?",
+    "answers": [
+      {"text": "Self-government", "category": "POLITICAL_CONCEPT"},
+      {"text": "Popular sovereignty", "category": "POLITICAL_CONCEPT"},
+      {"text": "Consent of the governed", "category": "POLITICAL_CONCEPT"},
+      {"text": "People should govern themselves", "category": "POLITICAL_CONCEPT"},
+      {"text": "(Example of) social contract", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 5,
+    "question": "How are changes made to the U.S. Constitution?",
+    "answers": [
+      {"text": "Amendments", "category": "DOCUMENT"},
+      {"text": "The amendment process", "category": "GOVERNMENT_ACTION"}
+    ]
+  },
+  {
+    "id": 6,
+    "question": "What does the Bill of Rights protect?",
+    "answers": [
+      {"text": "(The basic) rights of Americans", "category": "RIGHTS"},
+      {"text": "(The basic) rights of people living in the United States", "category": "RIGHTS"}
+    ]
+  },
+  {
+    "id": 7,
+    "question": "How many amendments does the U.S. Constitution have?",
+    "answers": [
+      {"text": "Twenty-seven (27)", "category": "NUMBER"}
+    ]
+  },
+  {
+    "id": 8,
+    "question": "Why is the Declaration of Independence important?",
+    "answers": [
+      {"text": "It says America is free from British control.", "category": "EVENT"},
+      {"text": "It says all people are created equal.", "category": "RIGHTS"},
+      {"text": "It identifies inherent rights.", "category": "RIGHTS"},
+      {"text": "It identifies individual freedoms.", "category": "RIGHTS"}
+    ]
+  },
+  {
+    "id": 9,
+    "question": "What founding document said the American colonies were free from Britain?",
+    "answers": [
+      {"text": "Declaration of Independence", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 10,
+    "question": "Name two important ideas from the Declaration of Independence and the U.S. Constitution.",
+    "answers": [
+      {"text": "Equality", "category": "POLITICAL_CONCEPT"},
+      {"text": "Liberty", "category": "POLITICAL_CONCEPT"},
+      {"text": "Social contract", "category": "POLITICAL_CONCEPT"},
+      {"text": "Natural rights", "category": "RIGHTS"},
+      {"text": "Limited government", "category": "POLITICAL_CONCEPT"},
+      {"text": "Self-government", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 11,
+    "question": "The words \"Life, Liberty, and the pursuit of Happiness\" are in what founding document?",
+    "answers": [
+      {"text": "Declaration of Independence", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 12,
+    "question": "What is the economic system of the United States?",
+    "answers": [
+      {"text": "Capitalism", "category": "POLITICAL_CONCEPT"},
+      {"text": "Free market economy", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 13,
+    "question": "What is the rule of law?",
+    "answers": [
+      {"text": "Everyone must follow the law.", "category": "POLITICAL_CONCEPT"},
+      {"text": "Leaders must obey the law.", "category": "POLITICAL_CONCEPT"},
+      {"text": "Government must obey the law.", "category": "POLITICAL_CONCEPT"},
+      {"text": "No one is above the law.", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 14,
+    "question": "Many documents influenced the U.S. Constitution. Name one.",
+    "answers": [
+      {"text": "Declaration of Independence", "category": "DOCUMENT"},
+      {"text": "Articles of Confederation", "category": "DOCUMENT"},
+      {"text": "Federalist Papers", "category": "DOCUMENT"},
+      {"text": "Anti-Federalist Papers", "category": "DOCUMENT"},
+      {"text": "Virginia Declaration of Rights", "category": "DOCUMENT"},
+      {"text": "Fundamental Orders of Connecticut", "category": "DOCUMENT"},
+      {"text": "Mayflower Compact", "category": "DOCUMENT"},
+      {"text": "Iroquois Great Law of Peace", "category": "DOCUMENT"}
+    ]
+  },
+  {
+    "id": 15,
+    "question": "There are three branches of government. Why?",
+    "answers": [
+      {"text": "So one part does not become too powerful", "category": "POLITICAL_CONCEPT"},
+      {"text": "Checks and balances", "category": "POLITICAL_CONCEPT"},
+      {"text": "Separation of powers", "category": "POLITICAL_CONCEPT"}
+    ]
+  },
+  {
+    "id": 16,
+    "question": "Name the three branches of government.",
+    "answers": [
+      {"text": "Legislative, executive, and judicial", "category": "GOVERNMENT_BRANCH"},
+      {"text": "Congress, president, and the courts", "category": "GOVERNMENT_BRANCH"}
+    ]
+  },
+  {
+    "id": 17,
+    "question": "The President of the United States is in charge of which branch of government?",
+    "answers": [
+      {"text": "Executive branch", "category": "GOVERNMENT_BRANCH"}
+    ]
+  },
+  {
+    "id": 18,
+    "question": "What part of the federal government writes laws?",
+    "answers": [
+      {"text": "(U.S.) Congress", "category": "GOVERNMENT_BRANCH"},
+      {"text": "(U.S. or national) legislature", "category": "GOVERNMENT_BRANCH"},
+      {"text": "Legislative branch", "category": "GOVERNMENT_BRANCH"}
+    ]
+  },
+  {
+    "id": 19,
+    "question": "What are the two parts of the U.S. Congress?",
+    "answers": [
+      {"text": "Senate and House (of Representatives)", "category": "GOVERNMENT_BRANCH"}
+    ]
+  },
+  {
+    "id": 20,
+    "question": "Name one power of the U.S. Congress.",
+    "answers": [
+      {"text": "Writes laws", "category": "GOVERNMENT_ACTION"},
+      {"text": "Declares war", "category": "GOVERNMENT_ACTION"},
+      {"text": "Makes the federal budget", "category": "GOVERNMENT_ACTION"}
+    ]
+  }
+]

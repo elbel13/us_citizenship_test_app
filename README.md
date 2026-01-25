@@ -1,16 +1,13 @@
-# us_citizenship_test_app
+# US Citizenship Test App
 
-A new Flutter project.
+An app to help users prepare for the US Citizenship Test with flashcards, multiple choice questions, writing practice, listening exercises, and simulated interviews.
 
-## Getting Started
+After helping my wife study for her citizenship test, I realized the stresful and high stakes this test can be for immigrants. Many don't have access to good study materials or structured practice. This app aims to fill that gap by providing a free, easy-to-use, comprehensive study tool.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features
+- Flashcards
+- Multiple Choice Questions
+- Writing Practice
+- Listening Exercises
+- Simulated Interviews
+- Test Readiness Assessment
