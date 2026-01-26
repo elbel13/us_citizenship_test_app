@@ -44,13 +44,16 @@ class DatabaseService {
     String path = join(await getDatabasesPath(), 'citizenship_test.db');
     return await openDatabase(
       path,
-      version: 2, // Incremented version for schema change
+      version: 4, // Bumped to reload reading sentences with fixes
       onCreate: _createDatabase,
       onUpgrade: (db, oldVersion, newVersion) async {
         // For now, just drop and recreate (no user data to preserve)
-        if (oldVersion < 2) {
+        if (oldVersion < 4) {
+          await db.execute('DROP TABLE IF EXISTS answer');
           await db.execute('DROP TABLE IF EXISTS question_text');
           await db.execute('DROP TABLE IF EXISTS question');
+          await db.execute('DROP TABLE IF EXISTS answer_category');
+          await db.execute('DROP TABLE IF EXISTS reading_sentence');
           await _createDatabase(db, newVersion);
         }
       },
@@ -123,6 +126,27 @@ class DatabaseService {
       ON answer(category_id)
     ''');
 
+    // Create reading_sentence table
+    await db.execute('''
+      CREATE TABLE reading_sentence (
+        id TEXT PRIMARY KEY,
+        text TEXT NOT NULL,
+        vocabulary_words TEXT NOT NULL,
+        category TEXT NOT NULL,
+        difficulty INTEGER NOT NULL
+      )
+    ''');
+
+    await db.execute('''
+      CREATE INDEX idx_reading_sentence_category 
+      ON reading_sentence(category)
+    ''');
+
+    await db.execute('''
+      CREATE INDEX idx_reading_sentence_difficulty 
+      ON reading_sentence(difficulty)
+    ''');
+
     // Populate categories
     Batch batch = db.batch();
     categoryIds.forEach((name, id) {
@@ -140,6 +164,15 @@ class DatabaseService {
     if (count == null || count == 0) {
       // Database is empty, populate it
       await _loadQuestionsFromAssets(db, 'en');
+    }
+
+    // Check if reading sentences are populated
+    final sentenceCount = Sqflite.firstIntValue(
+      await db.rawQuery('SELECT COUNT(*) FROM reading_sentence'),
+    );
+
+    if (sentenceCount == null || sentenceCount == 0) {
+      await _loadReadingSentencesFromAssets(db);
     }
   }
 
@@ -197,6 +230,33 @@ class DatabaseService {
       await batch.commit(noResult: true);
     } catch (e) {
       print('Error loading questions from assets: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> _loadReadingSentencesFromAssets(Database db) async {
+    try {
+      final String jsonString = await rootBundle.loadString(
+        'assets/reading_sentences.json',
+      );
+      final Map<String, dynamic> jsonData = json.decode(jsonString);
+      final List<dynamic> sentences = jsonData['sentences'];
+
+      Batch batch = db.batch();
+
+      for (var sentence in sentences) {
+        batch.insert('reading_sentence', {
+          'id': sentence['id'],
+          'text': sentence['text'],
+          'vocabulary_words': json.encode(sentence['vocabularyWords']),
+          'category': sentence['category'],
+          'difficulty': sentence['difficulty'],
+        }, conflictAlgorithm: ConflictAlgorithm.replace);
+      }
+
+      await batch.commit(noResult: true);
+    } catch (e) {
+      print('Error loading reading sentences from assets: $e');
       rethrow;
     }
   }
@@ -267,7 +327,55 @@ class DatabaseService {
     await db.delete('answer');
     await db.delete('question_text');
     await db.delete('question');
+    await db.delete('reading_sentence');
     // Note: We don't delete answer_category as those are constant
+  }
+
+  // Reading sentence methods
+  Future<List<Map<String, dynamic>>> getAllReadingSentences() async {
+    final db = await database;
+    return await db.query('reading_sentence', orderBy: 'id');
+  }
+
+  Future<List<Map<String, dynamic>>> getReadingSentencesByCategory(
+    String category,
+  ) async {
+    final db = await database;
+    return await db.query(
+      'reading_sentence',
+      where: 'category = ?',
+      whereArgs: [category],
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getReadingSentencesByDifficulty(
+    int difficulty,
+  ) async {
+    final db = await database;
+    return await db.query(
+      'reading_sentence',
+      where: 'difficulty = ?',
+      whereArgs: [difficulty],
+    );
+  }
+
+  Future<Map<String, dynamic>?> getReadingSentenceById(String id) async {
+    final db = await database;
+    final results = await db.query(
+      'reading_sentence',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+    return results.isNotEmpty ? results.first : null;
+  }
+
+  Future<int> getReadingSentenceCount() async {
+    final db = await database;
+    return Sqflite.firstIntValue(
+          await db.rawQuery('SELECT COUNT(*) FROM reading_sentence'),
+        ) ??
+        0;
   }
 
   Future<void> close() async {

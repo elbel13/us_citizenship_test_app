@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/question.dart';
 import '../services/database_service.dart';
+import '../widgets/progress_indicator_widget.dart';
 
 class MultipleChoiceScreen extends StatefulWidget {
   const MultipleChoiceScreen({Key? key}) : super(key: key);
@@ -219,27 +220,16 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
 
   Widget _buildQuizScreen() {
     final currentQuestion = _quizQuestions[_currentQuestionIndex];
-    final totalAnswered = _correctAnswers + _incorrectAnswers;
 
     return Column(
       children: [
         // Progress and score display
-        Container(
-          padding: const EdgeInsets.all(16.0),
-          color: Colors.grey[200],
-          child: Column(
-            children: [
-              Text(
-                'Question ${_currentQuestionIndex + 1} of ${_quizQuestions.length}',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Score: $_correctAnswers correct, $_incorrectAnswers incorrect',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-          ),
+        ProgressIndicatorWidget(
+          currentIndex: _currentQuestionIndex,
+          totalItems: _quizQuestions.length,
+          correctAnswers: _correctAnswers,
+          incorrectAnswers: _incorrectAnswers,
+          itemLabel: 'Question',
         ),
         Expanded(
           child: SingleChildScrollView(

@@ -134,6 +134,12 @@ abstract class AppLocalizations {
   /// **'Listening'**
   String get listening;
 
+  /// Reading menu option
+  ///
+  /// In en, this message translates to:
+  /// **'Reading'**
+  String get reading;
+
   /// Simulated interview menu option
   ///
   /// In en, this message translates to:

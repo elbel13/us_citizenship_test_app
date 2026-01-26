@@ -27,6 +27,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get listening => 'Comprensión Auditiva';
 
   @override
+  String get reading => 'Lectura';
+
+  @override
   String get simulatedInterview => 'Entrevista Simulada';
 
   @override

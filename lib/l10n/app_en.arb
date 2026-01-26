@@ -24,6 +24,10 @@
   "@listening": {
     "description": "Listening menu option"
   },
+  "reading": "Reading",
+  "@reading": {
+    "description": "Reading menu option"
+  },
   "simulatedInterview": "Simulated Interview",
   "@simulatedInterview": {
     "description": "Simulated interview menu option"

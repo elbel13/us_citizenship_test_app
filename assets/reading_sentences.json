@@ -1,0 +1,284 @@
+{
+  "sentences": [
+    {
+      "id": "rs_001",
+      "text": "Who is the President?",
+      "vocabularyWords": ["Who", "is", "the", "President"],
+      "category": "question",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_002",
+      "text": "What is the capital?",
+      "vocabularyWords": ["What", "is", "the", "capital"],
+      "category": "question",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_003",
+      "text": "Abraham Lincoln was the President.",
+      "vocabularyWords": ["Abraham Lincoln", "was", "the", "President"],
+      "category": "people",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_004",
+      "text": "George Washington was the Father of Our Country.",
+      "vocabularyWords": ["George Washington", "was", "the", "Father of Our Country"],
+      "category": "people",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_005",
+      "text": "The people elect Congress.",
+      "vocabularyWords": ["The", "people", "elects", "Congress"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_006",
+      "text": "Congress meets in the capital.",
+      "vocabularyWords": ["Congress", "meet", "in", "the", "capital"],
+      "category": "civics",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_007",
+      "text": "The President lives in the White House.",
+      "vocabularyWords": ["The", "President", "lives", "in", "the", "White House"],
+      "category": "civics",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_008",
+      "text": "We pay dollar bills.",
+      "vocabularyWords": ["We", "pay", "dollar bill"],
+      "category": "other",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_009",
+      "text": "The United States has many states.",
+      "vocabularyWords": ["The", "United States", "has", "many", "state"],
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_010",
+      "text": "Citizens have rights.",
+      "vocabularyWords": ["citizen", "have", "right"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_011",
+      "text": "People can vote.",
+      "vocabularyWords": ["people", "can", "vote"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_012",
+      "text": "When is Independence Day?",
+      "vocabularyWords": ["When", "is", "Independence Day"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_013",
+      "text": "We want to vote.",
+      "vocabularyWords": ["We", "want", "to", "vote"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_014",
+      "text": "The American flag is red, white, and blue.",
+      "vocabularyWords": ["The", "American flag", "is", "colors"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_015",
+      "text": "Where do the Senators meet?",
+      "vocabularyWords": ["Where", "do", "the", "Senators", "meet"],
+      "category": "question",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_016",
+      "text": "Presidents' Day is a holiday.",
+      "vocabularyWords": ["Presidents' Day", "is", "a", "holiday"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_017",
+      "text": "We have Memorial Day.",
+      "vocabularyWords": ["We", "have", "Memorial Day"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_018",
+      "text": "The city is in the south.",
+      "vocabularyWords": ["The", "city", "is", "in", "the", "south"],
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_019",
+      "text": "America is a country.",
+      "vocabularyWords": ["America", "is", "a", "country"],
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_020",
+      "text": "The Bill of Rights is important.",
+      "vocabularyWords": ["The", "Bill of Rights", "is"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_021",
+      "text": "How does government work?",
+      "vocabularyWords": ["How", "does", "government", "work"],
+      "category": "question",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_022",
+      "text": "Why do we have Flag Day?",
+      "vocabularyWords": ["Why", "do", "we", "have", "Flag Day"],
+      "category": "holidays",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_023",
+      "text": "Columbus Day comes in October.",
+      "vocabularyWords": ["Columbus Day", "come", "in"],
+      "category": "holidays",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_024",
+      "text": "Thanksgiving is a holiday.",
+      "vocabularyWords": ["Thanksgiving", "is", "a", "holiday"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_025",
+      "text": "Labor Day is for people.",
+      "vocabularyWords": ["Labor Day", "is", "for", "people"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_026",
+      "text": "The U.S. is a large country.",
+      "vocabularyWords": ["The", "U.S.", "is", "a", "largest", "country"],
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_027",
+      "text": "One state has many cities.",
+      "vocabularyWords": ["one", "state", "has", "many", "city"],
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_028",
+      "text": "George Washington lived here.",
+      "vocabularyWords": ["George Washington", "lived", "here"],
+      "category": "people",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_029",
+      "text": "The first President was George Washington.",
+      "vocabularyWords": ["The", "first", "President", "was", "George Washington"],
+      "category": "people",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_030",
+      "text": "John Adams was the second President.",
+      "vocabularyWords": ["The", "second", "President", "was"],
+      "category": "people",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_031",
+      "text": "What colors are on the American flag?",
+      "vocabularyWords": ["What", "colors", "are", "on", "the", "American flag"],
+      "category": "question",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_032",
+      "text": "The United States is in North America.",
+      "vocabularyWords": ["The", "United States", "is", "in", "North", "America"],
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_033",
+      "text": "Here is a one dollar bill.",
+      "vocabularyWords": ["Here", "is", "a", "one", "dollar bill"],
+      "category": "other",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_034",
+      "text": "The largest city has the most people.",
+      "vocabularyWords": ["The", "largest", "city", "has", "most", "people"],
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_035",
+      "text": "Where does the President live?",
+      "vocabularyWords": ["Where", "does", "the", "President", "live"],
+      "category": "question",
+      "difficulty": 2
+    },
+    {
+      "id": "rs_036",
+      "text": "Citizens live in America.",
+      "vocabularyWords": ["citizen", "lives", "in", "America"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_037",
+      "text": "The capital is a city.",
+      "vocabularyWords": ["The", "capital", "is", "a", "city"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_038",
+      "text": "People elect the government.",
+      "vocabularyWords": ["people", "elects", "the", "government"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_039",
+      "text": "Citizens have rights.",
+      "vocabularyWords": ["citizen", "have", "right"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "rs_040",
+      "text": "Senators work in the capital.",
+      "vocabularyWords": ["Senators", "work", "in", "the", "capital"],
+      "category": "civics",
+      "difficulty": 2
+    }
+  ]
+}

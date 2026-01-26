@@ -5,6 +5,7 @@ import 'screens/flashcards_screen.dart';
 import 'screens/multiple_choice_screen.dart';
 import 'screens/writing_screen.dart';
 import 'screens/listening_screen.dart';
+import 'screens/reading_practice_screen.dart';
 import 'screens/simulated_interview_screen.dart';
 import 'screens/test_readiness_screen.dart';
 import 'screens/settings_screen.dart';
@@ -66,6 +67,7 @@ class _USCitizenshipTestAppState extends State<USCitizenshipTestApp> {
         '/multiple_choice': (context) => const MultipleChoiceScreen(),
         '/writing': (context) => const WritingScreen(),
         '/listening': (context) => const ListeningScreen(),
+        '/reading': (context) => const ReadingPracticeScreen(),
         '/simulated_interview': (context) => const SimulatedInterviewScreen(),
         '/test_readiness': (context) => const TestReadinessScreen(),
         '/settings': (context) => const SettingsScreen(),

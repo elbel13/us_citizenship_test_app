@@ -26,8 +26,13 @@ class MainMenuScreen extends StatelessWidget {
         route: '/listening',
       ),
       _MenuItem(
-        title: l10n.simulatedInterview,
+        title: l10n.reading,
         icon: Icons.record_voice_over,
+        route: '/reading',
+      ),
+      _MenuItem(
+        title: l10n.simulatedInterview,
+        icon: Icons.mic,
         route: '/simulated_interview',
       ),
       _MenuItem(
