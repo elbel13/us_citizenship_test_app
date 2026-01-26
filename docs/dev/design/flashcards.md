@@ -10,7 +10,7 @@ Flashcards are stored in a local database using the `sqflite` package. Each flas
 
 The dataset isn't specific to just flashcards, but rather the entire question set for the US Citizenship Test. Flashcards are generated dynamically from this dataset. The questions/answers dataset can be found here: https://www.uscis.gov/sites/default/files/document/questions-and-answers/2025-Civics-Test-128-Questions-and-Answers.pdf
 
-We can store the dataset in JSON files within the app's assets, structured by language. On app initialization, the relevant JSON file is parsed and the asnwers/questions are created in the local database. This way they can be used by the Flashcards screen as well as other screens like Multiple Choice, Writing, Listening, and Simulated Interview.
+We can store the dataset in JSON files within the app's assets, structured by language. On app initialization, the relevant JSON file is parsed and the asnwers/questions are created in the local database. This way they can be used by the Flashcards screen as well as other screens like Multiple Choice, Writing, Reading, and Simulated Interview.
 
 DB Table Schema:
 ```sql

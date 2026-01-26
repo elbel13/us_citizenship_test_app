@@ -21,11 +21,6 @@ class MainMenuScreen extends StatelessWidget {
       ),
       _MenuItem(title: l10n.writing, icon: Icons.edit, route: '/writing'),
       _MenuItem(
-        title: l10n.listening,
-        icon: Icons.hearing,
-        route: '/listening',
-      ),
-      _MenuItem(
         title: l10n.reading,
         icon: Icons.record_voice_over,
         route: '/reading',

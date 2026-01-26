@@ -66,7 +66,6 @@ class _USCitizenshipTestAppState extends State<USCitizenshipTestApp> {
         '/flashcards': (context) => const FlashcardsScreen(),
         '/multiple_choice': (context) => const MultipleChoiceScreen(),
         '/writing': (context) => const WritingScreen(),
-        '/listening': (context) => const ListeningScreen(),
         '/reading': (context) => const ReadingPracticeScreen(),
         '/simulated_interview': (context) => const SimulatedInterviewScreen(),
         '/test_readiness': (context) => const TestReadinessScreen(),

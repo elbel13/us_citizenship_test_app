@@ -20,10 +20,6 @@
   "@writing": {
     "description": "Writing menu option"
   },
-  "listening": "Listening",
-  "@listening": {
-    "description": "Listening menu option"
-  },
   "reading": "Reading",
   "@reading": {
     "description": "Reading menu option"

@@ -128,12 +128,6 @@ abstract class AppLocalizations {
   /// **'Writing'**
   String get writing;
 
-  /// Listening menu option
-  ///
-  /// In en, this message translates to:
-  /// **'Listening'**
-  String get listening;
-
   /// Reading menu option
   ///
   /// In en, this message translates to:

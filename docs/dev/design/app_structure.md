@@ -5,7 +5,7 @@ This is a mobile app planed for UI optimized to a mobile experience. There shoul
   - Flashcards
   - Multiple Choice
   - Writing
-  - Listening
+  - Reading
   - Simulated Interview
   - Test Readiness
   - Settings
