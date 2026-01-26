@@ -1,9 +1,6 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:us_citizenship_test_app/services/database_service.dart';
-import 'package:us_citizenship_test_app/models/question.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -125,8 +122,8 @@ void main() {
     test('database only populates once', () async {
       final databaseService = DatabaseService();
       // Access database multiple times
-      final db1 = await databaseService.database;
-      final db2 = await databaseService.database;
+      await databaseService.database;
+      await databaseService.database;
 
       final questions = await databaseService.getQuestions('en');
       final count = questions.length;

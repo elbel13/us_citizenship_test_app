@@ -44,11 +44,11 @@ class DatabaseService {
     String path = join(await getDatabasesPath(), 'citizenship_test.db');
     return await openDatabase(
       path,
-      version: 4, // Bumped to reload reading sentences with fixes
+      version: 5, // Bumped for writing sentences
       onCreate: _createDatabase,
       onUpgrade: (db, oldVersion, newVersion) async {
         // For now, just drop and recreate (no user data to preserve)
-        if (oldVersion < 4) {
+        if (oldVersion < 5) {
           await db.execute('DROP TABLE IF EXISTS answer');
           await db.execute('DROP TABLE IF EXISTS question_text');
           await db.execute('DROP TABLE IF EXISTS question');
@@ -147,6 +147,27 @@ class DatabaseService {
       ON reading_sentence(difficulty)
     ''');
 
+    // Create writing_sentence table
+    await db.execute('''
+      CREATE TABLE writing_sentence (
+        id TEXT PRIMARY KEY,
+        text TEXT NOT NULL,
+        vocabulary_words TEXT NOT NULL,
+        category TEXT NOT NULL,
+        difficulty INTEGER NOT NULL
+      )
+    ''');
+
+    await db.execute('''
+      CREATE INDEX idx_writing_sentence_category 
+      ON writing_sentence(category)
+    ''');
+
+    await db.execute('''
+      CREATE INDEX idx_writing_sentence_difficulty 
+      ON writing_sentence(difficulty)
+    ''');
+
     // Populate categories
     Batch batch = db.batch();
     categoryIds.forEach((name, id) {
@@ -173,6 +194,15 @@ class DatabaseService {
 
     if (sentenceCount == null || sentenceCount == 0) {
       await _loadReadingSentencesFromAssets(db);
+    }
+
+    // Check if writing sentences are populated
+    final writingSentenceCount = Sqflite.firstIntValue(
+      await db.rawQuery('SELECT COUNT(*) FROM writing_sentence'),
+    );
+
+    if (writingSentenceCount == null || writingSentenceCount == 0) {
+      await _loadWritingSentencesFromAssets(db);
     }
   }
 
@@ -374,6 +404,80 @@ class DatabaseService {
     final db = await database;
     return Sqflite.firstIntValue(
           await db.rawQuery('SELECT COUNT(*) FROM reading_sentence'),
+        ) ??
+        0;
+  }
+
+  Future<void> _loadWritingSentencesFromAssets(Database db) async {
+    try {
+      final String jsonString = await rootBundle.loadString(
+        'assets/writing_sentences.json',
+      );
+      final Map<String, dynamic> jsonData = json.decode(jsonString);
+      final List<dynamic> sentences = jsonData['sentences'];
+
+      Batch batch = db.batch();
+
+      for (var sentence in sentences) {
+        batch.insert('writing_sentence', {
+          'id': sentence['id'],
+          'text': sentence['text'],
+          'vocabulary_words': json.encode(sentence['vocabularyWords']),
+          'category': sentence['category'],
+          'difficulty': sentence['difficulty'],
+        }, conflictAlgorithm: ConflictAlgorithm.replace);
+      }
+
+      await batch.commit(noResult: true);
+    } catch (e) {
+      print('Error loading writing sentences from assets: $e');
+      rethrow;
+    }
+  }
+
+  // Writing sentence methods
+  Future<List<Map<String, dynamic>>> getAllWritingSentences() async {
+    final db = await database;
+    return await db.query('writing_sentence', orderBy: 'id');
+  }
+
+  Future<List<Map<String, dynamic>>> getWritingSentencesByCategory(
+    String category,
+  ) async {
+    final db = await database;
+    return await db.query(
+      'writing_sentence',
+      where: 'category = ?',
+      whereArgs: [category],
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getWritingSentencesByDifficulty(
+    int difficulty,
+  ) async {
+    final db = await database;
+    return await db.query(
+      'writing_sentence',
+      where: 'difficulty = ?',
+      whereArgs: [difficulty],
+    );
+  }
+
+  Future<Map<String, dynamic>?> getWritingSentenceById(String id) async {
+    final db = await database;
+    final results = await db.query(
+      'writing_sentence',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+    return results.isNotEmpty ? results.first : null;
+  }
+
+  Future<int> getWritingSentenceCount() async {
+    final db = await database;
+    return Sqflite.firstIntValue(
+          await db.rawQuery('SELECT COUNT(*) FROM writing_sentence'),
         ) ??
         0;
   }

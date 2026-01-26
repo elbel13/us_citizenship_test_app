@@ -42,6 +42,7 @@ dependencies:
   speech_to_text: ^7.3.0
   string_similarity: ^2.1.1
   permission_handler: ^12.0.1
+  flutter_tts: ^4.2.0
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,7 @@ flutter:
   assets:
     - assets/questions_en_categorized.json
     - assets/reading_sentences.json
+    - assets/writing_sentences.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

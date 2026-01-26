@@ -3,8 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'screens/main_menu_screen.dart';
 import 'screens/flashcards_screen.dart';
 import 'screens/multiple_choice_screen.dart';
-import 'screens/writing_screen.dart';
-import 'screens/listening_screen.dart';
+import 'screens/writing_practice_screen.dart';
 import 'screens/reading_practice_screen.dart';
 import 'screens/simulated_interview_screen.dart';
 import 'screens/test_readiness_screen.dart';
@@ -65,7 +64,7 @@ class _USCitizenshipTestAppState extends State<USCitizenshipTestApp> {
         '/': (context) => const MainMenuScreen(),
         '/flashcards': (context) => const FlashcardsScreen(),
         '/multiple_choice': (context) => const MultipleChoiceScreen(),
-        '/writing': (context) => const WritingScreen(),
+        '/writing': (context) => const WritingPracticeScreen(),
         '/reading': (context) => const ReadingPracticeScreen(),
         '/simulated_interview': (context) => const SimulatedInterviewScreen(),
         '/test_readiness': (context) => const TestReadinessScreen(),

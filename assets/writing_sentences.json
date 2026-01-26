@@ -1,0 +1,284 @@
+{
+  "sentences": [
+    {
+      "id": "ws_001",
+      "text": "Adams was the President.",
+      "vocabularyWords": ["Adams", "was", "the", "President"],
+      "category": "people",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_002",
+      "text": "Lincoln was the President.",
+      "vocabularyWords": ["Lincoln", "was", "the", "President"],
+      "category": "people",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_003",
+      "text": "Washington was the Father of Our Country.",
+      "vocabularyWords": ["Washington", "was", "the", "Father of Our Country"],
+      "category": "people",
+      "difficulty": 2
+    },
+    {
+      "id": "ws_004",
+      "text": "George Washington was the first President.",
+      "vocabularyWords": ["Washington", "was", "the", "first", "President"],
+      "category": "people",
+      "difficulty": 2
+    },
+    {
+      "id": "ws_005",
+      "text": "Abraham Lincoln was President during the Civil War.",
+      "vocabularyWords": ["Lincoln", "was", "President", "during", "the", "Civil War"],
+      "category": "people",
+      "difficulty": 3
+    },
+    {
+      "id": "ws_006",
+      "text": "Citizens have the right to vote.",
+      "vocabularyWords": ["citizens", "have", "the", "right", "to", "vote"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_007",
+      "text": "Congress meets in the capital.",
+      "vocabularyWords": ["Congress", "meets", "in", "the", "capital"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_008",
+      "text": "The President lives in the White House.",
+      "vocabularyWords": ["The", "President", "lives", "in", "the", "White House"],
+      "category": "civics",
+      "difficulty": 2
+    },
+    {
+      "id": "ws_009",
+      "text": "Senators meet in Washington.",
+      "vocabularyWords": ["Senators", "meet", "in", "Washington"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_010",
+      "text": "People elect the President.",
+      "vocabularyWords": ["people", "elect", "the", "President"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_011",
+      "text": "We have freedom of speech.",
+      "vocabularyWords": ["We", "have", "freedom of speech"],
+      "category": "civics",
+      "difficulty": 2
+    },
+    {
+      "id": "ws_012",
+      "text": "The United States has a flag.",
+      "vocabularyWords": ["The", "United States", "has", "a", "flag"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_013",
+      "text": "The flag is red, white, and blue.",
+      "vocabularyWords": ["The", "flag", "is", "red", "white", "and", "blue"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_014",
+      "text": "Citizens can vote.",
+      "vocabularyWords": ["citizens", "can", "vote"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_015",
+      "text": "We pay taxes.",
+      "vocabularyWords": ["We", "pay", "taxes"],
+      "category": "civics",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_016",
+      "text": "Alaska is a state.",
+      "vocabularyWords": ["Alaska", "is", "a", "state"],
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_017",
+      "text": "California is a state.",
+      "vocabularyWords": ["California", "is", "a", "state"],
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_018",
+      "text": "Delaware is a state.",
+      "vocabularyWords": ["Delaware", "is", "a", "state"],
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_019",
+      "text": "Canada is north of the United States.",
+      "vocabularyWords": ["Canada", "is", "north", "of", "the", "United States"],
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": "ws_020",
+      "text": "Mexico is south of the United States.",
+      "vocabularyWords": ["Mexico", "is", "south", "of", "the", "United States"],
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": "ws_021",
+      "text": "New York City is the largest city.",
+      "vocabularyWords": ["New York City", "is", "the", "largest", "city"],
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": "ws_022",
+      "text": "Washington, D.C. is the capital.",
+      "vocabularyWords": ["Washington, D.C.", "is", "the", "capital"],
+      "category": "places",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_023",
+      "text": "The United States has fifty states.",
+      "vocabularyWords": ["The", "United States", "has", "fifty", "states"],
+      "category": "places",
+      "difficulty": 2
+    },
+    {
+      "id": "ws_024",
+      "text": "Presidents' Day is in February.",
+      "vocabularyWords": ["Presidents' Day", "is", "in", "February"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_025",
+      "text": "Memorial Day is in May.",
+      "vocabularyWords": ["Memorial Day", "is", "in", "May"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_026",
+      "text": "Flag Day is in June.",
+      "vocabularyWords": ["Flag Day", "is", "in", "June"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_027",
+      "text": "Independence Day is in July.",
+      "vocabularyWords": ["Independence Day", "is", "in", "July"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_028",
+      "text": "Labor Day is in September.",
+      "vocabularyWords": ["Labor Day", "is", "in", "September"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_029",
+      "text": "Columbus Day is in October.",
+      "vocabularyWords": ["Columbus Day", "is", "in", "October"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_030",
+      "text": "Thanksgiving is in November.",
+      "vocabularyWords": ["Thanksgiving", "is", "in", "November"],
+      "category": "holidays",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_031",
+      "text": "We live in the United States.",
+      "vocabularyWords": ["We", "live", "in", "the", "United States"],
+      "category": "other",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_032",
+      "text": "The President is here.",
+      "vocabularyWords": ["The", "President", "is", "here"],
+      "category": "other",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_033",
+      "text": "One hundred Senators meet in Congress.",
+      "vocabularyWords": ["one hundred", "Senators", "meet", "in", "Congress"],
+      "category": "other",
+      "difficulty": 2
+    },
+    {
+      "id": "ws_034",
+      "text": "People can vote for the President.",
+      "vocabularyWords": ["people", "can", "vote", "for", "the", "President"],
+      "category": "other",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_035",
+      "text": "Washington was the first President.",
+      "vocabularyWords": ["Washington", "was", "the", "first", "President"],
+      "category": "other",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_036",
+      "text": "The capital is in Washington, D.C.",
+      "vocabularyWords": ["The", "capital", "is", "in", "Washington, D.C."],
+      "category": "other",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_037",
+      "text": "Citizens want to vote.",
+      "vocabularyWords": ["citizens", "want", "to", "vote"],
+      "category": "other",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_038",
+      "text": "The largest state is Alaska.",
+      "vocabularyWords": ["The", "largest", "state", "is", "Alaska"],
+      "category": "other",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_039",
+      "text": "Here is a dollar bill.",
+      "vocabularyWords": ["Here", "is", "a", "dollar bill"],
+      "category": "other",
+      "difficulty": 1
+    },
+    {
+      "id": "ws_040",
+      "text": "American Indians lived here.",
+      "vocabularyWords": ["American Indians", "lived", "here"],
+      "category": "other",
+      "difficulty": 1
+    }
+  ]
+}
