@@ -214,7 +214,7 @@ class _FlipCardState extends State<FlipCard>
       height: 500,
       margin: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(

@@ -23,7 +23,6 @@ class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
   WritingSentence? _currentSentence;
   bool _isLoading = true;
   bool _isSpeaking = false;
-  String _userInput = '';
   double? _similarityScore;
   String _feedback = '';
   bool _hasAttempted = false;
@@ -86,7 +85,6 @@ class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
   void _loadSentence() {
     setState(() {
       _hasAttempted = false;
-      _userInput = '';
       _similarityScore = null;
       _feedback = '';
       _inputController.clear();
@@ -125,7 +123,6 @@ class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
     );
 
     setState(() {
-      _userInput = userText;
       _similarityScore = score;
       _feedback = _evaluator.getFeedback(score);
       _hasAttempted = true;
@@ -236,7 +233,7 @@ class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
 
           // Instructions
           Card(
-            color: Colors.blue.shade50,
+            color: Theme.of(context).colorScheme.primaryContainer,
             child: const Padding(
               padding: EdgeInsets.all(12.0),
               child: Text(
@@ -388,7 +385,6 @@ class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
                       onPressed: () {
                         setState(() {
                           _hasAttempted = false;
-                          _userInput = '';
                           _similarityScore = null;
                           _feedback = '';
                           _inputController.clear();

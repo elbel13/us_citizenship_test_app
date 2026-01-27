@@ -257,7 +257,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                       'Select at least 2 correct answers',
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.blue[700],
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w500,
                       ),
                       textAlign: TextAlign.center,
@@ -329,20 +329,23 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
     IconData? icon;
     final isSelected = _selectedAnswerIndices.contains(index);
     final isCorrect = quizQuestion.correctAnswerIndices.contains(index);
+    final theme = Theme.of(context);
 
     if (_hasAnswered) {
       if (isCorrect) {
-        backgroundColor = Colors.green[100];
-        borderColor = Colors.green;
+        // Correct answer: use tertiary colors (typically green in Material 3)
+        backgroundColor = theme.colorScheme.tertiaryContainer;
+        borderColor = theme.colorScheme.tertiary;
         icon = Icons.check_circle;
       } else if (isSelected) {
-        backgroundColor = Colors.red[100];
-        borderColor = Colors.red;
+        // Wrong answer: use error colors (typically red)
+        backgroundColor = theme.colorScheme.errorContainer;
+        borderColor = theme.colorScheme.error;
         icon = Icons.cancel;
       }
     } else if (isSelected) {
-      backgroundColor = Colors.blue[50];
-      borderColor = Colors.blue;
+      backgroundColor = theme.colorScheme.primaryContainer;
+      borderColor = theme.colorScheme.primary;
     }
 
     return InkWell(
@@ -350,8 +353,11 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
       child: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: backgroundColor ?? Colors.white,
-          border: Border.all(color: borderColor ?? Colors.grey[300]!, width: 2),
+          color: backgroundColor ?? theme.colorScheme.surface,
+          border: Border.all(
+            color: borderColor ?? theme.colorScheme.outlineVariant,
+            width: borderColor != null && _hasAnswered ? 3 : 2,
+          ),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
@@ -383,14 +389,18 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
         : (selectedCorrect == 1 && selectedWrong == 0);
 
     return Card(
-      color: isCorrect ? Colors.green[50] : Colors.red[50],
+      color: isCorrect
+          ? Theme.of(context).colorScheme.tertiaryContainer
+          : Theme.of(context).colorScheme.errorContainer,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
             Icon(
               isCorrect ? Icons.check_circle : Icons.cancel,
-              color: isCorrect ? Colors.green : Colors.red,
+              color: isCorrect
+                  ? Theme.of(context).colorScheme.tertiary
+                  : Theme.of(context).colorScheme.error,
               size: 32,
             ),
             const SizedBox(width: 12),
@@ -400,7 +410,9 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: isCorrect ? Colors.green[900] : Colors.red[900],
+                  color: isCorrect
+                      ? Theme.of(context).colorScheme.onTertiaryContainer
+                      : Theme.of(context).colorScheme.onErrorContainer,
                 ),
               ),
             ),

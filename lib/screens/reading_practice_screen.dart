@@ -321,7 +321,9 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
 
           // Instructions
           Card(
-            color: _testMode ? Colors.orange.shade50 : Colors.blue.shade50,
+            color: _testMode
+                ? Theme.of(context).colorScheme.secondaryContainer
+                : Theme.of(context).colorScheme.primaryContainer,
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Text(

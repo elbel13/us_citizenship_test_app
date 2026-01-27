@@ -41,6 +41,7 @@ class DatabaseService {
   }
 
   Future<Database> _initDatabase() async {
+    print('DatabaseService: Starting database initialization...');
     String path = join(await getDatabasesPath(), 'citizenship_test.db');
     return await openDatabase(
       path,
@@ -177,14 +178,19 @@ class DatabaseService {
   }
 
   Future<void> _populateIfEmpty(Database db) async {
+    print('DatabaseService: Checking if population needed...');
     // Check if database is already populated
     final count = Sqflite.firstIntValue(
       await db.rawQuery('SELECT COUNT(*) FROM question'),
     );
 
     if (count == null || count == 0) {
+      print('DatabaseService: Loading questions from assets...');
       // Database is empty, populate it
       await _loadQuestionsFromAssets(db, 'en');
+      print('DatabaseService: Questions loaded.');
+    } else {
+      print('DatabaseService: Questions already loaded ($count questions).');
     }
 
     // Check if reading sentences are populated
@@ -193,17 +199,32 @@ class DatabaseService {
     );
 
     if (sentenceCount == null || sentenceCount == 0) {
+      print('DatabaseService: Loading reading sentences...');
       await _loadReadingSentencesFromAssets(db);
+      print('DatabaseService: Reading sentences loaded.');
+    } else {
+      print(
+        'DatabaseService: Reading sentences already loaded ($sentenceCount sentences).',
+      );
     }
 
     // Check if writing sentences are populated
+    print('DatabaseService: Checking writing sentences...');
     final writingSentenceCount = Sqflite.firstIntValue(
       await db.rawQuery('SELECT COUNT(*) FROM writing_sentence'),
     );
 
     if (writingSentenceCount == null || writingSentenceCount == 0) {
+      print('DatabaseService: Loading writing sentences...');
       await _loadWritingSentencesFromAssets(db);
+      print('DatabaseService: Writing sentences loaded.');
+    } else {
+      print(
+        'DatabaseService: Writing sentences already loaded ($writingSentenceCount sentences).',
+      );
     }
+
+    print('DatabaseService: Database initialization complete!');
   }
 
   Future<void> _loadQuestionsFromAssets(

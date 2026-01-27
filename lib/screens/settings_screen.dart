@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
+import '../services/theme_service.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  final ThemeService themeService;
+
+  const SettingsScreen({Key? key, required this.themeService})
+    : super(key: key);
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -13,11 +17,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDarkMode = widget.themeService.themeMode == ThemeMode.dark;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settings)),
       body: ListView(
         children: [
+          SwitchListTile(
+            secondary: const Icon(Icons.dark_mode),
+            title: const Text('Dark Mode'),
+            subtitle: Text(isDarkMode ? 'Enabled' : 'Disabled'),
+            value: isDarkMode,
+            onChanged: (bool value) {
+              widget.themeService.toggleTheme(value);
+            },
+          ),
+          const Divider(),
           ListTile(
             leading: const Icon(Icons.language),
             title: Text(l10n.language),

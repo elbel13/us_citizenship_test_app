@@ -11,12 +11,19 @@ import 'screens/settings_screen.dart';
 import 'theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
 import 'services/database_service.dart';
+import 'services/theme_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize database
-  await DatabaseService().database;
+  // Initialize database in background - don't block app startup
+  DatabaseService().database
+      .then((_) {
+        // Database initialized successfully
+      })
+      .catchError((error) {
+        print('Error initializing database: $error');
+      });
 
   runApp(const USCitizenshipTestApp());
 }
@@ -32,10 +39,33 @@ class USCitizenshipTestApp extends StatefulWidget {
         .findAncestorStateOfType<_USCitizenshipTestAppState>();
     state?.setLocale(newLocale);
   }
+
+  static void setThemeMode(BuildContext context, ThemeMode mode) {
+    _USCitizenshipTestAppState? state = context
+        .findAncestorStateOfType<_USCitizenshipTestAppState>();
+    state?.setThemeMode(mode);
+  }
 }
 
 class _USCitizenshipTestAppState extends State<USCitizenshipTestApp> {
   Locale? _locale;
+  final ThemeService _themeService = ThemeService();
+
+  @override
+  void initState() {
+    super.initState();
+    _themeService.addListener(_onThemeChanged);
+  }
+
+  @override
+  void dispose() {
+    _themeService.removeListener(_onThemeChanged);
+    super.dispose();
+  }
+
+  void _onThemeChanged() {
+    setState(() {});
+  }
 
   void setLocale(Locale locale) {
     setState(() {
@@ -43,11 +73,17 @@ class _USCitizenshipTestAppState extends State<USCitizenshipTestApp> {
     });
   }
 
+  void setThemeMode(ThemeMode mode) {
+    _themeService.setThemeMode(mode);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'US Citizenship Test App',
       theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: _themeService.themeMode,
       locale: _locale,
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -68,7 +104,7 @@ class _USCitizenshipTestAppState extends State<USCitizenshipTestApp> {
         '/reading': (context) => const ReadingPracticeScreen(),
         '/simulated_interview': (context) => const SimulatedInterviewScreen(),
         '/test_readiness': (context) => const TestReadinessScreen(),
-        '/settings': (context) => const SettingsScreen(),
+        '/settings': (context) => SettingsScreen(themeService: _themeService),
       },
     );
   }
