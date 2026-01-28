@@ -11,3 +11,7 @@ After helping my wife study for her citizenship test, I realized the stresful an
 - Reading Practice
 - Simulated Interviews
 - Test Readiness Assessment
+
+## Acknowledgments
+
+This project uses [DistilGPT-2](https://huggingface.co/distilgpt2) by Hugging Face for natural language generation in the simulated interview feature. DistilGPT-2 is licensed under Apache 2.0. See [NOTICES.md](NOTICES.md) for full attribution.
