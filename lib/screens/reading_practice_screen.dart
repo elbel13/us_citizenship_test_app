@@ -5,6 +5,8 @@ import '../models/reading_sentence.dart';
 import '../services/reading_sentence_service.dart';
 import '../services/reading_evaluator.dart';
 import '../widgets/progress_indicator_widget.dart';
+import '../widgets/word_diff_display.dart';
+import '../theme/word_diff_colors.dart';
 
 class ReadingPracticeScreen extends StatefulWidget {
   const ReadingPracticeScreen({super.key});
@@ -31,6 +33,7 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
   double? _similarityScore;
   String _feedback = '';
   bool _hasAttempted = false;
+  List<WordDiff>? _wordDiff;
   int _correctAnswers = 0;
   int _incorrectAnswers = 0;
   int _totalSentences = 0;
@@ -138,6 +141,7 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
       _spokenText = '';
       _similarityScore = null;
       _feedback = '';
+      _wordDiff = null;
       _testInputController.clear();
 
       // Move to next sentence, or reshuffle if we've gone through all
@@ -173,6 +177,7 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
       _spokenText = '';
       _similarityScore = null;
       _feedback = '';
+      _wordDiff = null;
     });
 
     try {
@@ -223,9 +228,15 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
       _spokenText,
     );
 
+    final wordDiff = _evaluator.getWordDiff(
+      _currentSentence!.text,
+      _spokenText,
+    );
+
     setState(() {
       _similarityScore = score;
       _feedback = _evaluator.getFeedback(score);
+      _wordDiff = wordDiff;
       _hasAttempted = true;
       _isListening = false;
 
@@ -303,288 +314,380 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
   }
 
   Widget _buildContent() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Progress and score display
-          if (_totalSentences > 0) ...[
-            ProgressIndicatorWidget(
-              totalItems: _totalSentences,
-              correctAnswers: _correctAnswers,
-              incorrectAnswers: _incorrectAnswers,
-              itemLabel: 'Sentence',
-            ),
-            const SizedBox(height: 16),
-          ],
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Progress and score display
+            if (_totalSentences > 0) ...[
+              ProgressIndicatorWidget(
+                totalItems: _totalSentences,
+                correctAnswers: _correctAnswers,
+                incorrectAnswers: _incorrectAnswers,
+                itemLabel: 'Sentence',
+              ),
+              const SizedBox(height: 16),
+            ],
 
-          // Instructions
-          Card(
-            color: _testMode
-                ? Theme.of(context).colorScheme.secondaryContainer
-                : Theme.of(context).colorScheme.primaryContainer,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                _testMode
-                    ? 'TEST MODE: Type what you would say, then press "Submit" to test the evaluation.'
-                    : 'Read the sentence below aloud when you press the microphone button.',
-                style: Theme.of(context).textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          const SizedBox(height: 24),
-
-          // Sentence to read
-          Card(
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Text(
-                _currentSentence?.text ?? '',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  height: 1.5,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          const SizedBox(height: 24),
-
-          // Microphone button OR Test input
-          if (_testMode) ...[
-            // Test mode: Text input
-            TextField(
-              controller: _testInputController,
-              decoration: InputDecoration(
-                labelText: 'Type your answer here',
-                hintText: 'Enter the sentence as you would say it',
-                border: const OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () => _testInputController.clear(),
-                ),
-              ),
-              maxLines: 3,
-              textCapitalization: TextCapitalization.sentences,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () {
-                setState(() {
-                  _spokenText = _testInputController.text;
-                  _hasAttempted = false;
-                });
-                if (_spokenText.isNotEmpty) {
-                  _evaluateReading();
-                } else {
-                  _showInfo('Please type something to evaluate');
-                }
-              },
-              icon: const Icon(Icons.check),
-              label: const Text('Submit & Evaluate'),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-            ),
-          ] else ...[
-            // Speech mode: Microphone button
-            Center(
-              child: Column(
-                children: [
-                  InkWell(
-                    onTap: _speechInitializing || !_speechAvailable
-                        ? null
-                        : (_isListening ? _stopListening : _startListening),
-                    borderRadius: BorderRadius.circular(50),
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: _speechInitializing
-                            ? Colors.grey
-                            : (!_speechAvailable
-                                  ? Colors.grey.shade400
-                                  : (_isListening ? Colors.red : Colors.blue)),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          if (_isListening)
-                            BoxShadow(
-                              color: Colors.red.withOpacity(0.5),
-                              blurRadius: 20,
-                              spreadRadius: 5,
-                            ),
-                        ],
-                      ),
-                      child: _speechInitializing
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : Icon(
-                              !_speechAvailable
-                                  ? Icons.mic_off
-                                  : (_isListening ? Icons.mic : Icons.mic_none),
-                              size: 50,
-                              color: Colors.white,
-                            ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    _speechInitializing
-                        ? 'Initializing...'
-                        : (!_speechAvailable
-                              ? 'Not available'
-                              : (_isListening
-                                    ? 'Listening...'
-                                    : 'Tap to speak')),
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ],
-              ),
-            ),
-          ],
-          const SizedBox(height: 24),
-
-          // Spoken text
-          if (_spokenText.isNotEmpty) ...[
-            Text('You said:', style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 8),
+            // Instructions
             Card(
+              color: _testMode
+                  ? Theme.of(context).colorScheme.secondaryContainer
+                  : Theme.of(context).colorScheme.primaryContainer,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Text(
-                  _spokenText,
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  _testMode
+                      ? 'TEST MODE: Type what you would say, then press "Submit" to test the evaluation.'
+                      : 'Read the sentence below aloud when you press the microphone button.',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-          ],
+            const SizedBox(height: 24),
 
-          // Results
-          if (_similarityScore != null && _hasAttempted) ...[
+            // Sentence to read
             Card(
-              color: _getScoreColor(_similarityScore!).withOpacity(0.1),
+              elevation: 4,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(24.0),
+                child: Text(
+                  _currentSentence?.text ?? '',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Microphone button OR Test input
+            if (_testMode) ...[
+              // Test mode: Text input
+              TextField(
+                controller: _testInputController,
+                decoration: InputDecoration(
+                  labelText: 'Type your answer here',
+                  hintText: 'Enter the sentence as you would say it',
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () => _testInputController.clear(),
+                  ),
+                ),
+                maxLines: 3,
+                textCapitalization: TextCapitalization.sentences,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () {
+                  setState(() {
+                    _spokenText = _testInputController.text;
+                    _hasAttempted = false;
+                  });
+                  if (_spokenText.isNotEmpty) {
+                    _evaluateReading();
+                  } else {
+                    _showInfo('Please type something to evaluate');
+                  }
+                },
+                icon: const Icon(Icons.check),
+                label: const Text('Submit & Evaluate'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+              ),
+            ] else ...[
+              // Speech mode: Microphone button
+              Center(
                 child: Column(
                   children: [
-                    Text(
-                      'Score: ${_evaluator.getPercentageScore(_similarityScore!)}%',
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: _getScoreColor(_similarityScore!),
-                            fontWeight: FontWeight.bold,
-                          ),
+                    InkWell(
+                      onTap: _speechInitializing || !_speechAvailable
+                          ? null
+                          : (_isListening ? _stopListening : _startListening),
+                      borderRadius: BorderRadius.circular(50),
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: _speechInitializing
+                              ? Colors.grey
+                              : (!_speechAvailable
+                                    ? Colors.grey.shade400
+                                    : (_isListening
+                                          ? Colors.red
+                                          : Colors.blue)),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            if (_isListening)
+                              BoxShadow(
+                                color: Colors.red.withOpacity(0.5),
+                                blurRadius: 20,
+                                spreadRadius: 5,
+                              ),
+                          ],
+                        ),
+                        child: _speechInitializing
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : Icon(
+                                !_speechAvailable
+                                    ? Icons.mic_off
+                                    : (_isListening
+                                          ? Icons.mic
+                                          : Icons.mic_none),
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                      ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     Text(
-                      _feedback,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      textAlign: TextAlign.center,
+                      _speechInitializing
+                          ? 'Initializing...'
+                          : (!_speechAvailable
+                                ? 'Not available'
+                                : (_isListening
+                                      ? 'Listening...'
+                                      : 'Tap to speak')),
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
-                    const SizedBox(height: 8),
-                    if (_evaluator.isPassing(_similarityScore!))
-                      const Icon(
-                        Icons.check_circle,
-                        color: Colors.green,
-                        size: 40,
-                      )
-                    else
-                      const Icon(Icons.cancel, color: Colors.red, size: 40),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+            const SizedBox(height: 24),
 
-          // Action buttons
-          if (_hasAttempted) ...[
-            if (_similarityScore != null &&
-                !_evaluator.isPassing(_similarityScore!))
-              // Show both "Try Again" and "Next" if failed
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {
-                        setState(() {
-                          _hasAttempted = false;
-                          _spokenText = '';
-                          _similarityScore = null;
-                          _feedback = '';
-                          _testInputController.clear();
-                          // Decrement incorrect counter when retrying
-                          _incorrectAnswers--;
-                        });
-                      },
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('Try Again'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.orange,
-                        side: const BorderSide(color: Colors.orange),
-                        minimumSize: const Size(0, 48),
-                      ),
-                    ),
+            // Spoken text
+            if (_spokenText.isNotEmpty) ...[
+              Text('You said:', style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 8),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    _spokenText,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: _loadSentence,
-                      icon: const Icon(Icons.arrow_forward),
-                      label: const Text('Next'),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(0, 48),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            else
-              // Show only "Next" if passed
-              ElevatedButton.icon(
-                onPressed: _loadSentence,
-                icon: const Icon(Icons.arrow_forward),
-                label: const Text('Next Sentence'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 48),
                 ),
               ),
+              const SizedBox(height: 16),
+            ],
+
+            // Word-by-word diff (if available)
+            if (_wordDiff != null && _hasAttempted) ...[
+              Text(
+                'Word-by-word analysis:',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: WordDiffDisplay(wordDiffs: _wordDiff!),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+
+            // Results
+            if (_similarityScore != null && _hasAttempted) ...[
+              Card(
+                color: _getScoreColor(_similarityScore!).withOpacity(0.1),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Score: ${_evaluator.getPercentageScore(_similarityScore!)}%',
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(
+                              color: _getScoreColor(_similarityScore!),
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        _feedback,
+                        style: Theme.of(context).textTheme.titleMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      if (_evaluator.isPassing(_similarityScore!))
+                        const Icon(
+                          Icons.check_circle,
+                          color: Colors.green,
+                          size: 40,
+                        )
+                      else
+                        const Icon(Icons.cancel, color: Colors.red, size: 40),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+
+            // Action buttons
+            if (_hasAttempted) ...[
+              if (_similarityScore != null &&
+                  !_evaluator.isPassing(_similarityScore!))
+                // Show both "Try Again" and "Next" if failed
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            _hasAttempted = false;
+                            _spokenText = '';
+                            _similarityScore = null;
+                            _feedback = '';
+                            _wordDiff = null;
+                            _testInputController.clear();
+                            // Decrement incorrect counter when retrying
+                            _incorrectAnswers--;
+                          });
+                        },
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Try Again'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.orange,
+                          side: const BorderSide(color: Colors.orange),
+                          minimumSize: const Size(0, 48),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: _loadSentence,
+                        icon: const Icon(Icons.arrow_forward),
+                        label: const Text('Next'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(0, 48),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              else
+                // Show only "Next" if passed
+                ElevatedButton.icon(
+                  onPressed: _loadSentence,
+                  icon: const Icon(Icons.arrow_forward),
+                  label: const Text('Next Sentence'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 48),
+                  ),
+                ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
 
   void _showInstructions() {
+    final colors = Theme.of(context).extension<WordDiffColors>()!;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('How to Practice'),
-        content: const SingleChildScrollView(
+        content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('1. Read the sentence displayed on screen'),
-              SizedBox(height: 8),
-              Text('2. Press the microphone button'),
-              SizedBox(height: 8),
-              Text('3. Read the sentence aloud clearly'),
-              SizedBox(height: 8),
-              Text('4. The app will evaluate your pronunciation'),
-              SizedBox(height: 8),
-              Text('5. You need 80% or higher to pass'),
-              SizedBox(height: 16),
-              Text('Tips:', style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Text('• Speak clearly and at a normal pace'),
-              SizedBox(height: 4),
-              Text('• Read in a quiet environment'),
-              SizedBox(height: 4),
-              Text('• Small pronunciation mistakes are okay'),
+              const Text('1. Read the sentence displayed on screen'),
+              const SizedBox(height: 8),
+              const Text('2. Press the microphone button'),
+              const SizedBox(height: 8),
+              const Text('3. Read the sentence aloud clearly'),
+              const SizedBox(height: 8),
+              const Text('4. The app will evaluate your pronunciation'),
+              const SizedBox(height: 8),
+              const Text('5. You need 80% or higher to pass'),
+              const SizedBox(height: 16),
+              const Text(
+                'Tips:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              const Text('• Speak clearly and at a normal pace'),
+              const SizedBox(height: 4),
+              const Text('• Read in a quiet environment'),
+              const SizedBox(height: 4),
+              const Text('• Small pronunciation mistakes are okay'),
+              const SizedBox(height: 16),
+              const Text(
+                'Word-by-word Analysis:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    size: 16,
+                    color: colors.correctWordColor,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Green',
+                    style: TextStyle(
+                      color: colors.correctWordColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const Text(' = Correct word'),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(
+                    Icons.remove_circle,
+                    size: 16,
+                    color: colors.missingWordColor,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Gray',
+                    style: TextStyle(
+                      color: colors.missingWordColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const Text(' = Missing word'),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Icon(
+                    Icons.add_circle,
+                    size: 16,
+                    color: colors.extraWordColor,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Orange',
+                    style: TextStyle(
+                      color: colors.extraWordColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const Text(' = Extra word'),
+                ],
+              ),
             ],
           ),
         ),

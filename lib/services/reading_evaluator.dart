@@ -64,8 +64,84 @@ class ReadingEvaluator {
     return differences;
   }
 
+  /// Get detailed word-level diff for display
+  /// Returns a list of WordDiff objects showing the comparison
+  /// Shows expected words in order (green/gray), with extra words inserted where spoken
+  List<WordDiff> getWordDiff(String expectedText, String spokenText) {
+    final expectedWords = _normalizeText(expectedText).split(' ');
+    final spokenWords = _normalizeText(spokenText).split(' ');
+    final result = <WordDiff>[];
+
+    // Track which spoken words we've already matched
+    final spokenWordUsed = List.filled(spokenWords.length, false);
+
+    // Match spoken words to expected words (greedy left-to-right)
+    final expectedToSpokenIndex = <int, int>{};
+    for (var i = 0; i < expectedWords.length; i++) {
+      for (var j = 0; j < spokenWords.length; j++) {
+        if (!spokenWordUsed[j] && expectedWords[i] == spokenWords[j]) {
+          expectedToSpokenIndex[i] = j;
+          spokenWordUsed[j] = true;
+          break;
+        }
+      }
+    }
+
+    // Build result: iterate through expected words in order
+    var lastSpokenIndex = -1;
+    for (var i = 0; i < expectedWords.length; i++) {
+      if (expectedToSpokenIndex.containsKey(i)) {
+        final spokenIndex = expectedToSpokenIndex[i]!;
+        // Insert any extra words that came before this word in spoken text
+        for (var j = lastSpokenIndex + 1; j < spokenIndex; j++) {
+          if (!spokenWordUsed[j]) {
+            result.add(
+              WordDiff(word: spokenWords[j], type: WordDiffType.added),
+            );
+          }
+        }
+        // Add the correct word
+        result.add(
+          WordDiff(word: expectedWords[i], type: WordDiffType.correct),
+        );
+        lastSpokenIndex = spokenIndex;
+      } else {
+        // Word was not spoken - mark as missing
+        result.add(
+          WordDiff(word: expectedWords[i], type: WordDiffType.missing),
+        );
+      }
+    }
+
+    // Add any remaining extra words at the end
+    for (var j = lastSpokenIndex + 1; j < spokenWords.length; j++) {
+      if (!spokenWordUsed[j]) {
+        result.add(WordDiff(word: spokenWords[j], type: WordDiffType.added));
+      }
+    }
+
+    return result;
+  }
+
   /// Calculate percentage score (0-100)
   int getPercentageScore(double similarityScore) {
     return (similarityScore * 100).round();
   }
+}
+
+/// Types of word differences
+enum WordDiffType {
+  correct, // Word matches expected
+  wrong, // Word doesn't match expected
+  missing, // Word missing from spoken text
+  added, // Extra word in spoken text
+}
+
+/// Represents a word-level diff result
+class WordDiff {
+  final String word;
+  final WordDiffType type;
+  final String? spokenAs; // What was actually said (for 'wrong' type)
+
+  WordDiff({required this.word, required this.type, this.spokenAs});
 }

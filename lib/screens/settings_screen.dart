@@ -17,7 +17,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isDarkMode = widget.themeService.themeMode == ThemeMode.dark;
+    // Check actual brightness when system mode is active
+    final isDarkMode =
+        widget.themeService.themeMode == ThemeMode.dark ||
+        (widget.themeService.themeMode == ThemeMode.system &&
+            MediaQuery.of(context).platformBrightness == Brightness.dark);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settings)),

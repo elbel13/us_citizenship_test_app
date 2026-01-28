@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'word_diff_colors.dart';
 
 class AppTheme {
   static ThemeData get lightTheme {
@@ -10,6 +11,7 @@ class AppTheme {
         onTertiaryContainer: Colors.green.shade900,
       ),
       useMaterial3: true,
+      extensions: const <ThemeExtension<dynamic>>[WordDiffColors.light],
       // Add more theme customizations here as needed
     );
   }
@@ -27,6 +29,7 @@ class AppTheme {
             onTertiaryContainer: Colors.green.shade200,
           ),
       useMaterial3: true,
+      extensions: const <ThemeExtension<dynamic>>[WordDiffColors.dark],
       // Add more dark theme customizations here as needed
     );
   }
