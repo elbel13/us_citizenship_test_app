@@ -1,18 +1,20 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
+import 'gpt2_tokenizer.dart';
 
 /// Service for loading and running the DistilGPT-2 TFLite model.
-/// This is a simplified MVP implementation for testing model inference.
 class LlmService {
   Interpreter? _interpreter;
+  final GPT2Tokenizer _tokenizer = GPT2Tokenizer();
   bool _isInitialized = false;
 
   /// Whether the model has been loaded and is ready for inference
   bool get isInitialized => _isInitialized;
 
   /// Initialize the LLM model
-  /// Loads the TFLite model from assets
+  /// Loads the TFLite model and tokenizer from assets
   Future<void> initialize() async {
     if (_isInitialized) {
       debugPrint('LLM already initialized');
@@ -20,8 +22,12 @@ class LlmService {
     }
 
     try {
-      debugPrint('Loading LLM model...');
+      debugPrint('Loading LLM model and tokenizer...');
       final stopwatch = Stopwatch()..start();
+
+      // Load tokenizer first
+      await _tokenizer.initialize();
+      debugPrint('Tokenizer loaded');
 
       // Load the TFLite model (builtins-only version for better mobile compatibility)
       _interpreter = await Interpreter.fromAsset(
@@ -61,14 +67,18 @@ class LlmService {
     }
   }
 
-  /// Generate text from a prompt (simplified MVP implementation)
+  /// Generate text from a prompt
   ///
-  /// This is a basic implementation to test model inference.
-  /// A production implementation would need:
-  /// - Proper BPE tokenization using GPT-2 vocab
-  /// - Temperature/top-k/top-p sampling
-  /// - Better text generation strategies
-  Future<String> generate(String prompt, {int maxTokens = 20}) async {
+  /// Uses GPT-2 tokenization and the TFLite model to generate text.
+  /// Parameters:
+  /// - [prompt]: The input text to continue
+  /// - [maxTokens]: Maximum number of tokens to generate (default: 20)
+  /// - [temperature]: Controls randomness (0.0 = deterministic, 1.0 = creative)
+  Future<String> generate(
+    String prompt, {
+    int maxTokens = 20,
+    double temperature = 0.7,
+  }) async {
     if (!_isInitialized) {
       throw StateError('LLM not initialized. Call initialize() first.');
     }
@@ -76,17 +86,69 @@ class LlmService {
     try {
       final stopwatch = Stopwatch()..start();
 
-      // TODO: Implement proper tokenization
-      // For MVP, we'll use a simplified approach
-      // This will need to be replaced with proper GPT-2 BPE tokenization
+      // Tokenize input
+      final inputTokens = _tokenizer.encode(prompt);
+      debugPrint('Input: "$prompt"');
+      debugPrint('Tokens (${inputTokens.length}): $inputTokens');
 
-      // For now, return a placeholder to verify model loading works
+      // Generate tokens one at a time
+      final generatedTokens = List<int>.from(inputTokens);
+
+      for (var i = 0; i < maxTokens; i++) {
+        // Prepare input tensor (batch_size=1, sequence_length=current length)
+        final inputShape = [1, generatedTokens.length];
+        final input = Int32List.fromList(generatedTokens);
+        final inputTensor = input.reshape(inputShape);
+
+        // Prepare output tensor (batch_size=1, sequence_length=current, vocab_size=50257)
+        final outputShape = [1, generatedTokens.length, 50257];
+        final output = List.filled(
+          outputShape[0] * outputShape[1] * outputShape[2],
+          0.0,
+        ).reshape(outputShape);
+
+        // Run inference
+        _interpreter!.run(inputTensor, output);
+
+        // Get logits for the last token
+        final lastTokenLogits =
+            (output as List)[0][generatedTokens.length - 1] as List;
+
+        // Apply temperature scaling
+        final scaledLogits = lastTokenLogits
+            .map((logit) => (logit as double) / temperature)
+            .toList();
+
+        // Simple greedy decoding (take highest probability token)
+        // TODO: Implement top-k, top-p sampling for better quality
+        var maxIndex = 0;
+        var maxValue = scaledLogits[0];
+        for (var j = 1; j < scaledLogits.length; j++) {
+          if (scaledLogits[j] > maxValue) {
+            maxValue = scaledLogits[j];
+            maxIndex = j;
+          }
+        }
+
+        // Add generated token
+        generatedTokens.add(maxIndex);
+
+        // Stop if we hit end-of-text token (50256)
+        if (maxIndex == 50256) {
+          break;
+        }
+      }
+
+      // Decode generated tokens
+      final generatedText = _tokenizer.decode(generatedTokens);
+
       stopwatch.stop();
+      debugPrint(
+        'Generated ${generatedTokens.length - inputTokens.length} tokens '
+        'in ${stopwatch.elapsedMilliseconds}ms',
+      );
 
-      return 'Model inference successful (${stopwatch.elapsedMilliseconds}ms)\n'
-          'Prompt: "$prompt"\n\n'
-          'Note: Full text generation requires GPT-2 tokenization implementation.\n'
-          'Next step: Add proper tokenizer to generate actual responses.';
+      return generatedText;
     } catch (e) {
       debugPrint('Error during inference: $e');
       rethrow;
@@ -97,7 +159,46 @@ class LlmService {
   void dispose() {
     _interpreter?.close();
     _interpreter = null;
+    _tokenizer.clearCache();
     _isInitialized = false;
     debugPrint('LLM service disposed');
+  }
+}
+
+// Extension to reshape lists for TFLite
+extension ListReshape<T> on List<T> {
+  List reshape(List<int> shape) {
+    if (shape.isEmpty) return this;
+
+    if (shape.length == 1) {
+      if (shape[0] != length) {
+        throw ArgumentError('Cannot reshape list of length $length to $shape');
+      }
+      return this;
+    }
+
+    final totalSize = shape.reduce((a, b) => a * b);
+    if (totalSize != length) {
+      throw ArgumentError('Cannot reshape list of length $length to $shape');
+    }
+
+    dynamic reshapeRecursive(List data, List<int> dims, int offset) {
+      if (dims.length == 1) {
+        return data.sublist(offset, offset + dims[0]);
+      }
+
+      final result = [];
+      final blockSize = dims.skip(1).reduce((a, b) => a * b);
+
+      for (var i = 0; i < dims[0]; i++) {
+        result.add(
+          reshapeRecursive(data, dims.sublist(1), offset + i * blockSize),
+        );
+      }
+
+      return result;
+    }
+
+    return reshapeRecursive(this, shape, 0);
   }
 }
