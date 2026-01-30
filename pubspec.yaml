@@ -77,7 +77,6 @@ flutter:
     - assets/questions_en_categorized.json
     - assets/reading_sentences.json
     - assets/writing_sentences.json
-    - assets/models/distilgpt2.tflite
     - assets/models/distilgpt2_builtins_only.tflite
     - assets/models/tokenizer/
 
