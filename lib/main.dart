@@ -8,6 +8,7 @@ import 'screens/reading_practice_screen.dart';
 import 'screens/simulated_interview_screen.dart';
 import 'screens/test_readiness_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/llm_test_screen.dart';
 import 'theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
 import 'services/database_service.dart';
@@ -105,6 +106,7 @@ class _USCitizenshipTestAppState extends State<USCitizenshipTestApp> {
         '/simulated_interview': (context) => const SimulatedInterviewScreen(),
         '/test_readiness': (context) => const TestReadinessScreen(),
         '/settings': (context) => SettingsScreen(themeService: _themeService),
+        '/llm_test': (context) => const LlmTestScreen(),
       },
     );
   }

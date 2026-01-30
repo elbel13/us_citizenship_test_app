@@ -44,7 +44,7 @@ dependencies:
   permission_handler: ^12.0.1
   flutter_tts: ^4.2.0
   shared_preferences: ^2.3.3
-  tflite_flutter: ^0.10.4
+  tflite_flutter: ^0.12.1
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +78,7 @@ flutter:
     - assets/reading_sentences.json
     - assets/writing_sentences.json
     - assets/models/distilgpt2.tflite
+    - assets/models/distilgpt2_builtins_only.tflite
     - assets/models/tokenizer/
 
   # An image asset can refer to one or more resolution-specific "variants", see

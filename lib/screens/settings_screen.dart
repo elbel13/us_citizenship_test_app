@@ -44,6 +44,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => _showLanguageDialog(context),
           ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.science),
+            title: const Text('LLM Test (Developer)'),
+            subtitle: const Text('Test DistilGPT-2 model inference'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () => Navigator.pushNamed(context, '/llm_test'),
+          ),
         ],
       ),
     );
