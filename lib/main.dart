@@ -30,7 +30,7 @@ void main() async {
 }
 
 class USCitizenshipTestApp extends StatefulWidget {
-  const USCitizenshipTestApp({Key? key}) : super(key: key);
+  const USCitizenshipTestApp({super.key});
 
   @override
   State<USCitizenshipTestApp> createState() => _USCitizenshipTestAppState();

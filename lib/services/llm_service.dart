@@ -114,7 +114,7 @@ class LlmService {
 
         // Get logits for the last token
         final lastTokenLogits =
-            (output as List)[0][generatedTokens.length - 1] as List;
+            (output)[0][generatedTokens.length - 1] as List;
 
         // Apply temperature scaling
         final scaledLogits = lastTokenLogits

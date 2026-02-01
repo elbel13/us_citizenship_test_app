@@ -6,7 +6,7 @@ import '../services/database_service.dart';
 import '../widgets/progress_indicator_widget.dart';
 
 class MultipleChoiceScreen extends StatefulWidget {
-  const MultipleChoiceScreen({Key? key}) : super(key: key);
+  const MultipleChoiceScreen({super.key});
 
   @override
   State<MultipleChoiceScreen> createState() => _MultipleChoiceScreenState();

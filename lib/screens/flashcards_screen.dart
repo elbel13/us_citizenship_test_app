@@ -5,7 +5,7 @@ import '../models/question.dart';
 import '../services/database_service.dart';
 
 class FlashcardsScreen extends StatefulWidget {
-  const FlashcardsScreen({Key? key}) : super(key: key);
+  const FlashcardsScreen({super.key});
 
   @override
   State<FlashcardsScreen> createState() => _FlashcardsScreenState();
@@ -134,7 +134,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
 class FlipCard extends StatefulWidget {
   final Question question;
 
-  const FlipCard({Key? key, required this.question}) : super(key: key);
+  const FlipCard({super.key, required this.question});
 
   @override
   State<FlipCard> createState() => _FlipCardState();

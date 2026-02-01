@@ -6,8 +6,7 @@ import '../services/theme_service.dart';
 class SettingsScreen extends StatefulWidget {
   final ThemeService themeService;
 
-  const SettingsScreen({Key? key, required this.themeService})
-    : super(key: key);
+  const SettingsScreen({super.key, required this.themeService});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();

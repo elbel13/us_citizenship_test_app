@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 
 class TestReadinessScreen extends StatelessWidget {
-  const TestReadinessScreen({Key? key}) : super(key: key);
+  const TestReadinessScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

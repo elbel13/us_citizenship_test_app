@@ -13,7 +13,7 @@ import '../widgets/instruction_card.dart';
 import '../widgets/answer_text_field.dart';
 
 class SimulatedInterviewScreen extends StatefulWidget {
-  const SimulatedInterviewScreen({Key? key}) : super(key: key);
+  const SimulatedInterviewScreen({super.key});
 
   @override
   State<SimulatedInterviewScreen> createState() =>
