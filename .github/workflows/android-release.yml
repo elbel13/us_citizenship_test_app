@@ -52,6 +52,16 @@ jobs:
           name: model-files
           path: assets/models/
 
+      - name: Verify model files exist
+        run: |
+          echo "Checking model files..."
+          ls -lah assets/models/
+          ls -lah assets/models/tokenizer/
+          test -f assets/models/distilgpt2_builtins_only.tflite || (echo "ERROR: Model file missing!" && exit 1)
+          test -f assets/models/tokenizer/vocab.json || (echo "ERROR: vocab.json missing!" && exit 1)
+          test -f assets/models/tokenizer/merges.txt || (echo "ERROR: merges.txt missing!" && exit 1)
+          echo "All model files present!"
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
