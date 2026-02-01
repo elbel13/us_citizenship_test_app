@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: model-files
-          path: assets/models/
+          path: assets/models
           retention-days: 1
 
   build-and-release:
@@ -47,7 +47,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: model-files
-          path: assets/models/
+          path: assets/
 
       - name: Verify model files exist
         run: |
