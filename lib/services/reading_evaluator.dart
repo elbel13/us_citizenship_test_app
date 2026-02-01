@@ -1,9 +1,22 @@
 import 'package:string_similarity/string_similarity.dart';
 
+/// Result of answer evaluation
+enum EvaluationResult {
+  pass, // Answer is correct
+  partial, // Answer is partially correct or unclear
+  fail, // Answer is incorrect
+}
+
 /// Service for evaluating reading accuracy using speech recognition results
 class ReadingEvaluator {
   /// Minimum similarity score to pass (0.0 to 1.0)
   static const double passingThreshold = 0.80;
+
+  /// Minimum keyword match percentage for civics questions (0.0 to 1.0)
+  static const double keywordPassingThreshold = 0.70;
+
+  /// Minimum keyword match percentage for partial credit
+  static const double keywordPartialThreshold = 0.40;
 
   /// Calculate similarity between expected text and spoken text
   /// Returns a score from 0.0 (completely different) to 1.0 (identical)
@@ -36,13 +49,17 @@ class ReadingEvaluator {
 
   /// Normalize text for comparison
   /// - Convert to lowercase
-  /// - Remove punctuation
+  /// - Remove punctuation (but convert hyphens to spaces for number words)
   /// - Trim whitespace
   /// - Normalize multiple spaces to single space
   String _normalizeText(String text) {
     return text
         .toLowerCase()
-        .replaceAll(RegExp(r'[^\w\s]'), '') // Remove punctuation
+        .replaceAll(
+          '-',
+          ' ',
+        ) // Convert hyphens to spaces (e.g., "twenty-seven" -> "twenty seven")
+        .replaceAll(RegExp(r'[^\w\s]'), '') // Remove remaining punctuation
         .replaceAll(RegExp(r'\s+'), ' ') // Normalize whitespace
         .trim();
   }
@@ -126,6 +143,158 @@ class ReadingEvaluator {
   /// Calculate percentage score (0-100)
   int getPercentageScore(double similarityScore) {
     return (similarityScore * 100).round();
+  }
+
+  /// Evaluate civics question answer using keyword matching
+  /// Supports multiple acceptable answers
+  /// Returns Pass if keywords match well, Partial if some match, Fail if poor match
+  EvaluationResult evaluateCivicsAnswer(
+    List<String> acceptableAnswers,
+    String spokenAnswer,
+  ) {
+    if (acceptableAnswers.isEmpty) {
+      return EvaluationResult.fail;
+    }
+
+    // Normalize spoken answer
+    final spokenNorm = _normalizeText(spokenAnswer);
+
+    // Try matching against each acceptable answer
+    double bestMatchScore = 0.0;
+
+    for (final expected in acceptableAnswers) {
+      final score = _evaluateKeywordMatch(expected, spokenNorm);
+      if (score > bestMatchScore) {
+        bestMatchScore = score;
+      }
+    }
+
+    // Determine result based on best match
+    if (bestMatchScore >= keywordPassingThreshold) {
+      return EvaluationResult.pass;
+    } else if (bestMatchScore >= keywordPartialThreshold) {
+      return EvaluationResult.partial;
+    } else {
+      return EvaluationResult.fail;
+    }
+  }
+
+  /// Extract keywords from expected answer and check presence in spoken text
+  /// Returns a score from 0.0 to 1.0 representing keyword coverage
+  double _evaluateKeywordMatch(String expectedAnswer, String spokenNorm) {
+    final expectedNorm = _normalizeText(expectedAnswer);
+    final expectedWords = expectedNorm
+        .split(' ')
+        .where((w) => w.isNotEmpty)
+        .toList();
+
+    if (expectedWords.isEmpty) {
+      return 0.0;
+    }
+
+    // Extract keywords (remove common filler words)
+    final keywords = _extractKeywords(expectedWords);
+
+    if (keywords.isEmpty) {
+      // If all words are filler, fall back to similarity comparison
+      return expectedNorm.similarityTo(spokenNorm);
+    }
+
+    // Count how many keywords appear in spoken answer
+    int matchedKeywords = 0;
+    for (final keyword in keywords) {
+      if (spokenNorm.contains(keyword)) {
+        matchedKeywords++;
+      }
+    }
+
+    return matchedKeywords / keywords.length;
+  }
+
+  /// Extract important keywords by filtering out common filler words
+  List<String> _extractKeywords(List<String> words) {
+    // Common words to ignore in civics answers
+    const fillerWords = {
+      'the',
+      'a',
+      'an',
+      'and',
+      'or',
+      'but',
+      'in',
+      'on',
+      'at',
+      'to',
+      'for',
+      'of',
+      'with',
+      'from',
+      'by',
+      'is',
+      'are',
+      'was',
+      'were',
+      'be',
+      'been',
+      'being',
+      'have',
+      'has',
+      'had',
+      'do',
+      'does',
+      'did',
+      'will',
+      'would',
+      'should',
+      'could',
+      'may',
+      'might',
+      'can',
+      'must',
+      'it',
+      'its',
+      'this',
+      'that',
+      'these',
+      'those',
+      'there',
+      'here',
+      'what',
+      'which',
+      'who',
+      'when',
+      'where',
+      'why',
+      'how',
+      'all',
+      'each',
+      'every',
+      'both',
+      'few',
+      'more',
+      'most',
+      'other',
+      'some',
+      'such',
+      'than',
+      'too',
+      'very',
+      'one',
+    };
+
+    return words.where((word) => !fillerWords.contains(word)).toList();
+  }
+
+  /// Get feedback for civics question based on evaluation result
+  String getCivicsFeedback(EvaluationResult result) {
+    switch (result) {
+      case EvaluationResult.pass:
+        return 'Correct!';
+      case EvaluationResult.partial:
+        return 'Partially correct. Can you provide more detail?';
+      case EvaluationResult.fail:
+        return 'Not quite right.';
+    }
   }
 }
 

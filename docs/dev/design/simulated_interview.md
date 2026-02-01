@@ -6,7 +6,8 @@ The interview order is randomized each session to mimic the unpredictability of 
 
 ## Interview Flow
 1. **Introduction Screen**: Briefly explains the interview process and provides a "Start Interview" button.
-2. **Verbal Interview**:
+2. **Greeting and Small Talk**: The app uses Text-to-Speech (TTS) to greet the user and engage in brief small talk to set a comfortable tone.
+3. **Question Loop**: The interview consists of a series of questions drawn from the following
    - The app plays a question audio prompt using TTS.
    - The user responds verbally.
    - The app captures the response using speech recognition (already implemented - works offline).
@@ -16,7 +17,7 @@ The interview order is randomized each session to mimic the unpredictability of 
      - **Partial/Unclear**: Follow-up question or clarification request
      - **Fail**: Neutral acknowledgment (don't reveal incorrect), move to next question
    - The LLM's response is played via TTS to maintain conversational flow.
-3. **Completion Screen**: Summarizes performance, including number of correct answers and areas for improvement.
+4. **Completion Screen**: Summarizes performance, including number of correct answers and areas for improvement.
 
 ## Test Sections (order randomized)
 - English Speaking Test

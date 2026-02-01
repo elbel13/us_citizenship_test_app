@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import '../models/writing_sentence.dart';
 import '../services/writing_sentence_service.dart';
 import '../services/reading_evaluator.dart';
+import '../services/tts_service.dart';
 import '../widgets/progress_indicator_widget.dart';
 import '../widgets/word_diff_display.dart';
 import '../theme/word_diff_colors.dart';
@@ -17,14 +17,13 @@ class WritingPracticeScreen extends StatefulWidget {
 class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
   final WritingSentenceService _sentenceService = WritingSentenceService();
   final ReadingEvaluator _evaluator = ReadingEvaluator();
-  final FlutterTts _tts = FlutterTts();
+  final TtsService _tts = TtsService();
   final TextEditingController _inputController = TextEditingController();
 
   List<WritingSentence> _allSentences = [];
   int _currentSentenceIndex = 0;
   WritingSentence? _currentSentence;
   bool _isLoading = true;
-  bool _isSpeaking = false;
   double? _similarityScore;
   String _feedback = '';
   bool _hasAttempted = false;
@@ -41,28 +40,23 @@ class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
   }
 
   Future<void> _initializeTts() async {
-    await _tts.setLanguage('en-US');
-    await _tts.setSpeechRate(0.5); // Slower for dictation
-    await _tts.setPitch(1.0);
+    await _tts.initialize(
+      language: 'en-US',
+      speechRate: 0.5, // Slower for dictation
+      pitch: 1.0,
+    );
 
-    _tts.setStartHandler(() {
-      if (mounted) {
-        setState(() => _isSpeaking = true);
-      }
-    });
+    _tts.onSpeakStart = () {
+      if (mounted) setState(() {});
+    };
 
-    _tts.setCompletionHandler(() {
-      if (mounted) {
-        setState(() => _isSpeaking = false);
-      }
-    });
+    _tts.onSpeakComplete = () {
+      if (mounted) setState(() {});
+    };
 
-    _tts.setErrorHandler((msg) {
-      if (mounted) {
-        setState(() => _isSpeaking = false);
-        _showError('Speech error: $msg');
-      }
-    });
+    _tts.onError = (msg) {
+      if (mounted) _showError(msg);
+    };
   }
 
   Future<void> _loadAllSentences() async {
@@ -107,14 +101,13 @@ class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
   }
 
   Future<void> _speakSentence() async {
-    if (_currentSentence == null || _isSpeaking) return;
+    if (_currentSentence == null || _tts.isSpeaking) return;
 
     await _tts.speak(_currentSentence!.text);
   }
 
   Future<void> _stopSpeaking() async {
     await _tts.stop();
-    setState(() => _isSpeaking = false);
   }
 
   void _submitAnswer() {
@@ -327,16 +320,16 @@ class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
               child: Column(
                 children: [
                   InkWell(
-                    onTap: _isSpeaking ? _stopSpeaking : _speakSentence,
+                    onTap: _tts.isSpeaking ? _stopSpeaking : _speakSentence,
                     borderRadius: BorderRadius.circular(50),
                     child: Container(
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        color: _isSpeaking ? Colors.red : Colors.blue,
+                        color: _tts.isSpeaking ? Colors.red : Colors.blue,
                         shape: BoxShape.circle,
                         boxShadow: [
-                          if (_isSpeaking)
+                          if (_tts.isSpeaking)
                             BoxShadow(
                               color: Colors.red.withOpacity(0.5),
                               blurRadius: 20,
@@ -345,7 +338,7 @@ class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
                         ],
                       ),
                       child: Icon(
-                        _isSpeaking ? Icons.stop : Icons.play_arrow,
+                        _tts.isSpeaking ? Icons.stop : Icons.play_arrow,
                         size: 50,
                         color: Colors.white,
                       ),
@@ -353,7 +346,7 @@ class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    _isSpeaking ? 'Speaking...' : 'Tap to play',
+                    _tts.isSpeaking ? 'Speaking...' : 'Tap to play',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
