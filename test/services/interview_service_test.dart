@@ -43,9 +43,8 @@ void main() {
       final questions1 = await service.generateInterviewQuestions();
       final questions2 = await service.generateInterviewQuestions();
 
-      // Get first question type from each
+      // Get first question type
       final firstType1 = questions1.first.type;
-      final firstType2 = questions2.first.type;
 
       // Sections should be grouped (all of one type together)
       final firstSectionSize1 = questions1
