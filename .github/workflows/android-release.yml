@@ -33,10 +33,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: model-files
-          path: |
-            assets/models/distilgpt2_builtins_only.tflite
-            assets/models/tokenizer/vocab.json
-            assets/models/tokenizer/merges.txt
+          path: assets/models/
           retention-days: 1
 
   build-and-release:
