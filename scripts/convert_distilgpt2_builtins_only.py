@@ -12,12 +12,14 @@ from transformers import TFGPT2LMHeadModel, GPT2Tokenizer
 MODEL_NAME = "distilgpt2"
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "assets", "models")
 TFLITE_MODEL_PATH = os.path.join(OUTPUT_DIR, "distilgpt2_builtins_only.tflite")
+TOKENIZER_DIR = os.path.join(OUTPUT_DIR, "tokenizer")
 
 def convert_model_builtins_only():
     """Convert model using only TFLite builtins."""
     
     print(f"Loading {MODEL_NAME}...")
     model = TFGPT2LMHeadModel.from_pretrained(MODEL_NAME, from_pt=True)
+    tokenizer = GPT2Tokenizer.from_pretrained(MODEL_NAME)
     
     print("Creating concrete function...")
     @tf.function(input_signature=[
@@ -57,6 +59,12 @@ def convert_model_builtins_only():
         print(f"\n✓ Conversion complete!")
         print(f"  Model size: {model_size_mb:.2f} MB")
         print(f"  Model path: {TFLITE_MODEL_PATH}")
+        
+        # Save tokenizer files
+        print(f"\nSaving tokenizer files to {TOKENIZER_DIR}...")
+        os.makedirs(TOKENIZER_DIR, exist_ok=True)
+        tokenizer.save_pretrained(TOKENIZER_DIR)
+        print("✓ Tokenizer files saved!")
         
         # Verify
         print("\nVerifying model...")
