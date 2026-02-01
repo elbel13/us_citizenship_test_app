@@ -73,10 +73,12 @@ class LlmService {
   /// Parameters:
   /// - [prompt]: The input text to continue
   /// - [maxTokens]: Maximum number of tokens to generate (default: 20)
+  /// - [minTokens]: Minimum number of new tokens required (default: 5)
   /// - [temperature]: Controls randomness (0.0 = deterministic, 1.0 = creative)
   Future<String> generate(
     String prompt, {
     int maxTokens = 20,
+    int minTokens = 5,
     double temperature = 0.7,
   }) async {
     if (!_isInitialized) {
@@ -142,13 +144,31 @@ class LlmService {
       // Decode generated tokens
       final generatedText = _tokenizer.decode(generatedTokens);
 
+      // Extract only the newly generated text (remove the prompt)
+      final promptLength = prompt.length;
+      var newText = generatedText.length > promptLength
+          ? generatedText.substring(promptLength).trim()
+          : generatedText;
+
+      debugPrint('Full output: "$generatedText"');
+      debugPrint('New text only: "$newText"');
+
+      // Check minimum token requirement
+      final newTokens = generatedTokens.length - inputTokens.length;
+      if (newTokens < minTokens) {
+        debugPrint(
+          'Warning: Only generated $newTokens tokens (min: $minTokens)',
+        );
+        // Return what we have - alternatively could retry or use fallback
+      }
+
       stopwatch.stop();
       debugPrint(
-        'Generated ${generatedTokens.length - inputTokens.length} tokens '
+        'Generated $newTokens tokens '
         'in ${stopwatch.elapsedMilliseconds}ms',
       );
 
-      return generatedText;
+      return newText;
     } catch (e) {
       debugPrint('Error during inference: $e');
       rethrow;

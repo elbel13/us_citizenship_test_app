@@ -1,31 +1,59 @@
+import 'dart:math';
 import '../models/interview_question.dart';
 import '../services/reading_evaluator.dart';
 
-/// Service for generating LLM prompts for interview conversation flow
-/// Keeps prompts concise (<50 tokens) for faster inference
+/// Service for generating interview conversation prompts
+///
+/// Currently uses pre-written professional variations for instant, reliable responses.
+/// LLM integration (DistilGPT-2) attempted but proved unsuitable:
+/// - Model too small (82M params) for instruction-following
+/// - Poor output quality (repetitive, nonsensical)
+/// - Unacceptable latency (60-90 seconds per response)
+///
+/// Future enhancement: Replace with larger instruction-tuned model (Gemma 2B, Phi-2)
+/// or cloud API (Gemini Flash) for natural conversation variety.
 class InterviewPromptService {
-  /// Generate greeting prompt to start the interview
+  final _random = Random();
+
+  /// Generate greeting to start the interview
   String getGreetingPrompt() {
-    return 'You are a USCIS officer conducting a citizenship interview. '
-        'Greet the applicant professionally and warmly. Keep it brief (1-2 sentences).';
+    final greetings = [
+      'Good morning. Welcome to your citizenship interview.',
+      'Hello. Thank you for coming today.',
+      'Good afternoon. Please have a seat and we can begin.',
+      'Welcome. Let\'s get started with your interview.',
+    ];
+    return greetings[_random.nextInt(greetings.length)];
   }
 
   /// Generate prompt for asking a reading question
   String getReadingQuestionPrompt(String sentence) {
-    return 'Ask the applicant to read this sentence aloud: "$sentence". '
-        'Be professional and encouraging.';
+    final prompts = [
+      'Please read this sentence aloud for me.',
+      'Can you read this sentence?',
+      'I\'d like you to read this sentence.',
+    ];
+    return prompts[_random.nextInt(prompts.length)];
   }
 
   /// Generate prompt for asking a writing question
   String getWritingQuestionPrompt(String sentence) {
-    return 'Dictate this sentence to the applicant for them to write: "$sentence". '
-        'Speak clearly and at a moderate pace.';
+    final prompts = [
+      'Please write this sentence: $sentence',
+      'I\'ll dictate a sentence for you to write: $sentence',
+      'Please write down: $sentence',
+    ];
+    return prompts[_random.nextInt(prompts.length)];
   }
 
   /// Generate prompt for asking a civics question
   String getCivicsQuestionPrompt(String question) {
-    return 'Ask this citizenship question: "$question". '
-        'Be professional and neutral.';
+    // Randomly decide whether to add a prefix
+    if (_random.nextBool()) {
+      return question;
+    }
+    final prefixes = ['', 'Tell me, ', 'Can you tell me, '];
+    return prefixes[_random.nextInt(prefixes.length)] + question;
   }
 
   /// Generate response based on evaluation result
@@ -36,15 +64,33 @@ class InterviewPromptService {
     required String userAnswer,
     required int attemptNumber,
   }) {
-    final context = _getQuestionContext(questionType, question);
-
     switch (result) {
       case EvaluationResult.pass:
-        return _getPassResponse(context, attemptNumber);
+        final responses = [
+          'That is correct.',
+          'Good.',
+          'Very good.',
+          'Correct.',
+        ];
+        return responses[_random.nextInt(responses.length)];
       case EvaluationResult.partial:
-        return _getPartialResponse(context, userAnswer, attemptNumber);
+        if (attemptNumber >= 3) {
+          final moveOn = ['Let\'s move on.', 'Okay, next question.'];
+          return moveOn[_random.nextInt(moveOn.length)];
+        }
+        final clarify = [
+          'Can you tell me more?',
+          'Can you elaborate on that?',
+          'Could you give me more details?',
+        ];
+        return clarify[_random.nextInt(clarify.length)];
       case EvaluationResult.fail:
-        return _getFailResponse(context, attemptNumber);
+        if (attemptNumber >= 3) {
+          final moveOn = ['Next question.', 'Let\'s continue.'];
+          return moveOn[_random.nextInt(moveOn.length)];
+        }
+        final retry = ['Let me ask again.', 'I\'ll repeat the question.'];
+        return retry[_random.nextInt(retry.length)];
     }
   }
 
@@ -53,9 +99,26 @@ class InterviewPromptService {
     required InterviewQuestionType fromSection,
     required InterviewQuestionType toSection,
   }) {
-    final toSectionName = _getSectionName(toSection);
-    return 'Briefly transition to the $toSectionName section. '
-        'Keep it professional and brief (1 sentence).';
+    switch (toSection) {
+      case InterviewQuestionType.reading:
+        final transitions = [
+          'Now we\'ll do the reading test.',
+          'Let\'s move on to the reading portion.',
+        ];
+        return transitions[_random.nextInt(transitions.length)];
+      case InterviewQuestionType.writing:
+        final transitions = [
+          'Next is the writing test.',
+          'Now for the writing portion.',
+        ];
+        return transitions[_random.nextInt(transitions.length)];
+      case InterviewQuestionType.civics:
+        final transitions = [
+          'Now for the civics questions.',
+          'Let\'s begin the civics test.',
+        ];
+        return transitions[_random.nextInt(transitions.length)];
+    }
   }
 
   /// Generate completion prompt
@@ -65,69 +128,18 @@ class InterviewPromptService {
     required int civicsTotal,
   }) {
     if (passed) {
-      return 'Thank the applicant and inform them they passed the test. '
-          'They answered $civicsCorrect out of $civicsTotal civics questions correctly. '
-          'Be warm and professional (2-3 sentences).';
-    } else {
-      return 'Thank the applicant professionally. Inform them they can retake the test. '
-          'Be respectful and encouraging (2-3 sentences).';
+      final messages = [
+        'Congratulations! You have passed the test.',
+        'Well done. You passed.',
+        'You have successfully completed the test.',
+      ];
+      return messages[_random.nextInt(messages.length)];
     }
-  }
-
-  String _getQuestionContext(InterviewQuestionType type, String question) {
-    switch (type) {
-      case InterviewQuestionType.reading:
-        return 'reading "$question"';
-      case InterviewQuestionType.writing:
-        return 'writing "$question"';
-      case InterviewQuestionType.civics:
-        return 'the question "$question"';
-    }
-  }
-
-  String _getPassResponse(String context, int attemptNumber) {
-    if (attemptNumber == 1) {
-      return 'The applicant answered correctly on first try for $context. '
-          'Acknowledge positively and briefly. Then say "Next question." (1-2 sentences)';
-    } else {
-      return 'The applicant answered correctly for $context after $attemptNumber attempts. '
-          'Acknowledge and move on. Say "Next question." (1-2 sentences)';
-    }
-  }
-
-  String _getPartialResponse(
-    String context,
-    String userAnswer,
-    int attemptNumber,
-  ) {
-    if (attemptNumber >= 3) {
-      return 'The applicant\'s answer "$userAnswer" for $context was partially correct '
-          'after $attemptNumber attempts. Move on professionally. Say "Next question." (1-2 sentences)';
-    } else {
-      return 'The applicant\'s answer "$userAnswer" for $context needs more detail. '
-          'Ask them to clarify or elaborate. Be encouraging (1-2 sentences).';
-    }
-  }
-
-  String _getFailResponse(String context, int attemptNumber) {
-    if (attemptNumber >= 3) {
-      return 'The applicant did not answer correctly for $context after $attemptNumber attempts. '
-          'Move on professionally without revealing the correct answer. Say "Next question." (1-2 sentences)';
-    } else {
-      return 'The applicant\'s answer for $context was not quite right. '
-          'Encourage them to try again. Rephrase the question if helpful (1-2 sentences).';
-    }
-  }
-
-  String _getSectionName(InterviewQuestionType type) {
-    switch (type) {
-      case InterviewQuestionType.reading:
-        return 'reading test';
-      case InterviewQuestionType.writing:
-        return 'writing test';
-      case InterviewQuestionType.civics:
-        return 'civics test';
-    }
+    final messages = [
+      'Thank you for coming today. We\'ll be in touch.',
+      'Thank you. You\'ll hear from us soon.',
+    ];
+    return messages[_random.nextInt(messages.length)];
   }
 
   /// Clean up LLM response (remove quotes, extra whitespace)

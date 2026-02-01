@@ -6,6 +6,9 @@ import '../services/reading_sentence_service.dart';
 import '../services/reading_evaluator.dart';
 import '../widgets/progress_indicator_widget.dart';
 import '../widgets/word_diff_display.dart';
+import '../widgets/circular_action_button.dart';
+import '../widgets/instruction_card.dart';
+import '../widgets/answer_text_field.dart';
 import '../theme/word_diff_colors.dart';
 
 class ReadingPracticeScreen extends StatefulWidget {
@@ -332,20 +335,10 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
             ],
 
             // Instructions
-            Card(
-              color: _testMode
-                  ? Theme.of(context).colorScheme.secondaryContainer
-                  : Theme.of(context).colorScheme.primaryContainer,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Text(
-                  _testMode
-                      ? 'TEST MODE: Type what you would say, then press "Submit" to test the evaluation.'
-                      : 'Read the sentence below aloud when you press the microphone button.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
-              ),
+            InstructionCard(
+              text: _testMode
+                  ? 'TEST MODE: Type what you would say, then press "Submit" to test the evaluation.'
+                  : 'Read the sentence below aloud when you press the microphone button.',
             ),
             const SizedBox(height: 24),
 
@@ -369,23 +362,12 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
             // Microphone button OR Test input
             if (_testMode) ...[
               // Test mode: Text input
-              TextField(
+              AnswerTextField(
                 controller: _testInputController,
-                decoration: InputDecoration(
-                  labelText: 'Type your answer here',
-                  hintText: 'Enter the sentence as you would say it',
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () => _testInputController.clear(),
-                  ),
-                ),
-                maxLines: 3,
-                textCapitalization: TextCapitalization.sentences,
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: () {
+                labelText: 'Type your answer here',
+                hintText: 'Enter the sentence as you would say it',
+                showSubmitButton: true,
+                onSubmit: () {
                   setState(() {
                     _spokenText = _testInputController.text;
                     _hasAttempted = false;
@@ -396,70 +378,29 @@ class _ReadingPracticeScreenState extends State<ReadingPracticeScreen> {
                     _showInfo('Please type something to evaluate');
                   }
                 },
-                icon: const Icon(Icons.check),
-                label: const Text('Submit & Evaluate'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                ),
               ),
             ] else ...[
               // Speech mode: Microphone button
               Center(
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: _speechInitializing || !_speechAvailable
-                          ? null
-                          : (_isListening ? _stopListening : _startListening),
-                      borderRadius: BorderRadius.circular(50),
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: _speechInitializing
-                              ? Colors.grey
-                              : (!_speechAvailable
-                                    ? Colors.grey.shade400
-                                    : (_isListening
-                                          ? Colors.red
-                                          : Colors.blue)),
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            if (_isListening)
-                              BoxShadow(
-                                color: Colors.red.withOpacity(0.5),
-                                blurRadius: 20,
-                                spreadRadius: 5,
-                              ),
-                          ],
-                        ),
-                        child: _speechInitializing
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : Icon(
-                                !_speechAvailable
-                                    ? Icons.mic_off
-                                    : (_isListening
-                                          ? Icons.mic
-                                          : Icons.mic_none),
-                                size: 50,
-                                color: Colors.white,
-                              ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      _speechInitializing
-                          ? 'Initializing...'
-                          : (!_speechAvailable
-                                ? 'Not available'
-                                : (_isListening
-                                      ? 'Listening...'
-                                      : 'Tap to speak')),
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ],
+                child: CircularActionButton(
+                  onTap: _speechInitializing || !_speechAvailable
+                      ? null
+                      : (_isListening ? _stopListening : _startListening),
+                  icon: !_speechAvailable
+                      ? Icons.mic_off
+                      : (_isListening ? Icons.mic : Icons.mic_none),
+                  color: _speechInitializing
+                      ? Colors.grey
+                      : (!_speechAvailable
+                            ? Colors.grey.shade400
+                            : (_isListening ? Colors.red : Colors.blue)),
+                  isActive: _isListening,
+                  showProgress: _speechInitializing,
+                  statusText: _speechInitializing
+                      ? 'Initializing...'
+                      : (!_speechAvailable
+                            ? 'Not available'
+                            : (_isListening ? 'Listening...' : 'Tap to speak')),
                 ),
               ),
             ],

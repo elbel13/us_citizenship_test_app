@@ -5,6 +5,9 @@ import '../services/reading_evaluator.dart';
 import '../services/tts_service.dart';
 import '../widgets/progress_indicator_widget.dart';
 import '../widgets/word_diff_display.dart';
+import '../widgets/circular_action_button.dart';
+import '../widgets/instruction_card.dart';
+import '../widgets/answer_text_field.dart';
 import '../theme/word_diff_colors.dart';
 
 class WritingPracticeScreen extends StatefulWidget {
@@ -302,86 +305,32 @@ class _WritingPracticeScreenState extends State<WritingPracticeScreen> {
             ],
 
             // Instructions
-            Card(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              child: const Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Text(
-                  'Listen to the sentence and type what you hear.',
-                  style: TextStyle(fontSize: 14),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+            const InstructionCard(
+              text: 'Listen to the sentence and type what you hear.',
             ),
             const SizedBox(height: 24),
 
             // Audio playback button
             Center(
-              child: Column(
-                children: [
-                  InkWell(
-                    onTap: _tts.isSpeaking ? _stopSpeaking : _speakSentence,
-                    borderRadius: BorderRadius.circular(50),
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: _tts.isSpeaking ? Colors.red : Colors.blue,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          if (_tts.isSpeaking)
-                            BoxShadow(
-                              color: Colors.red.withOpacity(0.5),
-                              blurRadius: 20,
-                              spreadRadius: 5,
-                            ),
-                        ],
-                      ),
-                      child: Icon(
-                        _tts.isSpeaking ? Icons.stop : Icons.play_arrow,
-                        size: 50,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    _tts.isSpeaking ? 'Speaking...' : 'Tap to play',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ],
+              child: CircularActionButton(
+                onTap: _tts.isSpeaking ? _stopSpeaking : _speakSentence,
+                icon: _tts.isSpeaking ? Icons.stop : Icons.play_arrow,
+                color: _tts.isSpeaking ? Colors.red : Colors.blue,
+                isActive: _tts.isSpeaking,
+                statusText: _tts.isSpeaking ? 'Speaking...' : 'Tap to play',
               ),
             ),
             const SizedBox(height: 24),
 
             // Text input
-            TextField(
+            AnswerTextField(
               controller: _inputController,
-              decoration: InputDecoration(
-                labelText: 'Type your answer here',
-                hintText: 'Write what you hear...',
-                border: const OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () => _inputController.clear(),
-                ),
-              ),
-              maxLines: 3,
-              textCapitalization: TextCapitalization.sentences,
+              labelText: 'Type your answer here',
+              hintText: 'Write what you hear...',
               enabled: !_hasAttempted,
+              showSubmitButton: !_hasAttempted,
+              onSubmit: _submitAnswer,
             ),
-            const SizedBox(height: 16),
-
-            // Submit button
-            if (!_hasAttempted)
-              ElevatedButton.icon(
-                onPressed: _submitAnswer,
-                icon: const Icon(Icons.check),
-                label: const Text('Submit & Evaluate'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                ),
-              ),
 
             // Display the original sentence that was read
             if (_hasAttempted && _currentSentence != null) ...[

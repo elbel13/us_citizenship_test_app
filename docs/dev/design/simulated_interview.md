@@ -135,6 +135,33 @@ This is the most significant technical challenge and should be completed indepen
 - Demo app showing conversational responses
 - Performance benchmarks on target devices
 
+**Update - Implementation Decision (February 2026)**:
+
+After implementing DistilGPT-2 integration, we discovered the model is **unsuitable for this use case**:
+
+**Problems Encountered**:
+1. **Poor Output Quality**: Model generated repetitive, nonsensical responses ("I'm sorry, sir" repeated)
+2. **Failed Instruction-Following**: Could not follow "Rephrase this professionally" meta-instructions
+3. **Unacceptable Latency**: 60-90 seconds per response (target was <2 seconds)
+4. **Model Size**: Even at 82M parameters, too small for reliable instruction-following
+
+**Current Implementation**:
+- Using **pre-written professional variations** with randomization
+- Instant response time, perfect quality, no model download required
+- 3-5 hand-crafted variations per prompt type for natural variety
+- Maintains professional USCIS interview tone
+
+**Future Enhancement Options**:
+1. **Larger On-Device Model**: Gemma 2B or Phi-2 (2.7B params)
+   - Better instruction-following, but 10x larger (200-300MB)
+   - Still 20-30 second latency on mobile
+2. **Cloud API**: Gemini Flash or GPT-4o-mini
+   - Fast (<1 second), high quality, minimal cost (~$0.0001/request)
+   - Requires internet connection
+3. **Hybrid Approach**: Cloud API with offline fallback to variations
+
+**Decision**: Defer LLM integration until suitable mobile models become available or implement cloud API with proper offline handling. Current variation-based approach provides excellent UX without the complexity.
+
 ### Phase 2: Interview Feature Implementation
 Once LLM integration is proven viable, implement the full interview experience.
 

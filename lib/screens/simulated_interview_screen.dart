@@ -8,7 +8,9 @@ import '../services/interview_prompt_service.dart';
 import '../services/llm_service.dart';
 import '../services/tts_service.dart';
 import '../services/reading_evaluator.dart';
-import '../widgets/progress_indicator_widget.dart';
+import '../widgets/circular_action_button.dart';
+import '../widgets/instruction_card.dart';
+import '../widgets/answer_text_field.dart';
 
 class SimulatedInterviewScreen extends StatefulWidget {
   const SimulatedInterviewScreen({Key? key}) : super(key: key);
@@ -30,9 +32,12 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
   bool _isLoading = true;
   bool _isListening = false;
   bool _isProcessing = false;
+  bool _isSpeaking = false;
+  bool _useTextInput = false;
   String _currentTranscript = '';
   String _interviewerMessage = '';
   String? _error;
+  final _textController = TextEditingController();
 
   @override
   void initState() {
@@ -44,6 +49,20 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
     try {
       // Initialize services
       await _tts.initialize();
+      // Setup TTS callbacks to track speaking state
+      _tts.onSpeakStart = () {
+        if (mounted) {
+          debugPrint('TTS: Started speaking');
+          setState(() => _isSpeaking = true);
+        }
+      };
+
+      _tts.onSpeakComplete = () {
+        if (mounted) {
+          debugPrint('TTS: Finished speaking');
+          setState(() => _isSpeaking = false);
+        }
+      };
       await _speech.initialize();
       await _llmService.initialize();
 
@@ -183,15 +202,14 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
 
                 // Interviewer message
                 if (_interviewerMessage.isNotEmpty) ...[
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      _interviewerMessage,
-                      style: const TextStyle(fontSize: 16),
+                  Card(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        _interviewerMessage,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -199,13 +217,14 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
 
                 // Transcript display
                 if (_currentTranscript.isNotEmpty) ...[
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        _currentTranscript,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
                     ),
-                    child: Text(_currentTranscript),
                   ),
                   const SizedBox(height: 16),
                 ],
@@ -258,29 +277,27 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
   Widget _buildQuestionDisplay(InterviewQuestion question) {
     if (question.type == InterviewQuestionType.reading) {
       // Show text for reading questions
-      return Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          question.questionText,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
+      return Card(
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Text(
+            question.questionText,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
       );
     } else {
-      // For writing and civics, just show instruction
+      // For writing and civics, show instruction in a Card
       final instruction = question.type == InterviewQuestionType.writing
           ? 'Listen carefully and write what you hear'
           : 'Answer the question verbally';
 
-      return Text(
-        instruction,
-        style: Theme.of(context).textTheme.titleMedium,
-        textAlign: TextAlign.center,
-      );
+      return InstructionCard(text: instruction);
     }
   }
 
@@ -288,33 +305,75 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Microphone button
-        ElevatedButton.icon(
-          onPressed: _isProcessing ? null : _toggleListening,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: _isListening ? Colors.red : Colors.blue,
-            padding: const EdgeInsets.all(16),
-          ),
-          icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
-          label: Text(
-            _isListening ? 'Listening...' : 'Tap to Answer',
-            style: const TextStyle(fontSize: 18),
-          ),
+        // Input mode toggle
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Voice', style: TextStyle(fontSize: 14)),
+            Switch(
+              value: _useTextInput,
+              onChanged: (value) {
+                setState(() => _useTextInput = value);
+                if (!value) {
+                  _textController.clear();
+                }
+              },
+            ),
+            const Text('Text', style: TextStyle(fontSize: 14)),
+          ],
         ),
+        const SizedBox(height: 16),
 
-        if (_currentTranscript.isNotEmpty) ...[
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: _isProcessing ? null : _submitAnswer,
-            child: _isProcessing
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Text('Submit Answer', style: TextStyle(fontSize: 18)),
+        if (_useTextInput)
+          // Text input mode
+          Column(
+            children: [
+              AnswerTextField(
+                controller: _textController,
+                labelText: 'Type your answer here',
+                hintText: 'Enter your answer...',
+                onChanged: (value) {
+                  setState(() => _currentTranscript = value);
+                },
+                showSubmitButton: _currentTranscript.isNotEmpty,
+                onSubmit: _submitAnswer,
+                submitButtonText: 'Submit Answer',
+                isSubmitting: _isProcessing,
+              ),
+            ],
+          )
+        else
+          // Voice input mode - circular button like reading/writing
+          Center(
+            child: Column(
+              children: [
+                CircularActionButton(
+                  onTap: _isProcessing ? null : _toggleListening,
+                  icon: _isListening ? Icons.mic : Icons.mic_none,
+                  color: _isProcessing
+                      ? Colors.grey
+                      : (_isListening ? Colors.red : Colors.blue),
+                  isActive: _isListening,
+                  showProgress: _isProcessing,
+                  statusText: _isListening ? 'Listening...' : 'Tap to Answer',
+                ),
+                if (_currentTranscript.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: _isProcessing ? null : _submitAnswer,
+                    icon: const Icon(Icons.check),
+                    label: const Text('Submit Answer'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 32,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
           ),
-        ],
       ],
     );
   }
@@ -392,17 +451,26 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
       _isProcessing = true;
     });
 
-    // Generate and speak greeting
-    final greetingPrompt = _promptService.getGreetingPrompt();
-    final greeting = await _llmService.generate(greetingPrompt, maxTokens: 30);
-    final cleanGreeting = _promptService.cleanResponse(greeting);
+    // Get greeting (no LLM - instant response)
+    final greeting = _promptService.getGreetingPrompt();
 
     setState(() {
-      _interviewerMessage = cleanGreeting;
+      _interviewerMessage = greeting;
       _isProcessing = false;
+      _isSpeaking = true; // Pre-set to ensure wait loop catches it
     });
 
-    await _tts.speak(cleanGreeting);
+    await _tts.speak(greeting);
+
+    // Wait for TTS to finish speaking (with timeout)
+    debugPrint('Waiting for greeting TTS to complete...');
+    int waitCount = 0;
+    while (_isSpeaking && waitCount < 100) {
+      // Max 10 seconds
+      await Future.delayed(const Duration(milliseconds: 100));
+      waitCount++;
+    }
+    debugPrint('Greeting TTS complete (waited ${waitCount * 100}ms)');
 
     // Short pause then start questioning
     await Future.delayed(const Duration(seconds: 1));
@@ -419,38 +487,41 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
       _currentTranscript = '';
     });
 
-    // Generate question prompt
-    String questionPrompt;
+    // Generate question prompt (no LLM - instant response)
+    String questionText;
     switch (question.type) {
       case InterviewQuestionType.reading:
-        questionPrompt = _promptService.getReadingQuestionPrompt(
+        questionText = _promptService.getReadingQuestionPrompt(
           question.questionText,
         );
         break;
       case InterviewQuestionType.writing:
-        questionPrompt = _promptService.getWritingQuestionPrompt(
+        questionText = _promptService.getWritingQuestionPrompt(
           question.questionText,
         );
         break;
       case InterviewQuestionType.civics:
-        questionPrompt = _promptService.getCivicsQuestionPrompt(
+        questionText = _promptService.getCivicsQuestionPrompt(
           question.questionText,
         );
         break;
     }
 
-    final questionText = await _llmService.generate(
-      questionPrompt,
-      maxTokens: 40,
-    );
-    final cleanQuestion = _promptService.cleanResponse(questionText);
-
     setState(() {
-      _interviewerMessage = cleanQuestion;
+      _interviewerMessage = questionText;
       _isProcessing = false;
+      _isSpeaking = true; // Pre-set to ensure wait loop catches it
     });
 
-    await _tts.speak(cleanQuestion);
+    await _tts.speak(questionText);
+
+    // Wait for TTS to finish speaking (with timeout)
+    int waitCount = 0;
+    while (_isSpeaking && waitCount < 100) {
+      // Max 10 seconds
+      await Future.delayed(const Duration(milliseconds: 100));
+      waitCount++;
+    }
   }
 
   void _toggleListening() async {
@@ -485,6 +556,11 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
 
     setState(() => _isProcessing = true);
 
+    // Clear text input if in text mode
+    if (_useTextInput) {
+      _textController.clear();
+    }
+
     final question = _state!.currentQuestion!;
     final attemptNumber = _state!.currentQuestionAttempts + 1;
 
@@ -510,8 +586,8 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
     // Record attempt
     _state!.recordAttempt(_currentTranscript, result);
 
-    // Generate response
-    final responsePrompt = _promptService.getResponsePrompt(
+    // Get response (no LLM - instant response)
+    final response = _promptService.getResponsePrompt(
       questionType: question.type,
       result: result,
       question: question.questionText,
@@ -519,16 +595,22 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
       attemptNumber: attemptNumber,
     );
 
-    final response = await _llmService.generate(responsePrompt, maxTokens: 40);
-    final cleanResponse = _promptService.cleanResponse(response);
-
     setState(() {
-      _interviewerMessage = cleanResponse;
+      _interviewerMessage = response;
       _currentTranscript = '';
       _isProcessing = false;
+      _isSpeaking = true; // Pre-set to ensure wait loop catches it
     });
 
-    await _tts.speak(cleanResponse);
+    await _tts.speak(response);
+
+    // Wait for TTS to finish speaking (with timeout)
+    int waitCount = 0;
+    while (_isSpeaking && waitCount < 100) {
+      // Max 10 seconds
+      await Future.delayed(const Duration(milliseconds: 100));
+      waitCount++;
+    }
 
     // Determine next action
     if (result == EvaluationResult.pass || _state!.hasReachedMaxRetries) {
@@ -547,22 +629,26 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
         await _askCurrentQuestion();
       } else {
         // Interview complete
-        final completionPrompt = _promptService.getCompletionPrompt(
+        final completion = _promptService.getCompletionPrompt(
           passed: _state!.passesCivics(),
           civicsCorrect: _state!.civicsCorrect,
           civicsTotal: _state!.civicsAsked,
         );
-        final completion = await _llmService.generate(
-          completionPrompt,
-          maxTokens: 50,
-        );
-        final cleanCompletion = _promptService.cleanResponse(completion);
 
         setState(() {
-          _interviewerMessage = cleanCompletion;
+          _interviewerMessage = completion;
+          _isSpeaking = true; // Pre-set to ensure wait loop catches it
         });
 
-        await _tts.speak(cleanCompletion);
+        await _tts.speak(completion);
+
+        // Wait for TTS to finish speaking (with timeout)
+        int waitCount = 0;
+        while (_isSpeaking && waitCount < 100) {
+          // Max 10 seconds
+          await Future.delayed(const Duration(milliseconds: 100));
+          waitCount++;
+        }
       }
     }
     // Otherwise, wait for retry
