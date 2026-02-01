@@ -47,7 +47,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: model-files
-          path: assets/
+          path: assets/models/
 
       - name: Verify model files exist
         run: |
