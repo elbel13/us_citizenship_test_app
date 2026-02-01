@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:us_citizenship_test_app/services/database_service.dart';
+import '../helpers/database_test_helper.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -10,37 +11,34 @@ void main() {
   databaseFactory = databaseFactoryFfi;
 
   group('DatabaseService', () {
+    late DatabaseService databaseService;
+    late String testDbPath;
+
     setUp(() async {
-      // Reset the database between tests
-      final dbService = DatabaseService();
-      try {
-        await dbService.clearDatabase();
-        await dbService.close();
-      } catch (e) {
-        // Database might not exist yet
-      }
+      // Generate unique database path for this test
+      testDbPath = DatabaseTestHelper.getUniqueDatabasePath();
+      DatabaseService.setCustomDatabasePath(testDbPath);
+      databaseService = DatabaseService();
     });
 
     tearDown(() async {
-      // Clean up database after each test
-      final dbService = DatabaseService();
+      // Clean up this test's database
       try {
-        await dbService.clearDatabase();
-        await dbService.close();
+        await databaseService.close();
+        await DatabaseTestHelper.deleteDatabaseFile(testDbPath);
       } catch (e) {
         // Ignore errors during cleanup
       }
+      DatabaseService.setCustomDatabasePath(null);
     });
 
     test('database initializes successfully', () async {
-      final databaseService = DatabaseService();
       final db = await databaseService.database;
       expect(db, isNotNull);
       expect(db.isOpen, true);
     });
 
     test('creates required tables on initialization', () async {
-      final databaseService = DatabaseService();
       final db = await databaseService.database;
 
       // Check if question table exists
@@ -57,7 +55,6 @@ void main() {
     });
 
     test('creates index on question_text language_code', () async {
-      final databaseService = DatabaseService();
       final db = await databaseService.database;
 
       final indexExists = await db.rawQuery(
@@ -67,7 +64,6 @@ void main() {
     });
 
     test('populates database from assets on first access', () async {
-      final databaseService = DatabaseService();
       // This test relies on the mock asset being loaded
       final questions = await databaseService.getQuestions('en');
 
@@ -76,7 +72,6 @@ void main() {
     });
 
     test('getQuestions returns correct language questions', () async {
-      final databaseService = DatabaseService();
       final questionsEn = await databaseService.getQuestions('en');
 
       expect(questionsEn, isNotEmpty);
@@ -86,7 +81,6 @@ void main() {
     });
 
     test('getQuestions returns questions in order', () async {
-      final databaseService = DatabaseService();
       final questions = await databaseService.getQuestions('en');
 
       expect(questions, isNotEmpty);
@@ -98,14 +92,12 @@ void main() {
     });
 
     test('getQuestions returns empty list for non-existent language', () async {
-      final databaseService = DatabaseService();
       final questions = await databaseService.getQuestions('fr');
 
       expect(questions, isEmpty);
     });
 
     test('clearDatabase removes all data', () async {
-      final databaseService = DatabaseService();
       // First, ensure database is populated
       await databaseService.database;
       var questions = await databaseService.getQuestions('en');
@@ -120,7 +112,6 @@ void main() {
     });
 
     test('database only populates once', () async {
-      final databaseService = DatabaseService();
       // Access database multiple times
       await databaseService.database;
       await databaseService.database;
@@ -136,7 +127,6 @@ void main() {
     });
 
     test('Question data integrity after database operations', () async {
-      final databaseService = DatabaseService();
       final questions = await databaseService.getQuestions('en');
 
       expect(questions, isNotEmpty);

@@ -67,6 +67,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Run tests
+        run: flutter test
+
       - name: Restore keystore (from secrets)
         if: env.KEYSTORE_BASE64 != ''
         env:

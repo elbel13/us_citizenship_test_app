@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:us_citizenship_test_app/models/interview_question.dart';
+import 'package:us_citizenship_test_app/services/database_service.dart';
 import 'package:us_citizenship_test_app/services/interview_service.dart';
+import '../helpers/database_test_helper.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -12,9 +14,26 @@ void main() {
 
   group('InterviewService', () {
     late InterviewService service;
+    late DatabaseService dbService;
+    late String testDbPath;
 
-    setUp(() {
+    setUp(() async {
+      // Generate unique database path for this test
+      testDbPath = DatabaseTestHelper.getUniqueDatabasePath();
+      DatabaseService.setCustomDatabasePath(testDbPath);
+
       service = InterviewService();
+      dbService = DatabaseService();
+    });
+
+    tearDown(() async {
+      try {
+        await dbService.close();
+        await DatabaseTestHelper.deleteDatabaseFile(testDbPath);
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+      DatabaseService.setCustomDatabasePath(null);
     });
 
     test('generateInterviewQuestions returns correct count', () async {

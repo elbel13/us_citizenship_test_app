@@ -11,6 +11,7 @@ class DatabaseService {
   DatabaseService._internal();
 
   static Database? _database;
+  static String? _customDatabasePath; // For testing purposes
 
   // Category name to ID mapping
   static const Map<String, int> categoryIds = {
@@ -42,7 +43,9 @@ class DatabaseService {
 
   Future<Database> _initDatabase() async {
     print('DatabaseService: Starting database initialization...');
-    String path = join(await getDatabasesPath(), 'citizenship_test.db');
+    String path =
+        _customDatabasePath ??
+        join(await getDatabasesPath(), 'citizenship_test.db');
     return await openDatabase(
       path,
       version: 5, // Bumped for writing sentences
@@ -508,5 +511,12 @@ class DatabaseService {
       await _database!.close();
       _database = null;
     }
+  }
+
+  /// Set a custom database path for testing purposes.
+  /// Call this before accessing the database to use a different file.
+  static void setCustomDatabasePath(String? path) {
+    _customDatabasePath = path;
+    _database = null; // Force re-initialization with new path
   }
 }
