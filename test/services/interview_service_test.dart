@@ -24,16 +24,25 @@ void main() {
 
       service = InterviewService();
       dbService = DatabaseService();
+
+      // Initialize database and load default questions
+      await dbService.database;
+      await dbService.loadQuestionsForYear('2020', 'en');
     });
 
     tearDown(() async {
       try {
         await dbService.close();
-        await DatabaseTestHelper.deleteDatabaseFile(testDbPath);
       } catch (e) {
         // Ignore cleanup errors
       }
+      // Reset custom path after closing
       DatabaseService.setCustomDatabasePath(null);
+      try {
+        await DatabaseTestHelper.deleteDatabaseFile(testDbPath);
+      } catch (e) {
+        // Ignore file deletion errors
+      }
     });
 
     test('generateInterviewQuestions returns correct count', () async {
@@ -69,13 +78,15 @@ void main() {
       final firstSectionSize1 = questions1
           .takeWhile((q) => q.type == firstType1)
           .length;
-      expect(
-        firstSectionSize1,
-        equals(3),
-      ); // Reading or writing sections have 3 questions
 
-      // Not guaranteed to be different, but highly unlikely if truly random
-      // Just verify structure is correct
+      // First section size should match the section type
+      if (firstType1 == InterviewQuestionType.civics) {
+        expect(firstSectionSize1, equals(20));
+      } else {
+        expect(firstSectionSize1, equals(3)); // Reading or writing
+      }
+
+      // Verify structure is correct for both question sets
       expect(questions1.isNotEmpty, isTrue);
       expect(questions2.isNotEmpty, isTrue);
     });

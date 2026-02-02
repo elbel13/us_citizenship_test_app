@@ -188,10 +188,11 @@ class DatabaseService {
     );
 
     if (count == null || count == 0) {
-      print('DatabaseService: Loading questions from assets...');
-      // Database is empty, populate it
-      await _loadQuestionsFromAssets(db, 'en');
-      print('DatabaseService: Questions loaded.');
+      print(
+        'DatabaseService: Database empty, will be populated after onboarding.',
+      );
+      // Database is empty - will be populated after onboarding completes
+      // with the user's selected question year
     } else {
       print('DatabaseService: Questions already loaded ($count questions).');
     }
@@ -232,13 +233,16 @@ class DatabaseService {
 
   Future<void> _loadQuestionsFromAssets(
     Database db,
-    String languageCode,
-  ) async {
+    String languageCode, {
+    String? assetPath,
+  }) async {
     try {
+      // Use provided asset path or default
+      final path =
+          assetPath ?? 'assets/questions_${languageCode}_categorized.json';
+
       // Load the categorized JSON file from assets
-      final String jsonString = await rootBundle.loadString(
-        'assets/questions_${languageCode}_categorized.json',
-      );
+      final String jsonString = await rootBundle.loadString(path);
       final List<dynamic> jsonData = json.decode(jsonString);
 
       // Use a batch for better performance
@@ -518,5 +522,159 @@ class DatabaseService {
   static void setCustomDatabasePath(String? path) {
     _customDatabasePath = path;
     _database = null; // Force re-initialization with new path
+  }
+
+  /// Get available question years based on asset files
+  /// Checks for specific test versions that have been released
+  /// Test versions are published periodically (not annually): 2020, 2025, etc.
+  Future<List<String>> getAvailableQuestionYears() async {
+    final List<String> years = [];
+
+    // Check for known test versions
+    // Note: These are specific test editions, not annual releases
+    final knownVersions = ['2025', '2020'];
+
+    for (final year in knownVersions) {
+      try {
+        String assetPath;
+        if (year == '2020') {
+          // 2020 version uses the default file name
+          assetPath = 'assets/questions_en_categorized.json';
+        } else {
+          assetPath = 'assets/questions_en_categorized_$year.json';
+        }
+        await rootBundle.loadString(assetPath);
+        years.add(year);
+      } catch (e) {
+        // File doesn't exist - version not bundled yet
+      }
+    }
+
+    // Sort in descending order (latest first)
+    years.sort((a, b) => b.compareTo(a));
+
+    return years;
+  }
+
+  /// Load questions for a specific year
+  /// This should be called after onboarding when the user selects their question year
+  Future<void> loadQuestionsForYear(String year, String languageCode) async {
+    final db = await database;
+
+    // Clear existing questions
+    await db.delete('answer');
+    await db.delete('question_text');
+    await db.delete('question');
+
+    print('DatabaseService: Loading questions for year $year...');
+
+    // Determine the asset file name
+    String assetPath;
+    if (year == '2020') {
+      assetPath = 'assets/questions_${languageCode}_categorized.json';
+    } else {
+      assetPath = 'assets/questions_${languageCode}_categorized_$year.json';
+    }
+
+    await _loadQuestionsFromAssets(db, languageCode, assetPath: assetPath);
+    print('DatabaseService: Questions for year $year loaded successfully.');
+  }
+
+  /// Update location-specific answers in the database
+  /// This replaces placeholder answers with actual government official names
+  Future<void> updateLocationSpecificAnswers({
+    required String governor,
+    required String senator1,
+    required String senator2,
+    required String representative,
+    required String state,
+  }) async {
+    final db = await database;
+
+    print('DatabaseService: Updating location-specific answers for $state...');
+
+    // Find questions that need location-specific answers
+    // These are typically questions with GOVERNMENT_OFFICIAL category
+    // that have placeholder text like "Your state's governor", etc.
+
+    // For now, we'll update specific question IDs that are known to need this
+    // In a real implementation, you might want to mark these questions differently
+
+    // Example: Update governor question (you'll need to identify the actual question IDs)
+    // This is a placeholder implementation - actual IDs would come from your question set
+
+    final questionTexts = await db.query('question_text');
+
+    for (var qt in questionTexts) {
+      final questionText = qt['question_text'] as String;
+      final questionTextId = qt['id'] as int;
+
+      // Check if this is a location-specific question and update accordingly
+      if (questionText.toLowerCase().contains('governor')) {
+        // Update or add the governor answer
+        await _upsertLocationAnswer(
+          db,
+          questionTextId,
+          governor,
+          DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
+        );
+      } else if (questionText.toLowerCase().contains('senator')) {
+        // Update senator answers
+        await _upsertLocationAnswer(
+          db,
+          questionTextId,
+          senator1,
+          DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
+        );
+        await _upsertLocationAnswer(
+          db,
+          questionTextId,
+          senator2,
+          DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
+        );
+      } else if (questionText.toLowerCase().contains('representative')) {
+        // Update representative answer
+        await _upsertLocationAnswer(
+          db,
+          questionTextId,
+          representative,
+          DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
+        );
+      }
+    }
+
+    print('DatabaseService: Location-specific answers updated.');
+  }
+
+  /// Helper to upsert location-specific answer
+  Future<void> _upsertLocationAnswer(
+    Database db,
+    int questionTextId,
+    String answerText,
+    int categoryId,
+  ) async {
+    // Check if an answer with this category already exists
+    final existing = await db.query(
+      'answer',
+      where: 'question_text_id = ? AND category_id = ?',
+      whereArgs: [questionTextId, categoryId],
+    );
+
+    if (existing.isEmpty) {
+      // Insert new answer
+      await db.insert('answer', {
+        'question_text_id': questionTextId,
+        'answer_text': answerText,
+        'category_id': categoryId,
+      });
+    } else {
+      // Update existing answer
+      await db.update(
+        'answer',
+        {'answer_text': answerText},
+        where: 'question_text_id = ? AND category_id = ?',
+        whereArgs: [questionTextId, categoryId],
+      );
+    }
   }
 }

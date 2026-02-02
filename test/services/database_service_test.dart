@@ -19,17 +19,26 @@ void main() {
       testDbPath = DatabaseTestHelper.getUniqueDatabasePath();
       DatabaseService.setCustomDatabasePath(testDbPath);
       databaseService = DatabaseService();
+
+      // Initialize database and load default questions
+      await databaseService.database;
+      await databaseService.loadQuestionsForYear('2020', 'en');
     });
 
     tearDown(() async {
       // Clean up this test's database
       try {
         await databaseService.close();
-        await DatabaseTestHelper.deleteDatabaseFile(testDbPath);
       } catch (e) {
         // Ignore errors during cleanup
       }
+      // Reset custom path after closing
       DatabaseService.setCustomDatabasePath(null);
+      try {
+        await DatabaseTestHelper.deleteDatabaseFile(testDbPath);
+      } catch (e) {
+        // Ignore file deletion errors
+      }
     });
 
     test('database initializes successfully', () async {

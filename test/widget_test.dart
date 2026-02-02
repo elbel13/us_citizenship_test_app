@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:us_citizenship_test_app/main.dart';
+import 'package:us_citizenship_test_app/services/onboarding_service.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -10,8 +12,19 @@ void main() {
   databaseFactory = databaseFactoryFfi;
 
   testWidgets('App loads and displays main menu', (WidgetTester tester) async {
+    // Set up mock SharedPreferences with onboarding complete
+    SharedPreferences.setMockInitialValues({
+      'onboarding_completed': true,
+      'ui_language': 'en',
+      'study_language': 'en',
+    });
+
+    final onboardingService = OnboardingService();
+
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const USCitizenshipTestApp());
+    await tester.pumpWidget(
+      USCitizenshipTestApp(onboardingService: onboardingService),
+    );
     await tester.pumpAndSettle();
 
     // Verify that main menu title is displayed

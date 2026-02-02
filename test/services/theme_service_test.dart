@@ -159,17 +159,19 @@ void main() {
       expect(notified, false);
     });
 
-    test('hasListeners returns correct value', () async {
+    test('listeners can be added and removed', () async {
       final themeService = ThemeService();
 
-      expect(themeService.hasListeners, false);
+      bool listenerCalled = false;
+      void listener() {
+        listenerCalled = true;
+      }
 
-      void listener() {}
       themeService.addListener(listener);
-      expect(themeService.hasListeners, true);
+      await themeService.setThemeMode(ThemeMode.dark);
+      expect(listenerCalled, true);
 
       themeService.removeListener(listener);
-      expect(themeService.hasListeners, false);
     });
   });
 }

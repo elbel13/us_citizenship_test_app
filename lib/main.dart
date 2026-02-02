@@ -9,28 +9,25 @@ import 'screens/simulated_interview_screen.dart';
 import 'screens/test_readiness_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/llm_test_screen.dart';
+import 'screens/onboarding_screen.dart';
 import 'theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
-import 'services/database_service.dart';
 import 'services/theme_service.dart';
+import 'services/onboarding_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize database in background - don't block app startup
-  DatabaseService().database
-      .then((_) {
-        // Database initialized successfully
-      })
-      .catchError((error) {
-        print('Error initializing database: $error');
-      });
+  // Initialize onboarding service
+  final onboardingService = OnboardingService();
 
-  runApp(const USCitizenshipTestApp());
+  runApp(USCitizenshipTestApp(onboardingService: onboardingService));
 }
 
 class USCitizenshipTestApp extends StatefulWidget {
-  const USCitizenshipTestApp({super.key});
+  final OnboardingService onboardingService;
+
+  const USCitizenshipTestApp({super.key, required this.onboardingService});
 
   @override
   State<USCitizenshipTestApp> createState() => _USCitizenshipTestAppState();
@@ -56,16 +53,27 @@ class _USCitizenshipTestAppState extends State<USCitizenshipTestApp> {
   void initState() {
     super.initState();
     _themeService.addListener(_onThemeChanged);
+    widget.onboardingService.addListener(_onOnboardingChanged);
+
+    // Set initial locale from onboarding service
+    _locale = Locale(widget.onboardingService.uiLanguage);
   }
 
   @override
   void dispose() {
     _themeService.removeListener(_onThemeChanged);
+    widget.onboardingService.removeListener(_onOnboardingChanged);
     super.dispose();
   }
 
   void _onThemeChanged() {
     setState(() {});
+  }
+
+  void _onOnboardingChanged() {
+    setState(() {
+      _locale = Locale(widget.onboardingService.uiLanguage);
+    });
   }
 
   void setLocale(Locale locale) {
@@ -96,16 +104,23 @@ class _USCitizenshipTestAppState extends State<USCitizenshipTestApp> {
         Locale('en'), // English
         Locale('es'), // Spanish
       ],
-      initialRoute: '/',
+      initialRoute: widget.onboardingService.isOnboardingComplete
+          ? '/'
+          : '/onboarding',
       routes: {
         '/': (context) => const MainMenuScreen(),
+        '/onboarding': (context) =>
+            OnboardingScreen(onboardingService: widget.onboardingService),
         '/flashcards': (context) => const FlashcardsScreen(),
         '/multiple_choice': (context) => const MultipleChoiceScreen(),
         '/writing': (context) => const WritingPracticeScreen(),
         '/reading': (context) => const ReadingPracticeScreen(),
         '/simulated_interview': (context) => const SimulatedInterviewScreen(),
         '/test_readiness': (context) => const TestReadinessScreen(),
-        '/settings': (context) => SettingsScreen(themeService: _themeService),
+        '/settings': (context) => SettingsScreen(
+          themeService: _themeService,
+          onboardingService: widget.onboardingService,
+        ),
         '/llm_test': (context) => const LlmTestScreen(),
       },
     );
