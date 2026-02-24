@@ -22,7 +22,7 @@ void main() {
 
       // Initialize database and load default questions
       await databaseService.database;
-      await databaseService.loadQuestionsForYear('2020', 'en');
+      await databaseService.loadQuestionsForYear('2025', 'en');
     });
 
     tearDown(() async {

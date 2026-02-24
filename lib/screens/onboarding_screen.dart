@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import '../services/onboarding_service.dart';
 import '../services/database_service.dart';
 import '../services/location_service.dart';
+import '../l10n/app_localizations.dart';
 import '../main.dart';
 
 /// Main onboarding flow screen with PageView navigation
 class OnboardingScreen extends StatefulWidget {
   final OnboardingService onboardingService;
 
-  const OnboardingScreen({Key? key, required this.onboardingService})
-    : super(key: key);
+  const OnboardingScreen({super.key, required this.onboardingService});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -128,6 +128,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       // Update location-specific answers if we have officials
       if (_officials != null) {
         await _databaseService.updateLocationSpecificAnswers(
+          president: _officials!.president,
+          vicePresident: _officials!.vicePresident,
           governor: _officials!.governor,
           senator1: _officials!.senator1,
           senator2: _officials!.senator2,
@@ -160,6 +162,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (_isLoading) {
       return const Scaffold(
         body: Center(
@@ -205,12 +208,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     TextButton.icon(
                       onPressed: _goToPreviousPage,
                       icon: const Icon(Icons.arrow_back),
-                      label: const Text('Back'),
+                      label: Text(l10n.back),
                     )
                   else
                     const SizedBox(width: 80),
                   Text(
-                    'Step ${_currentPage + 1} of $totalPages',
+                    l10n.stepProgress(_currentPage + 1, totalPages),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   ElevatedButton.icon(
@@ -221,7 +224,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           : Icons.arrow_forward,
                     ),
                     label: Text(
-                      _currentPage == totalPages - 1 ? 'Finish' : 'Next',
+                      _currentPage == totalPages - 1 ? l10n.finish : l10n.next,
                     ),
                   ),
                 ],
@@ -277,14 +280,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _buildLanguageSelectionPage() {
+    final l10n = AppLocalizations.of(context)!;
     return _OnboardingPageLayout(
-      title: 'Welcome!',
-      subtitle: 'Select your preferred language for the app interface',
+      title: l10n.onboardingWelcome,
+      subtitle: l10n.onboardingLanguageSubtitle,
       child: Column(
         children: [
           _LanguageOption(
             languageCode: 'en',
-            languageName: 'English',
+            languageName: l10n.english,
             isSelected: _selectedUILanguage == 'en',
             onTap: () async {
               setState(() {
@@ -301,7 +305,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           const SizedBox(height: 12),
           _LanguageOption(
             languageCode: 'es',
-            languageName: 'Español (Spanish)',
+            languageName: l10n.spanish,
             isSelected: _selectedUILanguage == 'es',
             onTap: () async {
               setState(() {
@@ -319,15 +323,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _buildStudyLanguageSelectionPage() {
+    final l10n = AppLocalizations.of(context)!;
     return _OnboardingPageLayout(
-      title: 'Study Materials Language',
-      subtitle:
-          'The citizenship test is conducted in English. We recommend studying in English for best preparation.',
+      title: l10n.onboardingStudyLanguageTitle,
+      subtitle: l10n.onboardingStudyLanguageSubtitle,
       child: Column(
         children: [
           _LanguageOption(
             languageCode: 'en',
-            languageName: 'Study in English (Recommended)',
+            languageName: l10n.studyInLanguageRecommended(l10n.english),
             isSelected: _selectedStudyLanguage == 'en',
             onTap: () async {
               setState(() {
@@ -339,9 +343,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           const SizedBox(height: 12),
           _LanguageOption(
             languageCode: _selectedUILanguage ?? 'es',
-            languageName:
-                'Study in ${_selectedUILanguage == 'es' ? 'Spanish' : 'Selected Language'}',
-            subtitle: 'Currently only English materials are available',
+            languageName: l10n.studyInLanguage(
+              _selectedUILanguage == 'es' ? l10n.spanish : _selectedUILanguage!,
+            ),
+            subtitle: l10n.studyLanguageNote(
+              _selectedUILanguage == 'es' ? l10n.spanish : _selectedUILanguage!,
+            ),
             isSelected: _selectedStudyLanguage == _selectedUILanguage,
             isEnabled: false, // Disabled for now
             onTap: () async {
@@ -354,10 +361,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _buildYearSelectionPage() {
+    final l10n = AppLocalizations.of(context)!;
     return _OnboardingPageLayout(
-      title: 'Test Version',
-      subtitle:
-          'Select the citizenship test version based on when your application was filed. USCIS updates the test periodically.',
+      title: l10n.onboardingTestVersionTitle,
+      subtitle: l10n.onboardingTestVersionSubtitle,
       child: Column(
         children: _availableYears.map((year) {
           return Padding(
@@ -380,10 +387,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _buildLocationSetupPage() {
+    final l10n = AppLocalizations.of(context)!;
     return _OnboardingPageLayout(
-      title: 'Location Setup',
-      subtitle:
-          'We need your location to provide accurate information about your local government officials',
+      title: l10n.onboardingLocationTitle,
+      subtitle: l10n.onboardingLocationSubtitle,
       child: Column(
         children: [
           Card(
@@ -391,7 +398,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  const Icon(Icons.location_on, size: 48, color: Colors.blue),
+                  Icon(
+                    Icons.location_on,
+                    size: 48,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
                     onPressed: () async {
@@ -408,15 +419,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       }
                     },
                     icon: const Icon(Icons.my_location),
-                    label: const Text('Use My Location'),
+                    label: Text(l10n.useMyLocation),
                   ),
                   const SizedBox(height: 8),
-                  const Text('or', style: TextStyle(color: Colors.grey)),
+                  Text(
+                    l10n.or,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   OutlinedButton.icon(
                     onPressed: _showManualLocationEntry,
                     icon: const Icon(Icons.edit_location),
-                    label: const Text('Enter Zip Code'),
+                    label: Text(l10n.enterZipCode),
                   ),
                 ],
               ),
@@ -425,19 +441,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           if (_selectedState != null) ...[
             const SizedBox(height: 16),
             Card(
-              color: Colors.green.shade50,
+              color: Theme.of(context).colorScheme.primaryContainer,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    const Icon(Icons.check_circle, color: Colors.green),
+                    Icon(
+                      Icons.check_circle,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                     const SizedBox(height: 8),
                     Text(
-                      'Location set: $_selectedState',
+                      l10n.locationSet(_selectedState!),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     if (_selectedZipCode != null)
-                      Text('Zip Code: $_selectedZipCode'),
+                      Text(l10n.zipCode(_selectedZipCode!)),
                   ],
                 ),
               ),
@@ -449,15 +468,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _showManualLocationEntry() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) {
         String zipCode = '';
         return AlertDialog(
-          title: const Text('Enter Your Zip Code'),
+          title: Text(l10n.enterYourZipCode),
           content: TextField(
-            decoration: const InputDecoration(
-              labelText: 'Zip Code',
+            decoration: InputDecoration(
+              labelText: l10n.enterZipCode,
               hintText: '12345',
             ),
             keyboardType: TextInputType.number,
@@ -469,7 +489,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: Text(l10n.cancel),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -500,7 +520,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   }
                 }
               },
-              child: const Text('Confirm'),
+              child: Text(l10n.submit),
             ),
           ],
         );
@@ -517,11 +537,11 @@ class _OnboardingPageLayout extends StatelessWidget {
   final Widget child;
 
   const _OnboardingPageLayout({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -540,9 +560,9 @@ class _OnboardingPageLayout extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             subtitle,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: Colors.grey.shade700),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
           const SizedBox(height: 32),
           child,
@@ -561,14 +581,14 @@ class _LanguageOption extends StatelessWidget {
   final VoidCallback onTap;
 
   const _LanguageOption({
-    Key? key,
+    super.key,
     required this.languageCode,
     required this.languageName,
     this.subtitle,
     required this.isSelected,
     this.isEnabled = true,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -600,7 +620,11 @@ class _LanguageOption extends StatelessWidget {
                         fontWeight: isSelected
                             ? FontWeight.bold
                             : FontWeight.normal,
-                        color: isEnabled ? null : Colors.grey,
+                        color: isEnabled
+                            ? null
+                            : Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withOpacity(0.38),
                       ),
                     ),
                     if (subtitle != null) ...[
@@ -609,7 +633,7 @@ class _LanguageOption extends StatelessWidget {
                         subtitle!,
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey.shade600,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -633,16 +657,17 @@ class _YearOption extends StatelessWidget {
   final VoidCallback onTap;
 
   const _YearOption({
-    Key? key,
+    super.key,
     required this.year,
     required this.isSelected,
     required this.isLatest,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Card(
       elevation: isSelected ? 4 : 1,
       color: isSelected ? theme.colorScheme.primaryContainer : null,
@@ -682,13 +707,13 @@ class _YearOption extends StatelessWidget {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.green,
+                              color: Theme.of(context).colorScheme.primary,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Text(
-                              'Latest',
+                            child: Text(
+                              l10n.latest,
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.onPrimary,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -700,11 +725,11 @@ class _YearOption extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       isLatest
-                          ? 'Current test version (for recent applications)'
-                          : 'Previous test version',
+                          ? l10n.currentTestVersion
+                          : l10n.previousTestVersion,
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.grey.shade600,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ],

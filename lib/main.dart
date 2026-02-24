@@ -15,9 +15,7 @@ import 'l10n/app_localizations.dart';
 import 'services/theme_service.dart';
 import 'services/onboarding_service.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
+void main() {
   // Initialize onboarding service
   final onboardingService = OnboardingService();
 

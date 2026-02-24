@@ -51,5 +51,142 @@
   "spanish": "Spanish",
   "@spanish": {
     "description": "Spanish language option"
+  },
+  "onboardingWelcome": "Welcome!",
+  "@onboardingWelcome": {
+    "description": "Onboarding welcome title"
+  },
+  "onboardingLanguageSubtitle": "Select your preferred language for the app interface",
+  "@onboardingLanguageSubtitle": {
+    "description": "Onboarding language selection subtitle"
+  },
+  "onboardingStudyLanguageTitle": "Study Materials Language",
+  "@onboardingStudyLanguageTitle": {
+    "description": "Study language selection title"
+  },
+  "onboardingStudyLanguageSubtitle": "The citizenship test is conducted in English. We recommend studying in English for best preparation.",
+  "@onboardingStudyLanguageSubtitle": {
+    "description": "Study language selection subtitle"
+  },
+  "studyInLanguageRecommended": "Study in {language} (Recommended)",
+  "@studyInLanguageRecommended": {
+    "description": "Study in a specific language with recommendation",
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "studyInLanguage": "Study in {language}",
+  "@studyInLanguage": {
+    "description": "Study in a specific language",
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "studyLanguageNote": "Use {language} translations to help understand concepts",
+  "@studyLanguageNote": {
+    "description": "Note about using translated study materials",
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingTestVersionTitle": "Select Test Version",
+  "@onboardingTestVersionTitle": {
+    "description": "Test version selection title"
+  },
+  "onboardingTestVersionSubtitle": "Choose which version of the citizenship test questions you want to study",
+  "@onboardingTestVersionSubtitle": {
+    "description": "Test version selection subtitle"
+  },
+  "latest": "Latest",
+  "@latest": {
+    "description": "Latest version badge"
+  },
+  "currentTestVersion": "Current test version (for recent applications)",
+  "@currentTestVersion": {
+    "description": "Current test version description"
+  },
+  "previousTestVersion": "Previous test version",
+  "@previousTestVersion": {
+    "description": "Previous test version description"
+  },
+  "onboardingLocationTitle": "Location Setup",
+  "@onboardingLocationTitle": {
+    "description": "Location setup title"
+  },
+  "onboardingLocationSubtitle": "We need your location to provide accurate information about your local government officials",
+  "@onboardingLocationSubtitle": {
+    "description": "Location setup subtitle"
+  },
+  "useMyLocation": "Use My Location",
+  "@useMyLocation": {
+    "description": "Use GPS location button"
+  },
+  "or": "or",
+  "@or": {
+    "description": "Or separator text"
+  },
+  "enterZipCode": "Enter Zip Code",
+  "@enterZipCode": {
+    "description": "Manual zip code entry button"
+  },
+  "locationSet": "Location set: {state}",
+  "@locationSet": {
+    "description": "Location confirmation message",
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "zipCode": "Zip Code: {zip}",
+  "@zipCode": {
+    "description": "Zip code display",
+    "placeholders": {
+      "zip": {
+        "type": "String"
+      }
+    }
+  },
+  "enterYourZipCode": "Enter Your Zip Code",
+  "@enterYourZipCode": {
+    "description": "Zip code dialog title"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+  "submit": "Submit",
+  "@submit": {
+    "description": "Submit button"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next button"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button"
+  },
+  "finish": "Finish",
+  "@finish": {
+    "description": "Finish button"
+  },
+  "stepProgress": "Step {current} of {total}",
+  "@stepProgress": {
+    "description": "Shows current step and total steps",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
   }
 }

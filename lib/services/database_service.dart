@@ -537,8 +537,8 @@ class DatabaseService {
     for (final year in knownVersions) {
       try {
         String assetPath;
-        if (year == '2020') {
-          // 2020 version uses the default file name
+        if (year == '2025') {
+          // 2025 version uses the default file name (latest)
           assetPath = 'assets/questions_en_categorized.json';
         } else {
           assetPath = 'assets/questions_en_categorized_$year.json';
@@ -570,7 +570,8 @@ class DatabaseService {
 
     // Determine the asset file name
     String assetPath;
-    if (year == '2020') {
+    if (year == '2025') {
+      // 2025 version uses the default file name (latest)
       assetPath = 'assets/questions_${languageCode}_categorized.json';
     } else {
       assetPath = 'assets/questions_${languageCode}_categorized_$year.json';
@@ -583,6 +584,8 @@ class DatabaseService {
   /// Update location-specific answers in the database
   /// This replaces placeholder answers with actual government official names
   Future<void> updateLocationSpecificAnswers({
+    required String president,
+    required String vicePresident,
     required String governor,
     required String senator1,
     required String senator2,
@@ -597,12 +600,6 @@ class DatabaseService {
     // These are typically questions with GOVERNMENT_OFFICIAL category
     // that have placeholder text like "Your state's governor", etc.
 
-    // For now, we'll update specific question IDs that are known to need this
-    // In a real implementation, you might want to mark these questions differently
-
-    // Example: Update governor question (you'll need to identify the actual question IDs)
-    // This is a placeholder implementation - actual IDs would come from your question set
-
     final questionTexts = await db.query('question_text');
 
     for (var qt in questionTexts) {
@@ -610,8 +607,27 @@ class DatabaseService {
       final questionTextId = qt['id'] as int;
 
       // Check if this is a location-specific question and update accordingly
-      if (questionText.toLowerCase().contains('governor')) {
-        // Update or add the governor answer
+      if (questionText.toLowerCase().contains(
+            'president of the united states',
+          ) ||
+          questionText.toLowerCase().contains('name the president')) {
+        // Update president answer
+        await _upsertLocationAnswer(
+          db,
+          questionTextId,
+          president,
+          DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
+        );
+      } else if (questionText.toLowerCase().contains('vice president')) {
+        // Update vice president answer
+        await _upsertLocationAnswer(
+          db,
+          questionTextId,
+          vicePresident,
+          DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
+        );
+      } else if (questionText.toLowerCase().contains('governor')) {
+        // Update governor answer
         await _upsertLocationAnswer(
           db,
           questionTextId,
@@ -619,19 +635,23 @@ class DatabaseService {
           DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
         );
       } else if (questionText.toLowerCase().contains('senator')) {
-        // Update senator answers
+        // Update senator answers - both senators
         await _upsertLocationAnswer(
           db,
           questionTextId,
           senator1,
           DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
         );
-        await _upsertLocationAnswer(
-          db,
-          questionTextId,
-          senator2,
-          DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
-        );
+        // For questions asking for senators, add both as separate answers
+        if (senator2.isNotEmpty && senator2 != senator1) {
+          await _upsertLocationAnswer(
+            db,
+            questionTextId,
+            senator2,
+            DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
+            isSecondSenator: true,
+          );
+        }
       } else if (questionText.toLowerCase().contains('representative')) {
         // Update representative answer
         await _upsertLocationAnswer(
@@ -651,8 +671,9 @@ class DatabaseService {
     Database db,
     int questionTextId,
     String answerText,
-    int categoryId,
-  ) async {
+    int categoryId, {
+    bool isSecondSenator = false,
+  }) async {
     // Check if an answer with this category already exists
     final existing = await db.query(
       'answer',
@@ -667,13 +688,20 @@ class DatabaseService {
         'answer_text': answerText,
         'category_id': categoryId,
       });
+    } else if (isSecondSenator && existing.length == 1) {
+      // For second senator, add as additional answer
+      await db.insert('answer', {
+        'question_text_id': questionTextId,
+        'answer_text': answerText,
+        'category_id': categoryId,
+      });
     } else {
       // Update existing answer
       await db.update(
         'answer',
         {'answer_text': answerText},
-        where: 'question_text_id = ? AND category_id = ?',
-        whereArgs: [questionTextId, categoryId],
+        where: 'id = ?',
+        whereArgs: [existing.first['id']],
       );
     }
   }

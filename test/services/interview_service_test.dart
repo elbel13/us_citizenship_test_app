@@ -27,7 +27,7 @@ void main() {
 
       // Initialize database and load default questions
       await dbService.database;
-      await dbService.loadQuestionsForYear('2020', 'en');
+      await dbService.loadQuestionsForYear('2025', 'en');
     });
 
     tearDown(() async {

@@ -1,8 +1,12 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'government_officials_api_service.dart';
 
 /// Service to handle location permissions and government official lookup
 class LocationService {
+  final GovernmentOfficialsApiService _apiService =
+      GovernmentOfficialsApiService();
+
   /// Request location permission from the user
   Future<bool> requestLocationPermission() async {
     // Check if permission is already granted
@@ -128,21 +132,46 @@ class LocationService {
   }
 
   /// Get government officials for a state
-  /// This is a placeholder - actual implementation would call congress.gov API
-  /// or maintain a database of current officials
-  Future<GovernmentOfficials> getOfficialsForState(String state) async {
-    // TODO: Implement actual API calls to congress.gov and usa.gov
-    // For now, return placeholder data
-    // Users will need to manually verify and update this information
+  /// Uses hybrid approach: static data for governor, API for senators/reps
+  Future<GovernmentOfficials> getOfficialsForState(
+    String state, {
+    String? zipCode,
+  }) async {
+    try {
+      // Use the hybrid data service
+      final officialsData = await _apiService.getOfficialsByState(
+        state,
+        zipCode: zipCode,
+      );
 
-    return GovernmentOfficials(
-      state: state,
-      governor: 'Your state\'s current governor',
-      senator1: 'One of your state\'s current U.S. Senators',
-      senator2: 'One of your state\'s current U.S. Senators',
-      representative: 'Your U.S. Representative',
-      needsManualVerification: true,
-    );
+      final senators = officialsData['senators'] as List<dynamic>;
+      final representatives = officialsData['representatives'] as List<dynamic>;
+
+      return GovernmentOfficials(
+        state: officialsData['state'] as String? ?? state,
+        president: officialsData['president'] as String? ?? '',
+        vicePresident: officialsData['vicePresident'] as String? ?? '',
+        governor: officialsData['governor'] as String? ?? '',
+        senator1: senators.isNotEmpty ? senators[0] as String : '',
+        senator2: senators.length > 1 ? senators[1] as String : '',
+        representative: representatives.isNotEmpty
+            ? representatives[0] as String
+            : '',
+        needsManualVerification: false,
+      );
+    } catch (e) {
+      // If data loading fails, return placeholder data
+      return GovernmentOfficials(
+        state: state,
+        president: 'Current U.S. President',
+        vicePresident: 'Current U.S. Vice President',
+        governor: 'Your state\'s current governor',
+        senator1: 'One of your state\'s current U.S. Senators',
+        senator2: 'One of your state\'s current U.S. Senators',
+        representative: 'Your U.S. Representative',
+        needsManualVerification: true,
+      );
+    }
   }
 
   /// Get government officials from zip code
@@ -152,13 +181,15 @@ class LocationService {
       return null;
     }
 
-    return await getOfficialsForState(state);
+    return await getOfficialsForState(state, zipCode: zipCode);
   }
 }
 
 /// Model for government officials
 class GovernmentOfficials {
   final String state;
+  final String president;
+  final String vicePresident;
   final String governor;
   final String senator1;
   final String senator2;
@@ -167,6 +198,8 @@ class GovernmentOfficials {
 
   GovernmentOfficials({
     required this.state,
+    required this.president,
+    required this.vicePresident,
     required this.governor,
     required this.senator1,
     required this.senator2,

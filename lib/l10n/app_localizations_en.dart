@@ -46,4 +46,99 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spanish => 'Spanish';
+
+  @override
+  String get onboardingWelcome => 'Welcome!';
+
+  @override
+  String get onboardingLanguageSubtitle =>
+      'Select your preferred language for the app interface';
+
+  @override
+  String get onboardingStudyLanguageTitle => 'Study Materials Language';
+
+  @override
+  String get onboardingStudyLanguageSubtitle =>
+      'The citizenship test is conducted in English. We recommend studying in English for best preparation.';
+
+  @override
+  String studyInLanguageRecommended(String language) {
+    return 'Study in $language (Recommended)';
+  }
+
+  @override
+  String studyInLanguage(String language) {
+    return 'Study in $language';
+  }
+
+  @override
+  String studyLanguageNote(String language) {
+    return 'Use $language translations to help understand concepts';
+  }
+
+  @override
+  String get onboardingTestVersionTitle => 'Select Test Version';
+
+  @override
+  String get onboardingTestVersionSubtitle =>
+      'Choose which version of the citizenship test questions you want to study';
+
+  @override
+  String get latest => 'Latest';
+
+  @override
+  String get currentTestVersion =>
+      'Current test version (for recent applications)';
+
+  @override
+  String get previousTestVersion => 'Previous test version';
+
+  @override
+  String get onboardingLocationTitle => 'Location Setup';
+
+  @override
+  String get onboardingLocationSubtitle =>
+      'We need your location to provide accurate information about your local government officials';
+
+  @override
+  String get useMyLocation => 'Use My Location';
+
+  @override
+  String get or => 'or';
+
+  @override
+  String get enterZipCode => 'Enter Zip Code';
+
+  @override
+  String locationSet(String state) {
+    return 'Location set: $state';
+  }
+
+  @override
+  String zipCode(String zip) {
+    return 'Zip Code: $zip';
+  }
+
+  @override
+  String get enterYourZipCode => 'Enter Your Zip Code';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get submit => 'Submit';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get finish => 'Finish';
+
+  @override
+  String stepProgress(int current, int total) {
+    return 'Step $current of $total';
+  }
 }
