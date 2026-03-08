@@ -2,16 +2,9 @@ import 'dart:math';
 import '../models/interview_question.dart';
 import '../services/reading_evaluator.dart';
 
-/// Service for generating interview conversation prompts
+/// Service for generating interview conversation prompts.
 ///
-/// Currently uses pre-written professional variations for instant, reliable responses.
-/// LLM integration (DistilGPT-2) attempted but proved unsuitable:
-/// - Model too small (82M params) for instruction-following
-/// - Poor output quality (repetitive, nonsensical)
-/// - Unacceptable latency (60-90 seconds per response)
-///
-/// Future enhancement: Replace with larger instruction-tuned model (Gemma 2B, Phi-2)
-/// or cloud API (Gemini Flash) for natural conversation variety.
+/// Uses pre-written professional prompt variations for instant, reliable responses.
 class InterviewPromptService {
   final _random = Random();
 
@@ -142,7 +135,7 @@ class InterviewPromptService {
     return messages[_random.nextInt(messages.length)];
   }
 
-  /// Clean up LLM response (remove quotes, extra whitespace)
+  /// Clean up a response string (remove surrounding quotes, normalize whitespace)
   String cleanResponse(String response) {
     var cleaned = response.trim();
 

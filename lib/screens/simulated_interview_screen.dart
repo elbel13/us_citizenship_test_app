@@ -5,7 +5,6 @@ import '../models/interview_question.dart';
 import '../models/interview_state.dart';
 import '../services/interview_service.dart';
 import '../services/interview_prompt_service.dart';
-import '../services/llm_service.dart';
 import '../services/tts_service.dart';
 import '../services/reading_evaluator.dart';
 import '../widgets/circular_action_button.dart';
@@ -23,7 +22,6 @@ class SimulatedInterviewScreen extends StatefulWidget {
 class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
   final InterviewService _interviewService = InterviewService();
   final InterviewPromptService _promptService = InterviewPromptService();
-  final LlmService _llmService = LlmService();
   final TtsService _tts = TtsService();
   final ReadingEvaluator _evaluator = ReadingEvaluator();
   final stt.SpeechToText _speech = stt.SpeechToText();
@@ -64,7 +62,6 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
         }
       };
       await _speech.initialize();
-      await _llmService.initialize();
 
       // Generate questions
       final questions = await _interviewService.generateInterviewQuestions();
@@ -451,7 +448,6 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
       _isProcessing = true;
     });
 
-    // Get greeting (no LLM - instant response)
     final greeting = _promptService.getGreetingPrompt();
 
     setState(() {
@@ -487,7 +483,6 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
       _currentTranscript = '';
     });
 
-    // Generate question prompt (no LLM - instant response)
     String questionText;
     switch (question.type) {
       case InterviewQuestionType.reading:
@@ -586,7 +581,6 @@ class _SimulatedInterviewScreenState extends State<SimulatedInterviewScreen> {
     // Record attempt
     _state!.recordAttempt(_currentTranscript, result);
 
-    // Get response (no LLM - instant response)
     final response = _promptService.getResponsePrompt(
       questionType: question.type,
       result: result,

@@ -8,7 +8,6 @@ import 'screens/reading_practice_screen.dart';
 import 'screens/simulated_interview_screen.dart';
 import 'screens/test_readiness_screen.dart';
 import 'screens/settings_screen.dart';
-import 'screens/llm_test_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'theme/app_theme.dart';
 import 'l10n/app_localizations.dart';
@@ -119,7 +118,6 @@ class _USCitizenshipTestAppState extends State<USCitizenshipTestApp> {
           themeService: _themeService,
           onboardingService: widget.onboardingService,
         ),
-        '/llm_test': (context) => const LlmTestScreen(),
       },
     );
   }
