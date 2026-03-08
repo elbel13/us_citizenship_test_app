@@ -10,54 +10,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  generate-model:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Conda
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          auto-update-conda: true
-          python-version: '3.12'
-          environment-file: scripts/environment.yml
-          activate-environment: us_citizenship_ml
-
-      - name: Generate TFLite model
-        shell: bash -el {0}
-        run: |
-          python scripts/convert_distilgpt2_builtins_only.py
-
-      - name: Upload model artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: model-files
-          path: assets/models
-          retention-days: 1
-
   build-and-release:
-    needs: generate-model
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Download model artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: model-files
-          path: assets/models/
-
-      - name: Verify model files exist
-        run: |
-          echo "Checking model files..."
-          ls -lah assets/models/
-          ls -lah assets/models/tokenizer/
-          test -f assets/models/distilgpt2_builtins_only.tflite || (echo "ERROR: Model file missing!" && exit 1)
-          test -f assets/models/tokenizer/vocab.json || (echo "ERROR: vocab.json missing!" && exit 1)
-          test -f assets/models/tokenizer/merges.txt || (echo "ERROR: merges.txt missing!" && exit 1)
-          echo "All model files present!"
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
