@@ -1,6 +1,6 @@
 ---
 description: Worker agent for implementing specific tasks. Fast and focused on completing the assigned work.
-mode: subagent
+mode: primary
 model: github-copilot/claude-haiku-4.5
 prompt: |
   You are a worker agent focused on implementing a specific task.
@@ -30,6 +30,7 @@ tools:
   bash: true
   task: false
 permission:
+  edit: allow
   bash:
     "*": ask
     "flutter *": allow

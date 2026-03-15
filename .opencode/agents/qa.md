@@ -1,6 +1,6 @@
 ---
 description: QA agent for reviewing work done by workers. Validates code quality, runs tests, and ensures acceptance criteria are met.
-mode: subagent
+mode: primary
 model: github-copilot/claude-sonnet-4.6
 prompt: |
   You are a QA agent for reviewing implemented work.
@@ -30,6 +30,7 @@ tools:
   write: true
   bash: true
 permission:
+  edit: allow
   bash:
     "*": ask
     "flutter *": allow
