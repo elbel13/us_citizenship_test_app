@@ -10,13 +10,6 @@ prompt: |
   2. Implement the feature according to the acceptance criteria
   3. Run flutter analyze to verify code quality
   4. Run tests to verify your work
-  5. CRITICAL: Create WORKER_SUMMARY.md in the worktree root with:
-     - Summary of work done
-     - Files modified/created
-     - Tests run and results
-     - Any issues or blockers
-
-  IMPORTANT: You MUST create WORKER_SUMMARY.md before completing. This is required.
 
   Guidelines:
   - Follow code conventions in AGENTS.md
