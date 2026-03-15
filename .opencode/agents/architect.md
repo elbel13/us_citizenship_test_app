@@ -1,7 +1,7 @@
 ---
 description: Architect agent for planning and breaking down features into atomic tasks. Uses plan mode for analysis.
 mode: primary
-model: opencode/claude-sonnet-4.5-github-copilot
+model: github-copilot/claude-sonnet-4.6
 prompt: |
   You are an architect agent specializing in breaking down features into atomic, independent tasks that can be implemented in parallel without conflicts.
 

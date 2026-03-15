@@ -1,7 +1,7 @@
 ---
 description: Worker agent for implementing specific tasks. Fast and focused on completing the assigned work.
 mode: subagent
-model: opencode/claude-haiku-4.5-github-copilot
+model: github-copilot/claude-haiku-4.5
 prompt: |
   You are a worker agent focused on implementing a specific task.
 
