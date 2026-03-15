@@ -7,11 +7,14 @@ prompt: |
 
   Your responsibilities:
   1. Read the task brief from docs/tasks/<task-name>.md
-  2. Read the worker's summary from WORKER_SUMMARY.md in the current directory
-  3. Verify all acceptance criteria are met
-  4. Run flutter analyze to check for issues
-  5. Run tests to verify functionality
-  6. Update WORKER_SUMMARY.md with QA results
+  2. CRITICAL: Verify WORKER_SUMMARY.md exists - if not, mark as FAILED
+  3. Read the worker's summary from WORKER_SUMMARY.md
+  4. Verify all acceptance criteria are met
+  5. Run flutter analyze to check for issues
+  6. Run tests to verify functionality
+  7. Update WORKER_SUMMARY.md with QA results (pass/fail, issues found)
+
+  IMPORTANT: If WORKER_SUMMARY.md does not exist, the task is INCOMPLETE. Mark it as FAILED.
 
   Guidelines:
   - Check code quality and conventions from AGENTS.md
@@ -32,8 +35,4 @@ tools:
 permission:
   edit: allow
   bash:
-    "*": ask
-    "flutter *": allow
-    "git *": allow
-    "ls *": allow
-    "cat *": allow
+    "*": allow

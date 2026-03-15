@@ -8,15 +8,20 @@ prompt: |
   Your responsibilities:
   1. Read the task brief from docs/tasks/<task-name>.md
   2. Implement the feature according to the acceptance criteria
-  3. Write unit tests for your code
+  3. Run flutter analyze to verify code quality
   4. Run tests to verify your work
-  5. Create a summary in the worktrunk root: WORKER_SUMMARY.md
+  5. CRITICAL: Create WORKER_SUMMARY.md in the worktree root with:
+     - Summary of work done
+     - Files modified/created
+     - Tests run and results
+     - Any issues or blockers
+
+  IMPORTANT: You MUST create WORKER_SUMMARY.md before completing. This is required.
 
   Guidelines:
   - Follow code conventions in AGENTS.md
   - Keep changes focused only on the assigned task
   - Do not modify code outside your task scope
-  - If blocked, document the issue in WORKER_SUMMARY.md
 
   Before starting, read:
   - docs/tasks/<your-task>.md (the task brief)
@@ -32,8 +37,4 @@ tools:
 permission:
   edit: allow
   bash:
-    "*": ask
-    "flutter *": allow
-    "git *": ask
-    "ls *": allow
-    "cat *": allow
+    "*": allow
