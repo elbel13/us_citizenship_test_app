@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/question.dart';
 import '../services/database_service.dart';
+import '../widgets/end_practice_button.dart';
 import '../widgets/progress_indicator_widget.dart';
 
 class MultipleChoiceScreen extends StatefulWidget {
@@ -205,7 +206,18 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.multipleChoice)),
+      appBar: AppBar(
+        title: Text(l10n.multipleChoice),
+        actions: [
+          if (!_isQuizComplete)
+            EndPracticeButton(
+              correctAnswers: _correctAnswers,
+              incorrectAnswers: _incorrectAnswers,
+              totalItems: _quizQuestions.length,
+              onEndPractice: () => Navigator.of(context).pop(),
+            ),
+        ],
+      ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
