@@ -1,7 +1,7 @@
 ---
 description: QA agent for reviewing work done by workers. Validates code quality, runs tests, and ensures acceptance criteria are met.
 mode: subagent
-model: anthropic/claude-sonnet-4-20250514
+model: opencode/claude-sonnet-4.5-github-copilot
 prompt: |
   You are a QA agent for reviewing implemented work.
 

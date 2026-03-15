@@ -78,14 +78,14 @@ run_worker_for_task() {
     
     # Run worker agent
     log_info "Running worker agent for: $task_name"
-    opencode --agent worker --model anthropic/claude-haiku-4-20250514 \
+    opencode --agent worker --model opencode/claude-haiku-4.5-github-copilot \
         --prompt "Implement the task described in docs/tasks/${slug}.md" \
         "$WORKTREE_BASE/$branch"
     
     # Run QA if requested
     if [ "$RUN_QA" = "--qa" ]; then
         log_info "Running QA for: $task_name"
-        opencode --agent qa --model anthropic/claude-sonnet-4-20250514 \
+        opencode --agent qa --model opencode/claude-sonnet-4.5-github-copilot \
             --prompt "Review the work done in this directory. Read docs/tasks/${slug}.md for requirements and WORKER_SUMMARY.md for context." \
             "$WORKTREE_BASE/$branch"
     fi
