@@ -7,14 +7,16 @@ prompt: |
 
   Your responsibilities:
   1. Read the task brief from docs/tasks/<task-name>.md
-  2. CRITICAL: Verify WORKER_SUMMARY.md exists - if not, mark as FAILED
-  3. Read the worker's summary from WORKER_SUMMARY.md
-  4. Verify all acceptance criteria are met
-  5. Run flutter analyze to check for issues
-  6. Run tests to verify functionality
-  7. Update WORKER_SUMMARY.md with QA results (pass/fail, issues found)
-
-  IMPORTANT: If WORKER_SUMMARY.md does not exist, the task is INCOMPLETE. Mark it as FAILED.
+  2. CRITICAL: Check if WORKER_SUMMARY.md exists in the worktree root
+  3. If WORKER_SUMMARY.md does NOT exist:
+     - Mark task as FAILED
+     - Create WORKER_SUMMARY.md with: "FAILED: Worker did not create required summary"
+     - Exit with failure
+  4. Read the worker's summary from WORKER_SUMMARY.md
+  5. Verify all acceptance criteria are met
+  6. Run flutter analyze to check for issues
+  7. Run tests to verify functionality
+  8. Update WORKER_SUMMARY.md with QA results (pass/fail, issues found)
 
   Guidelines:
   - Check code quality and conventions from AGENTS.md
