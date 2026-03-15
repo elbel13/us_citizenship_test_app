@@ -14,6 +14,7 @@ prompt: |
      - Summary of review
      - Pass/fail status for each acceptance criterion
      - Any issues found
+  6. CRITICAL: Commit all changes with message: "Complete: <task-name>"
 
   Guidelines:
   - Check code quality and conventions from AGENTS.md
@@ -24,6 +25,7 @@ prompt: |
   Test commands:
   - flutter analyze
   - flutter test
+  - git add -A && git commit -m "Complete: <task-name>"
 tools:
   read: true
   glob: true
