@@ -1,18 +1,13 @@
 #!/bin/bash
 
 # US Citizenship Test App - Worker Orchestration Script
-# Usage: ./scripts/run-workers.sh [--workers=N] [--qa]
+# Usage: ./scripts/run-workers.sh [--parallel] [--qa]
 #
 # This script:
 # 1. Reads tasks from docs/TODO.md
 # 2. Creates worktrees for each task
-# 3. Runs worker agents in parallel
+# 3. Runs worker agents (parallel or sequential)
 # 4. Optionally runs QA after workers complete
-
-set -e
-
-WORKERS=${1:-1}  # Default to 1 worker, can pass --workers=N
-RUN_QA=${2:-""}  # Pass --qa to run QA after workers
 
 # Get repo root directory (where this script is located)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -23,6 +18,20 @@ TASKS_DIR="$REPO_ROOT/docs/tasks"
 
 # Worktrees are created as siblings to the repo
 WORKTREE_BASE="$(dirname "$REPO_ROOT")"
+
+# Parse arguments
+RUN_PARALLEL=""
+RUN_QA=""
+for arg in "$@"; do
+    case $arg in
+        --parallel)
+            RUN_PARALLEL="true"
+            ;;
+        --qa)
+            RUN_QA="true"
+            ;;
+    esac
+done
 
 # Colors for output
 RED='\033[0;31m'
@@ -64,6 +73,7 @@ run_worker_for_task() {
     local slug=$(echo "$task_name" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
     local branch="worker-${slug}"
     local worktree_path="$WORKTREE_BASE/$REPO_NAME.$branch"
+    local log_file="$REPO_ROOT/.worktree_${branch}.log"
     
     log_info "Processing task: $task_name"
     
@@ -71,28 +81,28 @@ run_worker_for_task() {
     if ! task_brief_exists "$task_name"; then
         log_warn "No task brief found for: $task_name (expected: $TASKS_DIR/${slug}.md)"
         log_warn "Skipping..."
+        echo "✗ $task_name (no brief)" >> "$REPO_ROOT/.worktree_completed_tasks.tmp"
         return 1
     fi
     
-    # Create worktree (creates branch and directory)
-    log_info "Creating worktree: $branch"
-    
     # Remove existing worktree if it exists
     if [ -d "$worktree_path" ]; then
-        log_info "Removing existing worktree: $worktree_path"
         wt remove --force "$branch" 2>/dev/null || rm -rf "$worktree_path"
         git branch -D "$branch" 2>/dev/null || true
     fi
     
-    wt switch --create "$branch"
+    # Create worktree
+    log_info "Creating worktree: $branch"
+    wt switch --create "$branch" > "$log_file" 2>&1
     
     # Verify worktree was created
     if [ ! -d "$worktree_path" ]; then
         log_error "Worktree not created at $worktree_path"
+        echo "✗ $task_name (worktree failed)" >> "$REPO_ROOT/.worktree_completed_tasks.tmp"
         return 1
     fi
     
-    # Copy task brief and opencode config to worktree (exclude node_modules)
+    # Copy task brief and opencode config to worktree
     mkdir -p "$worktree_path/docs/tasks"
     cp "$TASKS_DIR/${slug}.md" "$worktree_path/docs/tasks/"
     rsync -a --exclude='node_modules' "$REPO_ROOT/.opencode/" "$worktree_path/.opencode/"
@@ -104,32 +114,36 @@ run_worker_for_task() {
         --agent worker \
         --model github-copilot/claude-haiku-4.5 \
         --dir "$worktree_path" \
-        "Implement the task described in docs/tasks/${slug}.md"
+        "Implement the task described in docs/tasks/${slug}.md" >> "$log_file" 2>&1
+    
+    local worker_status=$?
     
     # Run QA if requested
-    if [ "$RUN_QA" = "--qa" ]; then
+    if [ "$RUN_QA" = "true" ]; then
         log_info "Running QA for: $task_name"
         opencode run \
             --agent qa \
             --model github-copilot/claude-sonnet-4.6 \
             --dir "$worktree_path" \
-            "Review the work done in this directory. Read docs/tasks/${slug}.md for requirements and WORKER_SUMMARY.md for context."
+            "Review the work done in this directory. Read docs/tasks/${slug}.md for requirements." >> "$log_file" 2>&1
     fi
     
-    log_info "Completed: $task_name"
-    
-    # Track completed tasks
-    if [ $? -eq 0 ]; then
+    if [ $worker_status -eq 0 ]; then
+        log_info "Completed: $task_name"
         echo "✓ $task_name" >> "$REPO_ROOT/.worktree_completed_tasks.tmp"
     else
+        log_error "Failed: $task_name"
         echo "✗ $task_name (failed)" >> "$REPO_ROOT/.worktree_completed_tasks.tmp"
     fi
+    
+    return $worker_status
 }
 
 # Main execution
 main() {
     log_info "Starting worker orchestration..."
     log_info "Worktrees will be created in: $WORKTREE_BASE"
+    [ "$RUN_PARALLEL" = "true" ] && log_info "Mode: PARALLEL" || log_info "Mode: SEQUENTIAL"
     
     # Extract tasks from TODO.md
     tasks=$(extract_tasks)
@@ -139,17 +153,40 @@ main() {
         exit 0
     fi
     
-    total=$(echo "$tasks" | wc -l)
+    # Convert to array
+    task_array=()
+    while IFS= read -r task; do
+        task_array+=("$task")
+    done <<< "$tasks"
+    
+    total=${#task_array[@]}
     log_info "Found $total tasks to process"
     
-    # Process each task
-    current=0
-    while IFS= read -r task; do
-        current=$((current + 1))
-        echo ""
-        log_info "=== Task $current of $total ==="
-        run_worker_for_task "$task" || true
-    done <<< "$tasks"
+    # Clear completion file
+    rm -f "$REPO_ROOT/.worktree_completed_tasks.tmp"
+    
+    if [ "$RUN_PARALLEL" = "true" ]; then
+        # Run tasks in parallel
+        pids=()
+        for task in "${task_array[@]}"; do
+            run_worker_for_task "$task" &
+            pids+=($!)
+        done
+        
+        # Wait for all to complete
+        for pid in "${pids[@]}"; do
+            wait $pid
+        done
+    else
+        # Run tasks sequentially
+        current=0
+        for task in "${task_array[@]}"; do
+            current=$((current + 1))
+            echo ""
+            log_info "=== Task $current of $total ==="
+            run_worker_for_task "$task" || true
+        done
+    fi
     
     log_info "Worker orchestration complete!"
     log_info "Review worktrees in: $WORKTREE_BASE"
