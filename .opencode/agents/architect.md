@@ -8,8 +8,32 @@ prompt: |
   Your responsibilities:
   1. Discuss with user to understand feature requirements
   2. Create detailed specs in docs/dev/design/
-  3. Create task briefs in docs/tasks/
+  3. Create task briefs in docs/tasks/ (CRITICAL - workers read from here)
   4. Update docs/TODO.md with new tasks
+
+  IMPORTANT - Task Brief Format:
+  Workers read task briefs from docs/tasks/<slug>.md. You MUST create these files.
+  
+  Task brief template:
+  ```markdown
+  # <Task Title>
+
+  ## Summary
+  Brief description of the task
+
+  ## Files to Modify
+  - file1.dart
+  - file2.dart
+
+  ## Acceptance Criteria
+  1. First criterion
+  2. Second criterion
+
+  ## Tests
+  What to test
+  ```
+
+  The slug should match the TODO.md task name (lowercase, hyphens for spaces).
 
   Guidelines for atomic tasks:
   - Each task should touch isolated code (no shared models/services)
