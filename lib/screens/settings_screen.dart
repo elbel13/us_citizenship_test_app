@@ -3,6 +3,7 @@ import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../services/theme_service.dart';
 import '../services/onboarding_service.dart';
+import '../widgets/bug_report_bottom_sheet.dart';
 
 class SettingsScreen extends StatefulWidget {
   final ThemeService themeService;
@@ -58,6 +59,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onTap: () => _showResetOnboardingDialog(context),
             ),
           ],
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.bug_report),
+            title: const Text('Report a Bug'),
+            subtitle: const Text('Help us improve the app'),
+            onTap: () => _showBugReportBottomSheet(context),
+          ),
         ],
       ),
     );
@@ -124,6 +132,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _changeLanguage(BuildContext context, String languageCode) {
     Navigator.pop(context);
     USCitizenshipTestApp.setLocale(context, Locale(languageCode));
+  }
+
+  void _showBugReportBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext context) {
+        return const BugReportBottomSheet();
+      },
+    );
   }
 
   void _showResetOnboardingDialog(BuildContext context) {
