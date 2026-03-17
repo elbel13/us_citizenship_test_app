@@ -8,7 +8,7 @@
 ## Medium Priority
 - Reverse geocoding (GPS → state conversion)
 - Tutorial screens
-- Centralized app configuration
+- Centralized app configuration (extract constants like app version, bug report email, API URLs into lib/config/app_config.dart)
 
 ## Low Priority
 - Spaced repetition system
