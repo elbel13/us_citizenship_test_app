@@ -607,7 +607,17 @@ class DatabaseService {
       final questionTextId = qt['id'] as int;
 
       // Check if this is a location-specific question and update accordingly
-      if (questionText.toLowerCase().contains(
+      // NOTE: 'vice president' must be checked before 'president of the united
+      // states' because the VP question text contains both substrings.
+      if (questionText.toLowerCase().contains('vice president')) {
+        // Update vice president answer
+        await _upsertLocationAnswer(
+          db,
+          questionTextId,
+          vicePresident,
+          DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
+        );
+      } else if (questionText.toLowerCase().contains(
             'president of the united states',
           ) ||
           questionText.toLowerCase().contains('name the president')) {
@@ -616,14 +626,6 @@ class DatabaseService {
           db,
           questionTextId,
           president,
-          DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
-        );
-      } else if (questionText.toLowerCase().contains('vice president')) {
-        // Update vice president answer
-        await _upsertLocationAnswer(
-          db,
-          questionTextId,
-          vicePresident,
           DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
         );
       } else if (questionText.toLowerCase().contains('governor')) {
