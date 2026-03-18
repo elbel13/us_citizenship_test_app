@@ -93,10 +93,18 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
         correctAnswers.add(correctAnswer);
       }
 
-      // Get wrong answers from the same categories
+      // Get wrong answers from the same categories.
+      // Request extra candidates to account for any that duplicate correct answers.
       final numWrong = requiresMultiple ? 2 : 3;
-      final incorrectAnswers = await _databaseService
-          .getWrongAnswersByCategories(question.id, categoryIds, numWrong);
+      final rawIncorrect = await _databaseService.getWrongAnswersByCategories(
+        question.id,
+        categoryIds,
+        numWrong + correctAnswers.length,
+      );
+      final incorrectAnswers = rawIncorrect
+          .where((a) => !correctAnswers.contains(a))
+          .take(numWrong)
+          .toList();
 
       // Combine correct and incorrect answers and shuffle
       final allAnswers = [...correctAnswers, ...incorrectAnswers]..shuffle();
