@@ -2,11 +2,14 @@
 
 # US Citizenship Test App - Worker Orchestration Script
 # Usage: ./scripts/run-workers.sh [--parallel] [--qa]
+# 
+# Environment variables:
+#   MAX_PARALLEL  - Max concurrent workers (default: 5)
 #
 # This script:
 # 1. Reads tasks from docs/TODO.md
 # 2. Creates worktrees for each task
-# 3. Runs worker agents (parallel or sequential)
+# 3. Runs worker agents (parallel or sequential, max 5 concurrent by default)
 # 4. Optionally runs QA after workers complete
 
 # Get repo root directory (where this script is located)
@@ -18,6 +21,9 @@ TASKS_DIR="$REPO_ROOT/docs/tasks"
 
 # Worktrees are created as siblings to the repo
 WORKTREE_BASE="$(dirname "$REPO_ROOT")"
+
+# Max concurrent workers (configurable via env var)
+MAX_PARALLEL="${MAX_PARALLEL:-5}"
 
 # Parse arguments
 RUN_PARALLEL=""
@@ -57,7 +63,7 @@ fi
 
 # Extract task names from TODO.md (lines with - )
 extract_tasks() {
-    grep -E "^\s*-\s+" "$TODO_FILE" | sed 's/.*-\s*//' | sed 's/[[:space:]]*(blocked.*//' | grep -v "^$"
+    grep -E "^\s*-\s+" "$TODO_FILE" | sed 's/^\s*-\s*//' | sed 's/[[:space:]]*(blocked.*//' | grep -v "^$"
 }
 
 # Check if task brief exists
@@ -166,17 +172,18 @@ main() {
     rm -f "$REPO_ROOT/.worktree_completed_tasks.tmp"
     
     if [ "$RUN_PARALLEL" = "true" ]; then
-        # Run tasks in parallel
-        pids=()
+        # Run tasks in parallel with throttling
+        log_info "Max concurrent workers: $MAX_PARALLEL"
+        running=0
         for task in "${task_array[@]}"; do
             run_worker_for_task "$task" &
-            pids+=($!)
+            running=$((running + 1))
+            if [ $running -ge $MAX_PARALLEL ]; then
+                wait -n
+                running=$((running - 1))
+            fi
         done
-        
-        # Wait for all to complete
-        for pid in "${pids[@]}"; do
-            wait $pid
-        done
+        wait
     else
         # Run tasks sequentially
         current=0

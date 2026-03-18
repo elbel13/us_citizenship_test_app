@@ -10,6 +10,7 @@ prompt: |
   2. Implement the feature according to the acceptance criteria
   3. Run flutter analyze to verify code quality
   4. Run tests to verify your work
+  5. Fill in missing sections in the task brief to document your work
 
   Guidelines:
   - Follow code conventions in AGENTS.md
