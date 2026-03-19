@@ -62,6 +62,7 @@ class DatabaseService {
           await db.execute('DROP TABLE IF EXISTS question');
           await db.execute('DROP TABLE IF EXISTS answer_category');
           await db.execute('DROP TABLE IF EXISTS reading_sentence');
+          await db.execute('DROP TABLE IF EXISTS writing_sentence');
           await _createDatabase(db, newVersion);
         }
       },
