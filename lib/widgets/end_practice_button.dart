@@ -56,7 +56,7 @@ class EndPracticeButton extends StatelessWidget {
                   children: [
                     Icon(Icons.check_circle, color: Colors.green, size: 20),
                     const SizedBox(width: 8),
-                    Text('Correct: $_totalAnswered'),
+                    Text('Correct: $correctAnswers'),
                   ],
                 ),
                 const SizedBox(height: 4),
