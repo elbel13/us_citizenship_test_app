@@ -24,6 +24,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
   String? _error;
   bool _hasLoadedQuestions = false;
   bool _hasAnswered = false;
+  bool _isEarlyExit = false;
   Set<int> _selectedAnswerIndices = {};
 
   @override
@@ -201,13 +202,26 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
       _correctAnswers = 0;
       _incorrectAnswers = 0;
       _hasAnswered = false;
+      _isEarlyExit = false;
       _selectedAnswerIndices.clear();
     });
     _prepareQuiz();
   }
 
+  void _endEarly() {
+    if (_correctAnswers + _incorrectAnswers == 0) {
+      // No questions answered — nothing to show, just leave.
+      Navigator.of(context).pop();
+      return;
+    }
+    setState(() {
+      _isEarlyExit = true;
+    });
+  }
+
   bool get _isQuizComplete =>
-      _currentQuestionIndex == _quizQuestions.length - 1 && _hasAnswered;
+      (_currentQuestionIndex == _quizQuestions.length - 1 && _hasAnswered) ||
+      _isEarlyExit;
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +236,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
               correctAnswers: _correctAnswers,
               incorrectAnswers: _incorrectAnswers,
               totalItems: _quizQuestions.length,
-              onEndPractice: () => Navigator.of(context).pop(),
+              onEndPractice: _endEarly,
             ),
         ],
       ),
@@ -443,7 +457,11 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
   }
 
   Widget _buildSummaryScreen(AppLocalizations l10n) {
-    final percentage = (_correctAnswers / _quizQuestions.length * 100).round();
+    final answeredCount = _correctAnswers + _incorrectAnswers;
+    final denominator = _isEarlyExit ? answeredCount : _quizQuestions.length;
+    final percentage = denominator > 0
+        ? (_correctAnswers / denominator * 100).round()
+        : 0;
 
     return Center(
       child: SingleChildScrollView(
@@ -458,7 +476,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Quiz Complete!',
+              _isEarlyExit ? 'Practice Ended Early' : 'Quiz Complete!',
               style: Theme.of(
                 context,
               ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -476,7 +494,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      '$_correctAnswers / ${_quizQuestions.length}',
+                      '$_correctAnswers / $denominator',
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
