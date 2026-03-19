@@ -282,11 +282,11 @@
   {
      "id": 35,
      "question": "Some states have more representatives than other states. Why?",
-     "answers": [
-       {"text": "(Because of) the state's population", "category": "POPULATION_REASON"},
-       {"text": "(Because) they have more people", "category": "POPULATION_REASON"},
-       {"text": "(Because) some states have more people", "category": "POPULATION_REASON"}
-     ]
+      "answers": [
+        {"text": "(Because of) the state's population", "category": "POLITICAL_CONCEPT"},
+        {"text": "(Because) they have more people", "category": "POLITICAL_CONCEPT"},
+        {"text": "(Because) some states have more people", "category": "POLITICAL_CONCEPT"}
+      ]
   },
   {
     "id": 36,
@@ -463,9 +463,9 @@
     "id": 55,
     "question": "How long do Supreme Court justices serve?",
     "answers": [
-      {"text": "(For) life", "category": "NUMBER_TENURE"},
-      {"text": "Lifetime appointment", "category": "NUMBER_TENURE"},
-      {"text": "(Until) retirement", "category": "NUMBER_TENURE"}
+       {"text": "(For) life", "category": "NUMBER_YEARS"},
+       {"text": "Lifetime appointment", "category": "NUMBER_YEARS"},
+       {"text": "(Until) retirement", "category": "NUMBER_YEARS"}
     ]
   },
   {
@@ -898,12 +898,12 @@
     "id": 99,
     "question": "Name one leader of the women's rights movement in the 1800s.",
     "answers": [
-      {"text": "Susan B. Anthony", "category": "HISTORICAL_FIGURE"},
-      {"text": "Elizabeth Cady Stanton", "category": "HISTORICAL_FIGURE"},
-      {"text": "Sojourner Truth", "category": "HISTORICAL_FIGURE"},
-      {"text": "Harriet Tubman", "category": "HISTORICAL_FIGURE"},
-      {"text": "Lucretia Mott", "category": "HISTORICAL_FIGURE"},
-      {"text": "Lucy Stone", "category": "HISTORICAL_FIGURE"}
+      {"text": "Susan B. Anthony", "category": "FOUNDING_FATHER"},
+      {"text": "Elizabeth Cady Stanton", "category": "FOUNDING_FATHER"},
+      {"text": "Sojourner Truth", "category": "FOUNDING_FATHER"},
+      {"text": "Harriet Tubman", "category": "FOUNDING_FATHER"},
+      {"text": "Lucretia Mott", "category": "FOUNDING_FATHER"},
+      {"text": "Lucy Stone", "category": "FOUNDING_FATHER"}
     ]
   },
   {
@@ -1019,9 +1019,9 @@
     "id": 113,
     "question": "Martin Luther King, Jr. is famous for many things. Name one.",
     "answers": [
-      {"text": "Fought for civil rights", "category": "HISTORICAL_FIGURE"},
-      {"text": "Worked for equality for all Americans", "category": "HISTORICAL_FIGURE"},
-      {"text": "Worked to ensure that people would \"not be judged by the color of their skin, but by the content of their character\"", "category": "HISTORICAL_FIGURE"}
+      {"text": "Fought for civil rights", "category": "EVENT"},
+      {"text": "Worked for equality for all Americans", "category": "EVENT"},
+      {"text": "Worked to ensure that people would \"not be judged by the color of their skin, but by the content of their character\"", "category": "EVENT"}
     ]
   },
   {
