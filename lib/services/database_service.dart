@@ -33,6 +33,9 @@ class DatabaseService {
     'EVENT': 16,
     'INNOVATION': 17,
     'NATIONAL_SYMBOL': 18,
+    'RULE_OF_LAW': 19,
+    'POLITICAL_IDEOLOGY': 20,
+    'POPULATION_REASON': 21,
   };
 
   Future<Database> get database async {
@@ -48,11 +51,12 @@ class DatabaseService {
         join(await getDatabasesPath(), 'citizenship_test.db');
     return await openDatabase(
       path,
-      version: 5, // Bumped for writing sentences
+      version:
+          6, // Bumped for RULE_OF_LAW, POLITICAL_IDEOLOGY, POPULATION_REASON categories
       onCreate: _createDatabase,
       onUpgrade: (db, oldVersion, newVersion) async {
         // For now, just drop and recreate (no user data to preserve)
-        if (oldVersion < 5) {
+        if (oldVersion < 6) {
           await db.execute('DROP TABLE IF EXISTS answer');
           await db.execute('DROP TABLE IF EXISTS question_text');
           await db.execute('DROP TABLE IF EXISTS question');

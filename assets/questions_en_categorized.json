@@ -96,22 +96,22 @@
     ]
   },
   {
-    "id": 12,
-    "question": "What is the economic system of the United States?",
-    "answers": [
-      {"text": "Capitalism", "category": "POLITICAL_CONCEPT"},
-      {"text": "Free market economy", "category": "POLITICAL_CONCEPT"}
-    ]
+     "id": 12,
+     "question": "What is the economic system of the United States?",
+     "answers": [
+       {"text": "Capitalism", "category": "POLITICAL_IDEOLOGY"},
+       {"text": "Free market economy", "category": "POLITICAL_IDEOLOGY"}
+     ]
   },
   {
-    "id": 13,
-    "question": "What is the rule of law?",
-    "answers": [
-      {"text": "Everyone must follow the law.", "category": "POLITICAL_CONCEPT"},
-      {"text": "Leaders must obey the law.", "category": "POLITICAL_CONCEPT"},
-      {"text": "Government must obey the law.", "category": "POLITICAL_CONCEPT"},
-      {"text": "No one is above the law.", "category": "POLITICAL_CONCEPT"}
-    ]
+     "id": 13,
+     "question": "What is the rule of law?",
+     "answers": [
+       {"text": "Everyone must follow the law.", "category": "RULE_OF_LAW"},
+       {"text": "Leaders must obey the law.", "category": "RULE_OF_LAW"},
+       {"text": "Government must obey the law.", "category": "RULE_OF_LAW"},
+       {"text": "No one is above the law.", "category": "RULE_OF_LAW"}
+     ]
   },
   {
     "id": 14,
@@ -280,13 +280,13 @@
     ]
   },
   {
-    "id": 35,
-    "question": "Some states have more representatives than other states. Why?",
-    "answers": [
-      {"text": "(Because of) the state's population", "category": "POLITICAL_CONCEPT"},
-      {"text": "(Because) they have more people", "category": "POLITICAL_CONCEPT"},
-      {"text": "(Because) some states have more people", "category": "POLITICAL_CONCEPT"}
-    ]
+     "id": 35,
+     "question": "Some states have more representatives than other states. Why?",
+     "answers": [
+       {"text": "(Because of) the state's population", "category": "POPULATION_REASON"},
+       {"text": "(Because) they have more people", "category": "POPULATION_REASON"},
+       {"text": "(Because) some states have more people", "category": "POPULATION_REASON"}
+     ]
   },
   {
     "id": 36,
@@ -465,12 +465,12 @@
     ]
   },
   {
-    "id": 56,
-    "question": "Supreme Court justices serve for life. Why?",
-    "answers": [
-      {"text": "To be independent (of politics)", "category": "POLITICAL_CONCEPT"},
-      {"text": "To limit outside (political) influence", "category": "POLITICAL_CONCEPT"}
-    ]
+     "id": 56,
+     "question": "Supreme Court justices serve for life. Why?",
+     "answers": [
+       {"text": "To be independent (of politics)", "category": "RULE_OF_LAW"},
+       {"text": "To limit outside (political) influence", "category": "RULE_OF_LAW"}
+     ]
   },
   {
     "id": 57,
@@ -503,11 +503,11 @@
     ]
   },
   {
-    "id": 60,
-    "question": "What is the purpose of the 10th Amendment?",
-    "answers": [
-      {"text": "(It states that the) powers not given to the federal government belong to the states or to the people.", "category": "POLITICAL_CONCEPT"}
-    ]
+     "id": 60,
+     "question": "What is the purpose of the 10th Amendment?",
+     "answers": [
+       {"text": "(It states that the) powers not given to the federal government belong to the states or to the people.", "category": "RULE_OF_LAW"}
+     ]
   },
   {
     "id": 61,
@@ -983,26 +983,26 @@
     ]
   },
   {
-    "id": 109,
-    "question": "During the Cold War, what was one main concern of the United States?",
-    "answers": [
-      {"text": "Communism", "category": "POLITICAL_CONCEPT"},
-      {"text": "Nuclear war", "category": "WAR"}
-    ]
+     "id": 109,
+     "question": "During the Cold War, what was one main concern of the United States?",
+     "answers": [
+       {"text": "Communism", "category": "POLITICAL_IDEOLOGY"},
+       {"text": "Nuclear war", "category": "WAR"}
+     ]
   },
   {
-    "id": 110,
-    "question": "Why did the United States enter the Korean War?",
-    "answers": [
-      {"text": "To stop the spread of communism", "category": "POLITICAL_CONCEPT"}
-    ]
+     "id": 110,
+     "question": "Why did the United States enter the Korean War?",
+     "answers": [
+       {"text": "To stop the spread of communism", "category": "POLITICAL_IDEOLOGY"}
+     ]
   },
   {
-    "id": 111,
-    "question": "Why did the United States enter the Vietnam War?",
-    "answers": [
-      {"text": "To stop the spread of communism", "category": "POLITICAL_CONCEPT"}
-    ]
+     "id": 111,
+     "question": "Why did the United States enter the Vietnam War?",
+     "answers": [
+       {"text": "To stop the spread of communism", "category": "POLITICAL_IDEOLOGY"}
+     ]
   },
   {
     "id": 112,
