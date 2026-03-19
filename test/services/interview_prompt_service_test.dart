@@ -60,7 +60,7 @@ void main() {
 
         expect(prompt, isNotEmpty);
         expect(
-          prompt.contains('correct') ||
+          prompt.toLowerCase().contains('correct') ||
               prompt.contains('Good') ||
               prompt.contains('Very'),
           isTrue,

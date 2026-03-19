@@ -56,7 +56,7 @@
     "id": 7,
     "question": "How many amendments does the U.S. Constitution have?",
     "answers": [
-      {"text": "Twenty-seven (27)", "category": "NUMBER"}
+      {"text": "Twenty-seven (27)", "category": "NUMBER_MEMBERS"}
     ]
   },
   {
@@ -180,14 +180,14 @@
     "id": 21,
     "question": "How many U.S. senators are there?",
     "answers": [
-      {"text": "One hundred (100)", "category": "NUMBER"}
+      {"text": "One hundred (100)", "category": "NUMBER_MEMBERS"}
     ]
   },
   {
     "id": 22,
     "question": "How long is a term for a U.S. senator?",
     "answers": [
-      {"text": "Six (6) years", "category": "NUMBER"}
+      {"text": "Six (6) years", "category": "NUMBER_YEARS"}
     ]
   },
   {
@@ -201,14 +201,14 @@
     "id": 24,
     "question": "How many voting members are in the House of Representatives?",
     "answers": [
-      {"text": "Four hundred thirty-five (435)", "category": "NUMBER"}
+      {"text": "Four hundred thirty-five (435)", "category": "NUMBER_MEMBERS"}
     ]
   },
   {
     "id": 25,
     "question": "How long is a term for a member of the House of Representatives?",
     "answers": [
-      {"text": "Two (2) years", "category": "NUMBER"}
+      {"text": "Two (2) years", "category": "NUMBER_YEARS"}
     ]
   },
   {
@@ -222,7 +222,7 @@
     "id": 27,
     "question": "How many senators does each state have?",
     "answers": [
-      {"text": "Two (2)", "category": "NUMBER"}
+      {"text": "Two (2)", "category": "NUMBER_MEMBERS"}
     ]
   },
   {
@@ -292,7 +292,7 @@
     "id": 36,
     "question": "The President of the United States is elected for how many years?",
     "answers": [
-      {"text": "Four (4) years", "category": "NUMBER"}
+      {"text": "Four (4) years", "category": "NUMBER_YEARS"}
     ]
   },
   {
@@ -445,23 +445,23 @@
     "id": 53,
     "question": "How many seats are on the Supreme Court?",
     "answers": [
-      {"text": "Nine (9)", "category": "NUMBER"}
+      {"text": "Nine (9)", "category": "NUMBER_MEMBERS"}
     ]
   },
   {
     "id": 54,
     "question": "How many Supreme Court justices are usually needed to decide a case?",
     "answers": [
-      {"text": "Five (5)", "category": "NUMBER"}
+      {"text": "Five (5)", "category": "NUMBER_MEMBERS"}
     ]
   },
   {
     "id": 55,
     "question": "How long do Supreme Court justices serve?",
     "answers": [
-      {"text": "(For) life", "category": "NUMBER"},
-      {"text": "Lifetime appointment", "category": "NUMBER"},
-      {"text": "(Until) retirement", "category": "NUMBER"}
+      {"text": "(For) life", "category": "NUMBER_TENURE"},
+      {"text": "Lifetime appointment", "category": "NUMBER_TENURE"},
+      {"text": "(Until) retirement", "category": "NUMBER_TENURE"}
     ]
   },
   {
@@ -1112,7 +1112,7 @@
     "id": 121,
     "question": "Why does the flag have 13 stripes?",
     "answers": [
-      {"text": "(Because there were) 13 original colonies", "category": "NUMBER"},
+      {"text": "(Because there were) 13 original colonies", "category": "NUMBER_HISTORICAL"},
       {"text": "(Because the stripes) represent the original colonies", "category": "NATIONAL_SYMBOL"}
     ]
   },
@@ -1122,7 +1122,7 @@
     "answers": [
       {"text": "(Because there is) one star for each state", "category": "NATIONAL_SYMBOL"},
       {"text": "(Because) each star represents a state", "category": "NATIONAL_SYMBOL"},
-      {"text": "(Because there are) 50 states", "category": "NUMBER"}
+      {"text": "(Because there are) 50 states", "category": "NUMBER_HISTORICAL"}
     ]
   },
   {

@@ -21,6 +21,10 @@ class DatabaseService {
     'HISTORICAL_FIGURE': 4,
     'GOVERNMENT_OFFICIAL': 5,
     'NUMBER': 6,
+    'NUMBER_MEMBERS': 22,
+    'NUMBER_YEARS': 23,
+    'NUMBER_TENURE': 24,
+    'NUMBER_HISTORICAL': 25,
     'DATE': 7,
     'WAR': 8,
     'GOVERNMENT_BRANCH': 9,
@@ -52,11 +56,11 @@ class DatabaseService {
     return await openDatabase(
       path,
       version:
-          6, // Bumped for RULE_OF_LAW, POLITICAL_IDEOLOGY, POPULATION_REASON categories
+          7, // Bumped for NUMBER subcategories (NUMBER_MEMBERS, NUMBER_YEARS, NUMBER_TENURE, NUMBER_HISTORICAL)
       onCreate: _createDatabase,
       onUpgrade: (db, oldVersion, newVersion) async {
         // For now, just drop and recreate (no user data to preserve)
-        if (oldVersion < 6) {
+        if (oldVersion < 7) {
           await db.execute('DROP TABLE IF EXISTS answer');
           await db.execute('DROP TABLE IF EXISTS question_text');
           await db.execute('DROP TABLE IF EXISTS question');
@@ -601,20 +605,28 @@ class DatabaseService {
 
     print('DatabaseService: Updating location-specific answers for $state...');
 
-    // Find questions that need location-specific answers
-    // These are typically questions with GOVERNMENT_OFFICIAL category
-    // that have placeholder text like "Your state's governor", etc.
+    // Find questions that need location-specific answers by their stable
+    // question IDs, rather than substring-matching on question text.
+    // Target questions:
+    //   Q23 - Who is one of your state's U.S. senators now?
+    //   Q29 - Name your U.S. representative.
+    //   Q38 - What is the name of the President of the United States now?
+    //   Q39 - What is the name of the Vice President of the United States now?
+    //   Q61 - Who is the governor of your state now?
+    const senatorQuestionId = 23;
+    const representativeQuestionId = 29;
+    const presidentQuestionId = 38;
+    const vicePresidentQuestionId = 39;
+    const governorQuestionId = 61;
 
     final questionTexts = await db.query('question_text');
 
     for (var qt in questionTexts) {
-      final questionText = qt['question_text'] as String;
+      final questionId = qt['question_id'] as int;
       final questionTextId = qt['id'] as int;
 
       // Check if this is a location-specific question and update accordingly
-      // NOTE: 'vice president' must be checked before 'president of the united
-      // states' because the VP question text contains both substrings.
-      if (questionText.toLowerCase().contains('vice president')) {
+      if (questionId == vicePresidentQuestionId) {
         // Update vice president answer
         await _upsertLocationAnswer(
           db,
@@ -622,10 +634,7 @@ class DatabaseService {
           vicePresident,
           DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
         );
-      } else if (questionText.toLowerCase().contains(
-            'president of the united states',
-          ) ||
-          questionText.toLowerCase().contains('name the president')) {
+      } else if (questionId == presidentQuestionId) {
         // Update president answer
         await _upsertLocationAnswer(
           db,
@@ -633,7 +642,7 @@ class DatabaseService {
           president,
           DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
         );
-      } else if (questionText.toLowerCase().contains('governor')) {
+      } else if (questionId == governorQuestionId) {
         // Update governor answer
         await _upsertLocationAnswer(
           db,
@@ -641,7 +650,7 @@ class DatabaseService {
           governor,
           DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
         );
-      } else if (questionText.toLowerCase().contains('senator')) {
+      } else if (questionId == senatorQuestionId) {
         // Update senator answers - both senators
         await _upsertLocationAnswer(
           db,
@@ -659,7 +668,7 @@ class DatabaseService {
             isSecondSenator: true,
           );
         }
-      } else if (questionText.toLowerCase().contains('representative')) {
+      } else if (questionId == representativeQuestionId) {
         // Update representative answer
         await _upsertLocationAnswer(
           db,
