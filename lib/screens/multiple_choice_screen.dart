@@ -73,10 +73,12 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
 
       // Detect if question requires multiple answers
       final questionTextLower = question.questionText.toLowerCase();
-      final requiresMultiple =
-          questionTextLower.contains('two ') ||
-          questionTextLower.contains('name two') ||
-          questionTextLower.contains('what are two');
+      final requiresMultiple = RegExp(
+        r'name (two|three|four|five|six|seven|eight|nine|ten|\d+)'
+        r'|what are (two|three|four|five|six|seven|eight|nine|ten|\d+)'
+        r'|name five'
+        r'|two or more',
+      ).hasMatch(questionTextLower);
 
       final correctAnswers = <String>[];
       if (requiresMultiple && question.answers.length >= 2) {
@@ -288,7 +290,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      'Select at least 2 correct answers',
+                      'Select all correct answers',
                       style: TextStyle(
                         fontSize: 14,
                         color: Theme.of(context).colorScheme.primary,
