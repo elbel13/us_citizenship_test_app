@@ -40,6 +40,10 @@ class DatabaseService {
     'RULE_OF_LAW': 19,
     'POLITICAL_IDEOLOGY': 20,
     'POPULATION_REASON': 21,
+    // Used for questions whose answers are the names of current office-holders
+    // (e.g. Speaker of the House, Chief Justice). These are replaced at
+    // onboarding time so their placeholder text never surfaces as a distractor.
+    'CURRENT_OFFICIAL': 26,
   };
 
   Future<Database> get database async {
@@ -595,6 +599,8 @@ class DatabaseService {
   Future<void> updateLocationSpecificAnswers({
     required String president,
     required String vicePresident,
+    required String speakerOfTheHouse,
+    required String chiefJustice,
     required String governor,
     required String senator1,
     required String senator2,
@@ -610,13 +616,17 @@ class DatabaseService {
     // Target questions:
     //   Q23 - Who is one of your state's U.S. senators now?
     //   Q29 - Name your U.S. representative.
+    //   Q30 - What is the name of the Speaker of the House of Representatives now?
     //   Q38 - What is the name of the President of the United States now?
     //   Q39 - What is the name of the Vice President of the United States now?
+    //   Q57 - Who is the Chief Justice of the United States now?
     //   Q61 - Who is the governor of your state now?
     const senatorQuestionId = 23;
     const representativeQuestionId = 29;
+    const speakerQuestionId = 30;
     const presidentQuestionId = 38;
     const vicePresidentQuestionId = 39;
+    const chiefJusticeQuestionId = 57;
     const governorQuestionId = 61;
 
     final questionTexts = await db.query('question_text');
@@ -641,6 +651,22 @@ class DatabaseService {
           questionTextId,
           president,
           DatabaseService.categoryIds['GOVERNMENT_OFFICIAL']!,
+        );
+      } else if (questionId == speakerQuestionId) {
+        // Update Speaker of the House answer
+        await _upsertLocationAnswer(
+          db,
+          questionTextId,
+          speakerOfTheHouse,
+          DatabaseService.categoryIds['CURRENT_OFFICIAL']!,
+        );
+      } else if (questionId == chiefJusticeQuestionId) {
+        // Update Chief Justice answer
+        await _upsertLocationAnswer(
+          db,
+          questionTextId,
+          chiefJustice,
+          DatabaseService.categoryIds['CURRENT_OFFICIAL']!,
         );
       } else if (questionId == governorQuestionId) {
         // Update governor answer

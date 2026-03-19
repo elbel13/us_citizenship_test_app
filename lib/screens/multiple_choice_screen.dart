@@ -104,8 +104,16 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
         categoryIds,
         numWrong + correctAnswers.length,
       );
+      // Normalize answer text for dedup: lowercase and strip a leading "the ".
+      String normalize(String s) =>
+          s.toLowerCase().replaceFirst(RegExp(r'^the\s+'), '').trim();
+      final correctNormalized = correctAnswers.map(normalize).toSet();
       final incorrectAnswers = rawIncorrect
-          .where((a) => !correctAnswers.contains(a))
+          .where(
+            (a) =>
+                !correctAnswers.contains(a) &&
+                !correctNormalized.contains(normalize(a)),
+          )
           .take(numWrong)
           .toList();
 

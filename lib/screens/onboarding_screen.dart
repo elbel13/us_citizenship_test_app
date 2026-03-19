@@ -130,6 +130,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         await _databaseService.updateLocationSpecificAnswers(
           president: _officials!.president,
           vicePresident: _officials!.vicePresident,
+          speakerOfTheHouse: _officials!.speakerOfTheHouse,
+          chiefJustice: _officials!.chiefJustice,
           governor: _officials!.governor,
           senator1: _officials!.senator1,
           senator2: _officials!.senator2,

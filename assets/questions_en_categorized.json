@@ -244,7 +244,7 @@
     "id": 30,
     "question": "What is the name of the Speaker of the House of Representatives now?",
     "answers": [
-      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the Speaker of the House of Representatives.", "category": "GOVERNMENT_OFFICIAL"}
+      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the Speaker of the House of Representatives.", "category": "CURRENT_OFFICIAL"}
     ]
   },
   {
@@ -307,14 +307,14 @@
     "id": 38,
     "question": "What is the name of the President of the United States now?",
     "answers": [
-      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the President of the United States.", "category": "GOVERNMENT_OFFICIAL"}
+      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the President of the United States.", "category": "CURRENT_OFFICIAL"}
     ]
   },
   {
     "id": 39,
     "question": "What is the name of the Vice President of the United States now?",
     "answers": [
-      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the Vice President of the United States.", "category": "GOVERNMENT_OFFICIAL"}
+      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the Vice President of the United States.", "category": "CURRENT_OFFICIAL"}
     ]
   },
   {
@@ -340,28 +340,32 @@
     "id": 42,
     "question": "Who is Commander in Chief of the U.S. military?",
     "answers": [
-      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
+      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
     ]
   },
   {
     "id": 43,
     "question": "Who signs bills to become laws?",
     "answers": [
-      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
+      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
     ]
   },
   {
     "id": 44,
     "question": "Who vetoes bills?",
     "answers": [
-      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
+      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
     ]
   },
   {
     "id": 45,
     "question": "Who appoints federal judges?",
     "answers": [
-      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
+      {"text": "The President (of the United States)", "category": "GOVERNMENT_OFFICIAL"},
+      {"text": "President (of the United States)", "category": "GOVERNMENT_OFFICIAL"}
     ]
   },
   {
@@ -476,7 +480,7 @@
     "id": 57,
     "question": "Who is the Chief Justice of the United States now?",
     "answers": [
-      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the Chief Justice of the United States.", "category": "GOVERNMENT_OFFICIAL"}
+      {"text": "Visit uscis.gov/citizenship/testupdates for the name of the Chief Justice of the United States.", "category": "CURRENT_OFFICIAL"}
     ]
   },
   {

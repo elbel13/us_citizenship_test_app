@@ -89,6 +89,8 @@ class GovernmentOfficialsApiService {
   /// Returns a map containing:
   /// - president: String (from static data)
   /// - vicePresident: String (from static data)
+  /// - speakerOfTheHouse: String (from static data)
+  /// - chiefJustice: String (from static data)
   /// - governor: String (from static data)
   /// - senators: List<String> (from API)
   /// - representatives: List<String> (from API if zip provided)
@@ -127,6 +129,8 @@ class GovernmentOfficialsApiService {
     return {
       'president': staticData['president'] as String? ?? '',
       'vicePresident': staticData['vicePresident'] as String? ?? '',
+      'speakerOfTheHouse': staticData['speakerOfTheHouse'] as String? ?? '',
+      'chiefJustice': staticData['chiefJustice'] as String? ?? '',
       'governor': governors[normalizedState] as String? ?? '',
       'senators': senators,
       'representatives': representatives,

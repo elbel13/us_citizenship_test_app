@@ -151,6 +151,8 @@ class LocationService {
         state: officialsData['state'] as String? ?? state,
         president: officialsData['president'] as String? ?? '',
         vicePresident: officialsData['vicePresident'] as String? ?? '',
+        speakerOfTheHouse: officialsData['speakerOfTheHouse'] as String? ?? '',
+        chiefJustice: officialsData['chiefJustice'] as String? ?? '',
         governor: officialsData['governor'] as String? ?? '',
         senator1: senators.isNotEmpty ? senators[0] as String : '',
         senator2: senators.length > 1 ? senators[1] as String : '',
@@ -165,6 +167,8 @@ class LocationService {
         state: state,
         president: 'Current U.S. President',
         vicePresident: 'Current U.S. Vice President',
+        speakerOfTheHouse: 'Current Speaker of the House',
+        chiefJustice: 'Current Chief Justice',
         governor: 'Your state\'s current governor',
         senator1: 'One of your state\'s current U.S. Senators',
         senator2: 'One of your state\'s current U.S. Senators',
@@ -190,6 +194,8 @@ class GovernmentOfficials {
   final String state;
   final String president;
   final String vicePresident;
+  final String speakerOfTheHouse;
+  final String chiefJustice;
   final String governor;
   final String senator1;
   final String senator2;
@@ -200,6 +206,8 @@ class GovernmentOfficials {
     required this.state,
     required this.president,
     required this.vicePresident,
+    required this.speakerOfTheHouse,
+    required this.chiefJustice,
     required this.governor,
     required this.senator1,
     required this.senator2,
